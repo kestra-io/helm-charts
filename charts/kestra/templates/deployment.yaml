@@ -1,0 +1,92 @@
+{{ range $name, $deployment := .Values.deployments }}
+  {{- if $deployment.enabled -}}
+
+{{ $merged := (merge (dict "Component" $name) $) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kestra.fullname" $merged }}
+  labels:
+    {{- include "kestra.labels" $merged | nindent 4 }}
+spec:
+  replicas: {{ $deployment.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "kestra.selectorsLabels" $merged | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "kestra.selectorsLabels" $merged | nindent 8 }}
+    spec:
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ $.Chart.Name }}-{{ $name }}
+          image: "{{ $.Values.image.image }}:{{ $.Values.image.tag }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          command:
+            {{- toYaml $deployment.command | nindent 12 }}
+          env:
+            {{- if $.Values.extraEnv }}{{ toYaml $.Values.extraEnv | trim | nindent 12 }}{{ end }}
+            - name: MICRONAUT_CONFIG_FILES
+              value: /app/confs/application.yml,/app/confs/application-secrets.yml
+            {{- include "kestra.env" $ | nindent 12 }}
+          volumeMounts:
+            {{- if $.Values.extraVolumeMounts }}{{ toYaml $.Values.extraVolumeMounts | trim | nindent 10 }}{{ end }}
+            {{- if $.Values.configuration }}
+            - name: config
+              mountPath: /app/confs/application.yml
+              subPath: application.yml
+            {{- end }}
+            {{- if $.Values.secrets }}
+            - name: secrets
+              mountPath: /app/confs/application-secrets.yml
+              subPath: application-secrets.yml
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: management
+              containerPort: 8081
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: management
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: management
+          resources:
+            {{- toYaml (default $.Values.resources $deployment.resources) | nindent 12 }}
+      {{- with default $.Values.nodeSelector $deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with default $.Values.affinity $deployment.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with default $.Values.tolerations $deployment.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        {{- if $.Values.extraVolumes  }}{{ toYaml $.Values.extraVolumes | trim | nindent 6 }}{{ end }}
+        {{- if $.Values.configuration }}
+        - name: config
+          configMap:
+            name: {{ template "kestra.fullname" (merge (dict "Component" "configmap") $) }}
+        {{- end }}
+        {{- if $.Values.secrets }}
+        - name: secrets
+          secret:
+            secretName: {{ template "kestra.fullname" (merge (dict "Component" "secret") $) }}
+        {{- end }}
+
+---
+  {{- end }}
+{{ end }}

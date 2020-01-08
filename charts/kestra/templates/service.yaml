@@ -1,0 +1,16 @@
+{{ $merged := (merge (dict "Component" "service") $) -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kestra.fullname" $merged }}
+  labels:
+{{ include "kestra.labels" $merged | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "kestra.selectorsLabels" (merge (dict "Component" "webserver") $) | nindent 6 }}
