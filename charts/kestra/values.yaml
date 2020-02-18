@@ -64,11 +64,13 @@ elasticsearch:
   clusterName: "es-kestra"
 
 
-### Ingress & Services
+### Services
 service:
   type: ClusterIP
   port: 8080
+  annotations: {}
 
+### Ingress
 ingress:
   enabled: false
   annotations: {}
@@ -86,6 +88,11 @@ ingress:
 
 ### Global Deployement
 nameOverride: ""
+
+### Annotations for deployments
+annotations: {}
+podAnnotations: {}
+
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
