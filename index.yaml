@@ -3,9 +3,9 @@ entries:
   kestra:
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-02-18T13:28:43.29513941Z"
+    created: "2020-02-18T15:42:51.497671245Z"
     description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
-    digest: 4bf99f1dbffb4544da4e261d6e93a040f14ea9cee1482125eee3ffce4dcdc662
+    digest: 048d35a2ccd2afef7194ff77e52e187233b272cb19683bc8c5ec2fcaad44f127
     home: https://kestra.io
     name: kestra
     urls:
@@ -13,7 +13,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-02-18T13:28:43.291250028Z"
+    created: "2020-02-18T15:42:51.494965765Z"
     description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
     digest: e097a8fd81ba2209db7c3bd67390d2754867bbfc12372654e314b4db9964909d
     home: http://www.kestra.io
@@ -21,4 +21,4 @@ entries:
     urls:
     - kestra-0.1.0.tgz
     version: 0.1.0
-generated: "2020-02-18T13:28:43.287352146Z"
+generated: "2020-02-18T15:42:51.484608144Z"
