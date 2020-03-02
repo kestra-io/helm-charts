@@ -19,6 +19,7 @@ secrets: {}
 deployments:
   webserver:
     enabled: true
+    kind: Deployment
     command:
       - sh
       - -c
@@ -30,6 +31,7 @@ deployments:
 
   executor:
     enabled: true
+    kind: Deployment
     command:
       - sh
       - -c
@@ -37,6 +39,7 @@ deployments:
 
   indexer:
     enabled: true
+    kind: Deployment
     command:
       - sh
       - -c
@@ -44,11 +47,11 @@ deployments:
 
   worker:
     enabled: true
-    replicaCount: 3
+    kind: DaemonSet
     command:
       - sh
       - -c
-      - "/app/kestra server worker"
+      - "/app/kestra server worker --thread=16"
 
 
 ### Kafka
@@ -92,7 +95,7 @@ nameOverride: ""
 ### Annotations for deployments
 annotations: {}
 podAnnotations: {}
-
+initContainers: []
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -112,8 +115,8 @@ tolerations: []
 
 affinity: {}
 
-extraVolumeMounts: {}
+extraVolumeMounts: []
 
-extraVolumes: {}
+extraVolumes: []
 
 extraEnv: []

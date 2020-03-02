@@ -3,7 +3,7 @@
 
 {{ $merged := (merge (dict "Component" $name) $) -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: {{ $deployment.kind }}
 metadata:
   name: {{ include "kestra.fullname" $merged }}
   labels:
@@ -13,7 +13,9 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if eq $deployment.kind "Deployment" }}
   replicas: {{ $deployment.replicaCount | default 1 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "kestra.selectorsLabels" $merged | nindent 6 }}
@@ -30,6 +32,10 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if $.Values.initContainers }}
+      initContainers:
+      {{- toYaml $.Values.initContainers | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ $.Chart.Name }}-{{ $name }}
           image: "{{ $.Values.image.image }}:{{ $.Values.image.tag }}"
@@ -42,7 +48,7 @@ spec:
               value: /app/confs/application.yml,/app/confs/application-secrets.yml
             {{- include "kestra.env" $ | nindent 12 }}
           volumeMounts:
-            {{- if $.Values.extraVolumeMounts }}{{ toYaml $.Values.extraVolumeMounts | trim | nindent 10 }}{{ end }}
+            {{- if $.Values.extraVolumeMounts }}{{ toYaml $.Values.extraVolumeMounts | trim | nindent 12 }}{{ end }}
             {{- if $.Values.configuration }}
             - name: config
               mountPath: /app/confs/application.yml
@@ -83,7 +89,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-        {{- if $.Values.extraVolumes  }}{{ toYaml $.Values.extraVolumes | trim | nindent 6 }}{{ end }}
+        {{- if $.Values.extraVolumes  }}{{ toYaml $.Values.extraVolumes | trim | nindent 8 }}{{ end }}
         {{- if $.Values.configuration }}
         - name: config
           configMap:
