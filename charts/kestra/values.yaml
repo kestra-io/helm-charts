@@ -91,6 +91,7 @@ ingress:
 
 ### Global Deployement
 nameOverride: ""
+serviceAccountName: ""
 
 ### Annotations for deployments
 annotations: {}

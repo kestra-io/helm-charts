@@ -28,6 +28,9 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
+      {{- if $.Values.serviceAccountName }}
+      serviceAccountName: {{ $.Values.serviceAccountName }}
+      {{- end }}
       {{- with $.Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -37,6 +40,7 @@ spec:
       {{- toYaml $.Values.initContainers | nindent 8 }}
       {{- end }}
       containers:
+
         - name: {{ $.Chart.Name }}-{{ $name }}
           image: "{{ $.Values.image.image }}:{{ $.Values.image.tag }}"
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
@@ -66,27 +70,27 @@ spec:
             - name: management
               containerPort: 8081
               protocol: TCP
-          {{- if .Values.livenessProbe.enabled -}}
+          {{- if $.Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: /health
               port: management
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.livenessProbe.successThreshold }}
-            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $.Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ $.Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ $.Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ $.Values.livenessProbe.failureThreshold }}
           {{- end }}
-          {{- if .Values.readinessProbe.enabled -}}
+          {{- if $.Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
               path: /health
               port: management
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.readinessProbe.successThreshold }}
-            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $.Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ $.Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ $.Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ $.Values.readinessProbe.failureThreshold }}
           {{- end }}
           resources:
             {{- toYaml (default $.Values.resources $deployment.resources) | nindent 12 }}
