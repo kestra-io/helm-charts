@@ -3,9 +3,18 @@ entries:
   kestra:
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-03-04T09:35:45.287944846Z"
+    created: "2020-05-27T16:22:23.030918831Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.5.1
+    - condition: kafka.enabled
+      name: kafka
+      repository: http://storage.googleapis.com/kubernetes-charts-incubator
+      version: 0.20.7
     description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
-    digest: a0b1026f44f24a79065008b8fa70c41ae1863ef2664f37f25e590f7fbbb4e9c2
+    digest: 08b21f6e5a1f2c71a7457a52d9bb201e67b19e7d03a02e7d4c4cc787793f51f0
     home: https://kestra.io
     name: kestra
     urls:
@@ -13,7 +22,16 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-03-04T09:35:45.283550351Z"
+    created: "2020-05-27T16:22:23.024632697Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.5.1
+    - condition: kafka.enabled
+      name: kafka
+      repository: http://storage.googleapis.com/kubernetes-charts-incubator
+      version: 0.20.7
     description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
     digest: 048d35a2ccd2afef7194ff77e52e187233b272cb19683bc8c5ec2fcaad44f127
     home: https://kestra.io
@@ -23,7 +41,16 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-03-04T09:35:45.280303554Z"
+    created: "2020-05-27T16:22:22.965091271Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.5.1
+    - condition: kafka.enabled
+      name: kafka
+      repository: http://storage.googleapis.com/kubernetes-charts-incubator
+      version: 0.20.7
     description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
     digest: e097a8fd81ba2209db7c3bd67390d2754867bbfc12372654e314b4db9964909d
     home: http://www.kestra.io
@@ -31,4 +58,4 @@ entries:
     urls:
     - kestra-0.1.0.tgz
     version: 0.1.0
-generated: "2020-03-04T09:35:45.276638258Z"
+generated: "2020-05-27T16:22:22.959857142Z"
