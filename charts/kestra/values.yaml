@@ -127,6 +127,8 @@ extraEnv: []
 ### ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 readinessProbe:
   enabled: true
+  path: /health
+  port: management
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
@@ -135,6 +137,8 @@ readinessProbe:
 
 livenessProbe:
   enabled: true
+  path: /health
+  port: management
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
