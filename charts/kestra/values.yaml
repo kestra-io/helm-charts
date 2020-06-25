@@ -45,6 +45,14 @@ deployments:
       - -c
       - "/app/kestra server indexer"
 
+  scheduler:
+    enabled: true
+    kind: Deployment
+    command:
+      - sh
+      - -c
+      - "/app/kestra server scheduler"
+
   worker:
     enabled: true
     kind: DaemonSet
