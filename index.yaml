@@ -3,7 +3,26 @@ entries:
   kestra:
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-05-27T16:22:23.030918831Z"
+    created: "2020-06-25T11:36:58.808078129Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.5.1
+    - condition: kafka.enabled
+      name: kafka
+      repository: http://storage.googleapis.com/kubernetes-charts-incubator
+      version: 0.20.7
+    description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
+    digest: e7486be33fd0d817f4dcdb08e9408a8e2ba7f70960ad1cc49325e19a2258739c
+    home: https://kestra.io
+    name: kestra
+    urls:
+    - kestra-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created: "2020-06-25T11:36:58.801691646Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -22,7 +41,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-05-27T16:22:23.024632697Z"
+    created: "2020-06-25T11:36:58.794501864Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -41,7 +60,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-05-27T16:22:22.965091271Z"
+    created: "2020-06-25T11:36:58.787703982Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -58,4 +77,4 @@ entries:
     urls:
     - kestra-0.1.0.tgz
     version: 0.1.0
-generated: "2020-05-27T16:22:22.959857142Z"
+generated: "2020-06-25T11:36:58.767425434Z"
