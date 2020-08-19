@@ -16,6 +16,11 @@ spec:
   {{- if eq $deployment.kind "Deployment" }}
   replicas: {{ $deployment.replicaCount | default 1 }}
   {{- end }}
+  {{- if $deployment.strategy }}
+  strategy:
+    {{- toYaml $deployment.strategy | nindent 4 }}
+    {{ if eq $deployment.strategy.type "Recreate" }}rollingUpdate: null{{ end }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "kestra.selectorsLabels" $merged | nindent 6 }}
@@ -40,7 +45,6 @@ spec:
       {{- toYaml $.Values.initContainers | nindent 8 }}
       {{- end }}
       containers:
-
         - name: {{ $.Chart.Name }}-{{ $name }}
           image: "{{ $.Values.image.image }}:{{ $.Values.image.tag }}"
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
@@ -49,19 +53,17 @@ spec:
           env:
             {{- if $.Values.extraEnv }}{{ toYaml $.Values.extraEnv | trim | nindent 12 }}{{ end }}
             - name: MICRONAUT_CONFIG_FILES
-              value: /app/confs/application.yml,/app/confs/application-secrets.yml
+              value: {{ $.Values.configurationPath }}
             {{- include "kestra.env" $ | nindent 12 }}
           volumeMounts:
             {{- if $.Values.extraVolumeMounts }}{{ toYaml $.Values.extraVolumeMounts | trim | nindent 12 }}{{ end }}
             {{- if $.Values.configuration }}
             - name: config
-              mountPath: /app/confs/application.yml
-              subPath: application.yml
+              mountPath: /app/confs/
             {{- end }}
             {{- if $.Values.secrets }}
             - name: secrets
-              mountPath: /app/confs/application-secrets.yml
-              subPath: application-secrets.yml
+              mountPath: /app/secrets/
             {{- end }}
           ports:
             - name: http
@@ -112,11 +114,17 @@ spec:
         - name: config
           configMap:
             name: {{ template "kestra.fullname" (merge (dict "Component" "configmap") $) }}
+            items:
+              - key:  application.yml
+                path: application.yml
         {{- end }}
         {{- if $.Values.secrets }}
         - name: secrets
           secret:
             secretName: {{ template "kestra.fullname" (merge (dict "Component" "secret") $) }}
+              items:
+              - key:  application-secrets.yml
+                path: application-secrets.yml
         {{- end }}
 
 ---
