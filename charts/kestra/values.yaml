@@ -16,7 +16,7 @@ secrets: {}
 
 
 ### configuration files
-configurationPath: /app/confs/application.yml,/app/secrets/application-secrets.yml
+configurationPath:
 
 ### Deployments
 deployments:
@@ -75,11 +75,9 @@ kafka:
   enabled: false
   imageTag: "5.3.2"
 
-
 ### ElasticSearch
 elasticsearch:
   enabled: false
-  image: "docker.elastic.co/elasticsearch/elasticsearch-oss"
   clusterName: "es-kestra"
 
 

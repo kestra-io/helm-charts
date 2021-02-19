@@ -69,24 +69,46 @@ Form the Elasticsearch URL.
 
 
 {{/*
-Env vars
+k8s-config vars
 */}}
-{{- define "kestra.env" -}}
+{{- define "kestra.k8s-config" -}}
 
-{{- if .Values.elasticsearch.enabled -}}
-- name: KESTRA_REPOSITORY_TYPE
-  value: "elasticsearch"
-- name: ELASTICSEARCH_HTTP_HOSTS
-  value: {{ include "kestra.elasticsearch.url" . }}
+{{- if or .Values.elasticsearch.enabled .Values.kafka.enabled -}}
+kestra:
+{{ if .Values.elasticsearch.enabled }}
+  repository:
+    type: elasticsearch
+  elasticsearch:
+    client:
+      http-hosts: {{ include "kestra.elasticsearch.url" . }}
 {{ end }}
-
-{{- if .Values.kafka.enabled -}}
-- name: KESTRA_QUEUE_TYPE
-  value: "kafka"
-- name: KESTRA_KAFKA_CLIENT_PROPERTIES_BOOTSTRAP_SERVERS
-  value: {{ include "kestra.kafka.url" . }}
+{{ if .Values.kafka.enabled }}
+  queue:
+    type: kafka
+  kafka:
+    client:
+      properties:
+        bootstrap.servers: {{ include "kestra.kafka.url" . }}
 {{ end }}
-
+{{- end -}}
 {{- end -}}
 
+{{/*
+Env vars
+*/}}
+{{- define "kestra.configurationPath" -}}
+{{- $configurations := list -}}
+
+{{- if .Values.configurationPath -}}
+{{- $configurations = append $configurations $.Values.configurationPath }}
+{{- else }}
+  {{- if $.Values.configuration }}{{ $configurations = append $configurations "/app/confs/application.yml" }}{{- end }}
+  {{- if $.Values.secrets }}{{ $configurations = append $configurations "/app/confs/application-secrets.yml" }}{{- end }}
+  {{- if include "kestra.k8s-config" $ }}{{ $configurations = append $configurations "/app/confs/application-k8s.yml" }}{{- end }}
+{{- end -}}
+
+- name: MICRONAUT_CONFIG_FILES
+  value: {{ join "," $configurations }}
+
+{{- end -}}
 

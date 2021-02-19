@@ -1,9 +1,9 @@
 dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
-  version: 7.5.1
+  version: 7.11.1
 - name: kafka
-  repository: http://storage.googleapis.com/kubernetes-charts-incubator
-  version: 0.20.7
-digest: sha256:2a425d6551ad30e4b35695f6346e1bf010cb0064a39456c44c187d19fdaebe6a
-generated: "2020-01-10T10:33:14.847235118+01:00"
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.9.0
+digest: sha256:ec8a636a1d683d4e47bd8db7cdcdbd95bebeefaa16bab79160848f1a36ed2288
+generated: "2021-02-19T11:57:05.435510312+01:00"

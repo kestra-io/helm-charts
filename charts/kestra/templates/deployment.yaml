@@ -52,9 +52,7 @@ spec:
             {{- toYaml $deployment.command | nindent 12 }}
           env:
             {{- if $.Values.extraEnv }}{{ toYaml $.Values.extraEnv | trim | nindent 12 }}{{ end }}
-            - name: MICRONAUT_CONFIG_FILES
-              value: {{ $.Values.configurationPath }}
-            {{- include "kestra.env" $ | nindent 12 }}
+            {{- include "kestra.configurationPath" $ | nindent 12 }}
           volumeMounts:
             {{- if $.Values.extraVolumeMounts }}{{ toYaml $.Values.extraVolumeMounts | trim | nindent 12 }}{{ end }}
             {{- if $.Values.configuration }}
@@ -117,6 +115,10 @@ spec:
             items:
               - key:  application.yml
                 path: application.yml
+              {{- if include "kestra.k8s-config" $ }}
+              - key:  application-k8s.yml
+                path: application-k8s.yml
+              {{- end }}
         {{- end }}
         {{- if $.Values.secrets }}
         - name: secrets

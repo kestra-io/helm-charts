@@ -15,7 +15,7 @@
   ```
 * Install it
   ```
-  helm install --name kestra kestra-io/kestra
+  helm install my-release kestra-io/kestra
   ```
 
 ### Using master branch
@@ -26,7 +26,7 @@
   ```
 * Install it
   ```
-  helm install --name kestra ./helm-charts/kestra
+  helm install my-release ./helm-charts/kestra
   ```
   
 ## License

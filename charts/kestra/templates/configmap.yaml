@@ -9,4 +9,6 @@ metadata:
 data:
   application.yml: |
 {{ .Values.configuration | toYaml | indent 4}}
+  application-k8s.yml: |
+    {{ include "kestra.k8s-config" $ | nindent 12 | indent 4}}
 {{- end }}
