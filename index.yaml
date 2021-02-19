@@ -3,7 +3,26 @@ entries:
   kestra:
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-08-19T09:09:47.614662246Z"
+    created: "2021-02-19T11:31:04.700053681Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.11.1
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.9.0
+    description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
+    digest: 6bbc3009fd3efd94939fcdfab8ade7edc7fd0ccf2191f3e81a9ad1b4d4065ba8
+    home: https://kestra.io
+    name: kestra
+    urls:
+    - kestra-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created: "2021-02-19T11:31:04.690385937Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -22,7 +41,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-08-19T09:09:47.605490625Z"
+    created: "2021-02-19T11:31:04.684960613Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -41,7 +60,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-08-19T09:09:47.59872921Z"
+    created: "2021-02-19T11:31:04.679019887Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -60,7 +79,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-08-19T09:09:47.590467791Z"
+    created: "2021-02-19T11:31:04.67309196Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -79,7 +98,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2020-08-19T09:09:47.583800676Z"
+    created: "2021-02-19T11:31:04.667461435Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -96,4 +115,4 @@ entries:
     urls:
     - kestra-0.1.0.tgz
     version: 0.1.0
-generated: "2020-08-19T09:09:47.575319157Z"
+generated: "2021-02-19T11:31:04.659980901Z"
