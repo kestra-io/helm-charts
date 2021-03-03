@@ -33,6 +33,24 @@ deployments:
     tolerations: []
     affinity: {}
     strategy: {}
+    autoscaler:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 3
+      extra: {}
+      metrics: []
+      #  - type: Resource
+      #    resource:
+      #      name: cpu
+      #      target:
+      #        type: Utilization
+      #        averageUtilization: 50
+      #  - type: Resource
+      #    resource:
+      #      name: memory
+      #      target:
+      #        type: AverageValue
+      #        averageValue: 100Mi
 
   executor:
     enabled: true
@@ -73,7 +91,7 @@ deployments:
 ### Kafka
 kafka:
   enabled: false
-  imageTag: "5.3.2"
+
 
 ### ElasticSearch
 elasticsearch:
@@ -86,6 +104,7 @@ service:
   type: ClusterIP
   port: 8080
   annotations: {}
+
 
 ### Ingress
 ingress:
@@ -106,6 +125,7 @@ ingress:
 ### Global Deployement
 nameOverride: ""
 serviceAccountName: ""
+
 
 ### Annotations for deployments
 annotations: {}

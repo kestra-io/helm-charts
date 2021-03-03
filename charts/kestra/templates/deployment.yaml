@@ -128,7 +128,6 @@ spec:
               - key:  application-secrets.yml
                 path: application-secrets.yml
         {{- end }}
-
 ---
   {{- end }}
 {{ end }}

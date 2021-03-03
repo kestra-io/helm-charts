@@ -1,0 +1,24 @@
+{{ range $name, $deployment := .Values.deployments }}
+  {{- if $deployment.autoscaler  -}}
+    {{- if $deployment.autoscaler.enabled -}}
+{{ $merged := (merge (dict "Component" $name) $) -}}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "kestra.fullname" $merged }}-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: {{ $deployment.kind }}
+    name: {{ include "kestra.fullname" $merged }}
+  minReplicas: {{ $deployment.autoscaler.minReplicas | default 1 }}
+  maxReplicas: {{ $deployment.autoscaler.maxReplicas | default 1 }}
+  {{- if $deployment.autoscaler.extra }}{{ toYaml $deployment.autoscaler.extra | trim | nindent 2 }}{{ end }}
+  {{- if $deployment.autoscaler.metrics }}
+  metrics:
+  {{- toYaml $deployment.autoscaler.metrics | nindent 4 }}
+  {{- end }}
+---
+    {{- end }}
+  {{- end }}
+{{ end }}
