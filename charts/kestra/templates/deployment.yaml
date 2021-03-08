@@ -44,6 +44,7 @@ spec:
       initContainers:
       {{- toYaml $.Values.initContainers | nindent 8 }}
       {{- end }}
+      terminationGracePeriodSeconds: {{ default $.Values.terminationGracePeriodSeconds $deployment.terminationGracePeriodSeconds }}
       containers:
         - name: {{ $.Chart.Name }}-{{ $name }}
           image: "{{ $.Values.image.image }}:{{ $.Values.image.tag }}"
