@@ -27,7 +27,7 @@ deployments:
     command:
       - sh
       - -c
-      - "/app/kestra server webserver"
+      - "exec /app/kestra server webserver"
     resources: {}
     nodeSelector: {}
     tolerations: []
@@ -59,7 +59,7 @@ deployments:
     command:
       - sh
       - -c
-      - "/app/kestra server executor"
+      - "exec /app/kestra server executor"
 
   indexer:
     enabled: true
@@ -67,7 +67,7 @@ deployments:
     command:
       - sh
       - -c
-      - "/app/kestra server indexer"
+      - "exec /app/kestra server indexer"
 
   scheduler:
     enabled: true
@@ -75,7 +75,7 @@ deployments:
     command:
       - sh
       - -c
-      - "/app/kestra server scheduler"
+      - "exec /app/kestra server scheduler"
     strategy:
       type: Recreate
 
@@ -85,7 +85,7 @@ deployments:
     command:
       - sh
       - -c
-      - "/app/kestra server worker --thread=16"
+      - "exec /app/kestra server worker --thread=16"
     terminationGracePeriodSeconds: 60
 
 
