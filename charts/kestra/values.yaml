@@ -88,6 +88,18 @@ deployments:
       - "exec /app/kestra server worker --thread=16"
     terminationGracePeriodSeconds: 60
 
+    # for io.kestra.core.tasks.scripts.Bash task, attach a docker dind container in order to isolate in a container
+    # every command launch
+    dind:
+      enabled: true
+      image:
+        image: docker
+        tag: dind-rootless
+        pullPolicy: IfNotPresent
+      socketPath: /run/user/1000/
+      resources: {}
+      args:
+        - --log-level=fatal
 
 ### Kafka
 kafka:
@@ -143,7 +155,7 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-#   memory: 128Mi
+  #   memory: 128Mi
 
 terminationGracePeriodSeconds: 30
 

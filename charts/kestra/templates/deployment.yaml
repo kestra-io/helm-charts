@@ -64,6 +64,10 @@ spec:
             - name: secrets
               mountPath: /app/secrets/
             {{- end }}
+            {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
+            - name: docker-dind-socket
+              mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8080
@@ -95,6 +99,20 @@ spec:
           {{- end }}
           resources:
             {{- toYaml (default $.Values.resources $deployment.resources) | nindent 12 }}
+        {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
+        - name: {{ $.Chart.Name }}-{{ $name }}-docker-dind
+          image: "{{ $.Values.deployments.worker.dind.image.image }}:{{ $.Values.deployments.worker.dind.image.tag }}"
+          imagePullPolicy: {{ $.Values.deployments.worker.dind.image.pullPolicy }}
+          args:
+            {{- toYaml $.Values.deployments.worker.dind.args | nindent 12 }}
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: docker-dind-socket
+              mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
+          resources:
+            {{- toYaml $.Values.deployments.worker.dind.resources | nindent 12 }}
+        {{- end }}
       {{- with default $.Values.nodeSelector $deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -128,6 +146,10 @@ spec:
               items:
               - key:  application-secrets.yml
                 path: application-secrets.yml
+        {{- end }}
+        {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
+        - name: docker-dind-socket
+          emptyDir: {}
         {{- end }}
 ---
   {{- end }}
