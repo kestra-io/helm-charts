@@ -45,8 +45,14 @@ spec:
       {{- toYaml $.Values.initContainers | nindent 8 }}
       {{- end }}
       terminationGracePeriodSeconds: {{ default $.Values.terminationGracePeriodSeconds $deployment.terminationGracePeriodSeconds }}
+      {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
+      securityContext:
+      {{- toYaml (default $.Values.podSecurityContext $deployment.podSecurityContext) | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ $.Chart.Name }}-{{ $name }}
+          securityContext:
+          {{- toYaml (default $.Values.securityContext $deployment.securityContext) | nindent 12 }}
           image: "{{ $.Values.image.image }}:{{ $.Values.image.tag }}"
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
           command:
@@ -67,6 +73,8 @@ spec:
             {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
             - name: docker-dind-socket
               mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
+            - name: docker-tmp
+              mountPath: /tmp
             {{- end }}
           ports:
             - name: http
@@ -105,11 +113,16 @@ spec:
           imagePullPolicy: {{ $.Values.deployments.worker.dind.image.pullPolicy }}
           args:
             {{- toYaml $.Values.deployments.worker.dind.args | nindent 12 }}
+          env:
+            - name: DOCKER_HOST
+              value: unix://{{ $.Values.deployments.worker.dind.socketPath }}/docker.sock
           securityContext:
             privileged: true
           volumeMounts:
             - name: docker-dind-socket
               mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
+            - name: docker-tmp
+              mountPath: /tmp
           resources:
             {{- toYaml $.Values.deployments.worker.dind.resources | nindent 12 }}
         {{- end }}
@@ -117,14 +130,14 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with default $.Values.affinity $deployment.affinity }}
+      {{- with default $.Values.affinity $deployment.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with default $.Values.tolerations $deployment.tolerations }}
+      {{- end }}
+      {{- with default $.Values.tolerations $deployment.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
       volumes:
         {{- if $.Values.extraVolumes  }}{{ toYaml $.Values.extraVolumes | trim | nindent 8 }}{{ end }}
         {{- if $.Values.configuration }}
@@ -150,6 +163,9 @@ spec:
         {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
         - name: docker-dind-socket
           emptyDir: {}
+        - name: docker-tmp
+          emptyDir: {}
+
         {{- end }}
 ---
   {{- end }}

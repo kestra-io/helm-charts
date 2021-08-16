@@ -33,6 +33,8 @@ deployments:
     tolerations: []
     affinity: {}
     strategy: {}
+    podSecurityContext: {}
+    securityContext: {}
     terminationGracePeriodSeconds: 30
     autoscaler:
       enabled: false
@@ -94,9 +96,9 @@ deployments:
       enabled: true
       image:
         image: docker
-        tag: dind-rootless
+        tag: dind
         pullPolicy: IfNotPresent
-      socketPath: /run/user/1000/
+      socketPath: /dind/
       resources: {}
       args:
         - --log-level=fatal
@@ -170,6 +172,17 @@ extraVolumeMounts: []
 extraVolumes: []
 
 extraEnv: []
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+# runAsUser: 1000
 
 
 ### Readiness / Liveness probe config.

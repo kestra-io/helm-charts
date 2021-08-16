@@ -1,6 +1,6 @@
 name: kestra
 description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
 home: https://kestra.io
-version: 0.2.3
+version: 0.2.4
 appVersion: "0.1.0"
 apiVersion: v1
