@@ -3,7 +3,7 @@ entries:
   kestra:
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.586884187Z"
+    created: "2021-09-03T10:49:25.906699166Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -14,7 +14,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 12.9.0
     description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
-    digest: f2c78b3f9eb35c68356518625cf8a5a8d9858c450cdc00c9dcd060be006abb37
+    digest: 343bb72d94433f1f9a1e0072d96a001c2cb11568de5ce3148c4a9929258b55a2
     home: https://kestra.io
     name: kestra
     urls:
@@ -22,7 +22,7 @@ entries:
     version: 0.2.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.577759533Z"
+    created: "2021-09-03T10:49:25.897721167Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -41,7 +41,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.56927519Z"
+    created: "2021-09-03T10:49:25.880544577Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -60,7 +60,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.55976643Z"
+    created: "2021-09-03T10:49:25.870954172Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -79,7 +79,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.550546774Z"
+    created: "2021-09-03T10:49:25.863338587Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -98,7 +98,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.541811227Z"
+    created: "2021-09-03T10:49:25.849463534Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -117,7 +117,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.535941128Z"
+    created: "2021-09-03T10:49:25.843243366Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -136,7 +136,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.530468836Z"
+    created: "2021-09-03T10:49:25.831255833Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -155,7 +155,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.525286148Z"
+    created: "2021-09-03T10:49:25.826238478Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -174,7 +174,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2021-08-16T15:30:56.519075644Z"
+    created: "2021-09-03T10:49:25.820633416Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -191,4 +191,4 @@ entries:
     urls:
     - kestra-0.1.0.tgz
     version: 0.1.0
-generated: "2021-08-16T15:30:56.513791055Z"
+generated: "2021-09-03T10:49:25.814714451Z"
