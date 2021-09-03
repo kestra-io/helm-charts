@@ -22,9 +22,9 @@ jobs:
         if: failure()
         with:
           status: ${{ job.status }}
-          username: Github Actions
-          icon_emoji: ':octocat:'
-          channel: '#kestra'
+          username: GitHub Actions
+          icon_emoji: ':github-actions:'
+          channel: '#git'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
