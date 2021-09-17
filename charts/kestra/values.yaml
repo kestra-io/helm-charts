@@ -18,16 +18,16 @@ secrets: {}
 ### configuration files
 configurationPath:
 
+### Kestra executable
+executable: /app/kestra
+
 ### Deployments
 deployments:
   webserver:
     enabled: true
     kind: Deployment
     replicaCount: 1
-    command:
-      - sh
-      - -c
-      - "exec /app/kestra server webserver"
+    command: "server webserver"
     resources: {}
     nodeSelector: {}
     tolerations: []
@@ -58,41 +58,29 @@ deployments:
   executor:
     enabled: true
     kind: Deployment
-    command:
-      - sh
-      - -c
-      - "exec /app/kestra server executor"
+    command: "server executor"
 
   indexer:
     enabled: true
     kind: Deployment
-    command:
-      - sh
-      - -c
-      - "exec /app/kestra server indexer"
+    command: "server indexer"
 
   scheduler:
     enabled: true
     kind: Deployment
-    command:
-      - sh
-      - -c
-      - "exec /app/kestra server scheduler"
+    command: "server scheduler"
     strategy:
       type: Recreate
 
   worker:
     enabled: true
     kind: DaemonSet
-    command:
-      - sh
-      - -c
-      - "exec /app/kestra server worker --thread=16"
+    command: "server worker --thread=128"
     terminationGracePeriodSeconds: 60
 
     # for io.kestra.core.tasks.scripts.Bash task, attach a docker dind container in order to isolate in a container
     # every command launch
-    dind:
+    dind: &dind
       enabled: true
       image:
         image: docker
@@ -102,6 +90,13 @@ deployments:
       resources: {}
       args:
         - --log-level=fatal
+
+  standalone:
+    enabled: false
+    kind: Deployment
+    command: "server standalone"
+    dind: *dind
+    terminationGracePeriodSeconds: 60
 
 ### Kafka
 kafka:

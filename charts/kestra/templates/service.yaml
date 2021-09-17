@@ -1,4 +1,5 @@
 {{ $merged := (merge (dict "Component" "service") $) -}}
+{{ $selector := ternary "standalone" "webserver" $.Values.deployments.standalone.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,4 +18,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "kestra.selectorsLabels" (merge (dict "Component" "webserver") $) | nindent 6 }}
+    {{- include "kestra.selectorsLabels" (merge (dict "Component" $selector) $) | nindent 6 }}

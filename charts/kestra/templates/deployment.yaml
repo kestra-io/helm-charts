@@ -2,6 +2,7 @@
   {{- if $deployment.enabled -}}
 
 {{ $merged := (merge (dict "Component" $name) $) -}}
+{{ $dind := and ($.Values.deployments.worker.dind.enabled) (or (eq $name "worker") (eq $name "standalone")) }}
 apiVersion: apps/v1
 kind: {{ $deployment.kind }}
 metadata:
@@ -45,7 +46,7 @@ spec:
       {{- toYaml $.Values.initContainers | nindent 8 }}
       {{- end }}
       terminationGracePeriodSeconds: {{ default $.Values.terminationGracePeriodSeconds $deployment.terminationGracePeriodSeconds }}
-      {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
+      {{- if $dind }}
       securityContext:
       {{- toYaml (default $.Values.podSecurityContext $deployment.podSecurityContext) | nindent 8 }}
       {{- end }}
@@ -56,7 +57,9 @@ spec:
           image: "{{ $.Values.image.image }}:{{ $.Values.image.tag }}"
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
           command:
-            {{- toYaml $deployment.command | nindent 12 }}
+            - sh
+            - -c
+            - "exec {{ $.Values.executable }} {{ $deployment.command }}"
           env:
             {{- if $.Values.extraEnv }}{{ toYaml $.Values.extraEnv | trim | nindent 12 }}{{ end }}
             {{- include "kestra.configurationPath" $ | nindent 12 }}
@@ -70,7 +73,7 @@ spec:
             - name: secrets
               mountPath: /app/secrets/
             {{- end }}
-            {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
+            {{- if $dind }}
             - name: docker-dind-socket
               mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
             - name: docker-tmp
@@ -107,7 +110,7 @@ spec:
           {{- end }}
           resources:
             {{- toYaml (default $.Values.resources $deployment.resources) | nindent 12 }}
-        {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
+        {{- if $dind }}
         - name: {{ $.Chart.Name }}-{{ $name }}-docker-dind
           image: "{{ $.Values.deployments.worker.dind.image.image }}:{{ $.Values.deployments.worker.dind.image.tag }}"
           imagePullPolicy: {{ $.Values.deployments.worker.dind.image.pullPolicy }}
@@ -160,7 +163,7 @@ spec:
               - key:  application-secrets.yml
                 path: application-secrets.yml
         {{- end }}
-        {{- if and ($.Values.deployments.worker.dind.enabled) (eq $name "worker") }}
+        {{- if $dind }}
         - name: docker-dind-socket
           emptyDir: {}
         - name: docker-tmp
