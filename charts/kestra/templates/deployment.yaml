@@ -77,7 +77,7 @@ spec:
             - name: docker-dind-socket
               mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
             - name: docker-tmp
-              mountPath: /tmp
+              mountPath: {{ $.Values.deployments.worker.dind.tmpPath }}
             {{- end }}
           ports:
             - name: http
@@ -91,6 +91,7 @@ spec:
             httpGet:
               path: {{ $.Values.livenessProbe.path }}
               port: {{ $.Values.livenessProbe.port }}
+              {{- if $.Values.livenessProbe.httpGetExtra }}{{ toYaml $.Values.livenessProbe.httpGetExtra | trim | nindent 14 }}{{ end }}
             initialDelaySeconds: {{ $.Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ $.Values.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ $.Values.livenessProbe.timeoutSeconds }}
@@ -102,6 +103,7 @@ spec:
             httpGet:
               path: {{ $.Values.readinessProbe.path }}
               port: {{ $.Values.readinessProbe.port }}
+              {{- if $.Values.readinessProbe.httpGetExtra }}{{ toYaml $.Values.readinessProbe.httpGetExtra | trim | nindent 14 }}{{ end }}
             initialDelaySeconds: {{ $.Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ $.Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ $.Values.readinessProbe.timeoutSeconds }}
@@ -121,11 +123,12 @@ spec:
               value: unix://{{ $.Values.deployments.worker.dind.socketPath }}/docker.sock
           securityContext:
             privileged: true
+            {{- toYaml $.Values.deployments.worker.dind.securityContext | nindent 12 }}
           volumeMounts:
             - name: docker-dind-socket
               mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
             - name: docker-tmp
-              mountPath: /tmp
+              mountPath: {{ $.Values.deployments.worker.dind.tmpPath }}
           resources:
             {{- toYaml $.Values.deployments.worker.dind.resources | nindent 12 }}
         {{- end }}

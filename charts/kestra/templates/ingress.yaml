@@ -1,7 +1,7 @@
 {{- if .Values.ingress.enabled -}}
 {{ $merged := (merge (dict "Component" "Ingress") $) -}}
 {{- $fullName := include "kestra.fullname" $merged -}}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
@@ -30,8 +30,10 @@ spec:
         {{- range .paths }}
           - path: {{ . }}
             backend:
-              serviceName: {{ $fullName }}
-              servicePort: http
+              service:
+                name: {{ $fullName }}
+                port:
+                  name: http
         {{- end }}
   {{- end }}
 {{- end }}
