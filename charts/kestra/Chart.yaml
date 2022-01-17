@@ -1,6 +1,44 @@
 name: kestra
-description: Kestra is a platform to build, test, schedule & monitor complex pipelines.
+description: infinitely scalable open source orchestration & scheduling platform.
 home: https://kestra.io
-version: 0.2.5
-appVersion: "0.1.0"
+version: 0.2.6
+appVersion: "0.3.1"
 apiVersion: v1
+keywords:
+  - orchestrator
+  - scheduler
+  - workflow
+icon: https://kestra.io/favicon-192x192.png
+sources:
+  - https://github.com/kestra-io/helm-charts
+maintainers:
+  - name: tchiotludo
+    email: tchiot.ludo@gmail.com
+type: application
+annotations:
+  artifacthub.io/links: |
+    - name: Documentation
+      url: https://kestra.io/docs/
+  artifacthub.io/screenshots: |
+    - title: Home page
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/01.png
+    - title: Flows list
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/02.png
+    - title: Flow topology
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/03.png
+    - title: Flow source
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/04.png
+    - title: Flow logs
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/05.png
+    - title: Execution gantt
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/06.png
+    - title: Namespaces list
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/08.png
+    - title: Global logs
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/09.png
+    - title: Execution topology
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/10.png
+    - title: Documentation
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/11.png
+    - title: Global logs
+      url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png

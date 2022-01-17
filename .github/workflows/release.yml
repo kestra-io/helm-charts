@@ -7,10 +7,20 @@ on:
 
 jobs:
   build:
+    name: Helm Publish
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
-      - uses: actions/checkout@v1
-      - uses: J12934/helm-gh-pages-action@master
+      - uses: actions/checkout@v2
+
+      # Copy for helm
+      - name: Add some files
+        run: |
+          cp LICENSE charts/kestra/LICENSE
+          cp README.md charts/kestra/README.md
+
+      - uses: J12934/helm-gh-pages-action@v2.0.0
         with:
           access-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
           charts-folder: "charts"
@@ -18,10 +28,12 @@ jobs:
 
       # Slack
       - name: Slack notification
-        uses: 8398a7/action-slack@v2
-        if: failure()
+        uses: 8398a7/action-slack@v3
+        if: ${{ always() && env.SLACK_WEBHOOK_URL != 0 }}
         with:
           status: ${{ job.status }}
+          job_name: Helm Publish
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           username: GitHub Actions
           icon_emoji: ':github-actions:'
           channel: '#git'
