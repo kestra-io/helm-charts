@@ -80,27 +80,26 @@ deployments:
     command: "server worker --thread=128"
     terminationGracePeriodSeconds: 60
 
-    # for io.kestra.core.tasks.scripts.Bash task, attach a docker dind container in order to isolate in a container
-    # every command launch
-    dind: &dind
-      enabled: true
-      image:
-        image: docker
-        tag: dind
-        pullPolicy: IfNotPresent
-      socketPath: /dind/
-      tmpPath: /tmp/
-      resources: {}
-      args:
-        - --log-level=fatal
-      securityContext: {}
-
   standalone:
     enabled: false
     kind: Deployment
     command: "server standalone"
-    dind: *dind
     terminationGracePeriodSeconds: 60
+
+# for io.kestra.core.tasks.scripts.Bash task, attach a docker dind container in order to isolate in a container
+# every command launch
+dind:
+  enabled: true
+  image:
+    image: docker
+    tag: dind
+    pullPolicy: IfNotPresent
+  socketPath: /dind/
+  tmpPath: /tmp/
+  resources: {}
+  args:
+    - --log-level=fatal
+  securityContext: {}
 
 ### Kafka
 kafka:

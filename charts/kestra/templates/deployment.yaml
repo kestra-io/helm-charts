@@ -2,7 +2,7 @@
   {{- if $deployment.enabled -}}
 
 {{ $merged := (merge (dict "Component" $name) $) -}}
-{{ $dind := and ($.Values.deployments.worker.dind.enabled) (or (eq $name "worker") (eq $name "standalone")) }}
+{{ $dind := and ($.Values.dind.enabled) (or (eq $name "worker") (eq $name "standalone")) }}
 apiVersion: apps/v1
 kind: {{ $deployment.kind }}
 metadata:
@@ -75,9 +75,9 @@ spec:
             {{- end }}
             {{- if $dind }}
             - name: docker-dind-socket
-              mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
+              mountPath: {{ $.Values.dind.socketPath }}
             - name: docker-tmp
-              mountPath: {{ $.Values.deployments.worker.dind.tmpPath }}
+              mountPath: {{ $.Values.dind.tmpPath }}
             {{- end }}
           ports:
             - name: http
@@ -114,23 +114,25 @@ spec:
             {{- toYaml (default $.Values.resources $deployment.resources) | nindent 12 }}
         {{- if $dind }}
         - name: {{ $.Chart.Name }}-{{ $name }}-docker-dind
-          image: "{{ $.Values.deployments.worker.dind.image.image }}:{{ $.Values.deployments.worker.dind.image.tag }}"
-          imagePullPolicy: {{ $.Values.deployments.worker.dind.image.pullPolicy }}
+          image: "{{ $.Values.dind.image.image }}:{{ $.Values.dind.image.tag }}"
+          imagePullPolicy: {{ $.Values.dind.image.pullPolicy }}
           args:
-            {{- toYaml $.Values.deployments.worker.dind.args | nindent 12 }}
+            {{- toYaml $.Values.dind.args | nindent 12 }}
           env:
             - name: DOCKER_HOST
-              value: unix://{{ $.Values.deployments.worker.dind.socketPath }}/docker.sock
+              value: unix://{{ $.Values.dind.socketPath }}/docker.sock
           securityContext:
             privileged: true
-            {{- toYaml $.Values.deployments.worker.dind.securityContext | nindent 12 }}
+            {{- if $.Values.dind.securityContext }}
+            {{- toYaml $.Values.dind.securityContext | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: docker-dind-socket
-              mountPath: {{ $.Values.deployments.worker.dind.socketPath }}
+              mountPath: {{ $.Values.dind.socketPath }}
             - name: docker-tmp
-              mountPath: {{ $.Values.deployments.worker.dind.tmpPath }}
+              mountPath: {{ $.Values.dind.tmpPath }}
           resources:
-            {{- toYaml $.Values.deployments.worker.dind.resources | nindent 12 }}
+            {{- toYaml $.Values.dind.resources | nindent 12 }}
         {{- end }}
       {{- with default $.Values.nodeSelector $deployment.nodeSelector }}
       nodeSelector:
