@@ -1,9 +1,18 @@
 dependencies:
   - name: elasticsearch
-    version: 7.11.1
+    version: ^7.16.3
     repository: https://helm.elastic.co
     condition: elasticsearch.enabled
   - name: kafka
-    version: 12.9.0
+    version: ^15.3.3
     repository: https://charts.bitnami.com/bitnami
     condition: kafka.enabled
+  - name: kafka
+    version: ^15.3.3
+    repository: https://charts.bitnami.com/bitnami
+    condition: kafka.enabled
+  - name: minio
+    version: ^3.5.8
+    repository: https://charts.min.io/
+    condition: minio.enabled
+

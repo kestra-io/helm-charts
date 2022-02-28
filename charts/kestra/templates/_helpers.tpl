@@ -61,35 +61,51 @@ Form the Elasticsearch URL.
 {{- end -}}
 
 {{/*
-Form the Elasticsearch URL.
+Form the Kafka URL.
 */}}
 {{- define "kestra.kafka.url" }}
 {{- printf "%s-%s:%s" .Release.Name "kafka" "9092" -}}
 {{- end -}}
 
+{{/*
+Form the Minio URL.
+*/}}
+{{- define "kestra.minio.url" }}
+{{- printf "%s-%s" .Release.Name "minio" -}}
+{{- end -}}
 
 {{/*
 k8s-config vars
 */}}
 {{- define "kestra.k8s-config" -}}
-
-{{- if or .Values.elasticsearch.enabled .Values.kafka.enabled -}}
+{{- if or .Values.elasticsearch.enabled .Values.kafka.enabled .Values.minio.enabled -}}
 kestra:
-{{ if .Values.elasticsearch.enabled }}
+{{- if .Values.elasticsearch.enabled }}
   repository:
     type: elasticsearch
   elasticsearch:
     client:
       http-hosts: {{ include "kestra.elasticsearch.url" . }}
-{{ end }}
-{{ if .Values.kafka.enabled }}
+{{- end }}
+{{- if .Values.kafka.enabled }}
   queue:
     type: kafka
   kafka:
     client:
       properties:
         bootstrap.servers: {{ include "kestra.kafka.url" . }}
-{{ end }}
+{{- end }}
+{{- if .Values.minio.enabled }}
+  storage:
+    type: minio
+    minio:
+      endpoint: {{ include "kestra.minio.url" . }}
+      port: 9000
+      access-key: {{ .Values.minio.rootUser }}
+      secret-key: {{ .Values.minio.rootPassword }}
+      secure: false
+      bucket: kestra
+{{- end }}
 {{- end -}}
 {{- end -}}
 

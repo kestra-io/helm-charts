@@ -1,7 +1,7 @@
 ### Image
 image:
   image: kestra/kestra
-  tag: latest
+  tag: latest-full
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -71,12 +71,10 @@ deployments:
     enabled: true
     kind: Deployment
     command: "server scheduler"
-    strategy:
-      type: Recreate
 
   worker:
     enabled: true
-    kind: DaemonSet
+    kind: Deployment
     command: "server worker --thread=128"
     terminationGracePeriodSeconds: 60
 
@@ -85,6 +83,7 @@ deployments:
     kind: Deployment
     command: "server standalone"
     terminationGracePeriodSeconds: 60
+
 
 # for io.kestra.core.tasks.scripts.Bash task, attach a docker dind container in order to isolate in a container
 # every command launch
@@ -101,16 +100,40 @@ dind:
     - --log-level=fatal
   securityContext: {}
 
+
 ### Kafka
 kafka:
   enabled: false
-
 
 ### ElasticSearch
 elasticsearch:
   enabled: false
   clusterName: "es-kestra"
 
+  esConfig:
+    elasticsearch.yml: |
+      xpack:
+        security:
+          enabled: false
+
+  antiAffinity: "soft"
+
+  roles:
+    ml: "false"
+
+
+### Minio
+minio:
+  enabled: false
+  rootUser: please-change-me
+  rootPassword: its-not-a-secret
+  mode: standalone
+  persistence:
+    size: 8Gi
+  buckets:
+    - name: kestra
+      policy: none
+      purge: false
 
 ### Services
 service:

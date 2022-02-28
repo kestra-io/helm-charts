@@ -29,8 +29,11 @@ spec:
     metadata:
       labels:
         {{- include "kestra.selectorsLabels" $merged | nindent 8 }}
-      {{- with $.Values.podAnnotations }}
+
       annotations:
+        checksum/secrets: {{ include (print $.Template.BasePath "/secret.yaml") $ | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+      {{- with $.Values.podAnnotations }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
@@ -65,7 +68,7 @@ spec:
             {{- include "kestra.configurationPath" $ | nindent 12 }}
           volumeMounts:
             {{- if $.Values.extraVolumeMounts }}{{ toYaml $.Values.extraVolumeMounts | trim | nindent 12 }}{{ end }}
-            {{- if $.Values.configuration }}
+            {{- if or $.Values.configuration (include "kestra.k8s-config" $) }}
             - name: config
               mountPath: /app/confs/
             {{- end }}
@@ -147,16 +150,18 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        {{- if $.Values.extraVolumes  }}{{ toYaml $.Values.extraVolumes | trim | nindent 8 }}{{ end }}
-        {{- if $.Values.configuration }}
+        {{- if $.Values.extraVolumes }}{{ toYaml $.Values.extraVolumes | trim | nindent 8 }}{{ end }}
+        {{- if or $.Values.configuration (include "kestra.k8s-config" $) }}
         - name: config
           configMap:
             name: {{ template "kestra.fullname" (merge (dict "Component" "configmap") $) }}
             items:
-              - key:  application.yml
+              {{- if $.Values.configuration }}
+              - key: application.yml
                 path: application.yml
+              {{- end }}
               {{- if include "kestra.k8s-config" $ }}
-              - key:  application-k8s.yml
+              - key: application-k8s.yml
                 path: application-k8s.yml
               {{- end }}
         {{- end }}
