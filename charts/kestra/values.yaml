@@ -91,14 +91,17 @@ dind:
   enabled: true
   image:
     image: docker
-    tag: dind
+    tag: dind-rootless
     pullPolicy: IfNotPresent
   socketPath: /dind/
   tmpPath: /tmp/
   resources: {}
   args:
     - --log-level=fatal
-  securityContext: {}
+    - --group=1000
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
 
 
 ### Kafka
@@ -199,14 +202,14 @@ extraEnv: []
 podSecurityContext: {}
 # fsGroup: 2000
 
-securityContext: {}
+securityContext:
   # capabilities:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-# runAsUser: 1000
-
+  runAsUser: 1000
+  runAsGroup: 1000
 
 ### Readiness / Liveness probe config.
 ### ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
