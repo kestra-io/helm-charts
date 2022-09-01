@@ -1,15 +1,12 @@
 dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
-  version: 7.16.3
+  version: 7.17.3
 - name: kafka
   repository: https://charts.bitnami.com/bitnami
-  version: 15.3.3
-- name: kafka
-  repository: https://charts.bitnami.com/bitnami
-  version: 15.3.3
+  version: 18.3.1
 - name: minio
   repository: https://charts.min.io/
-  version: 3.5.8
-digest: sha256:44e2b3ff7c9ff2b6cc91224310fd09efbc006fc514814fe0aa640dd53a55f673
-generated: "2022-02-28T21:23:18.573461326+01:00"
+  version: 4.0.13
+digest: sha256:2432aad40c2b7ac189b6eb42efe8c2e47ae3194f539f8e001e80710de1470ed9
+generated: "2022-09-01T18:13:41.999053881+02:00"
