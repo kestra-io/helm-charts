@@ -169,9 +169,9 @@ spec:
         - name: secrets
           secret:
             secretName: {{ template "kestra.fullname" (merge (dict "Component" "secret") $) }}
-              items:
-              - key:  application-secrets.yml
-                path: application-secrets.yml
+            items:
+            - key:  application-secrets.yml
+              path: application-secrets.yml
         {{- end }}
         {{- if $dind }}
         - name: docker-dind-socket

@@ -119,7 +119,7 @@ Env vars
 {{- $configurations = append $configurations $.Values.configurationPath }}
 {{- else }}
   {{- if $.Values.configuration }}{{ $configurations = append $configurations "/app/confs/application.yml" }}{{- end }}
-  {{- if $.Values.secrets }}{{ $configurations = append $configurations "/app/confs/application-secrets.yml" }}{{- end }}
+  {{- if $.Values.secrets }}{{ $configurations = append $configurations "/app/secrets/application-secrets.yml" }}{{- end }}
   {{- if include "kestra.k8s-config" $ }}{{ $configurations = append $configurations "/app/confs/application-k8s.yml" }}{{- end }}
 {{- end -}}
 
