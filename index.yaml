@@ -30,7 +30,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.5.0
-    created: "2022-09-02T14:11:30.862915628Z"
+    created: "2022-09-02T15:27:41.106984277Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -45,7 +45,7 @@ entries:
       repository: https://charts.min.io/
       version: ^4.0.13
     description: infinitely scalable open source orchestration & scheduling platform.
-    digest: 76ae1149f5923fa64749ed870c1e9253cd232e4ff64de6f3cef4af49d8461424
+    digest: 77268582683f0a8359cbb38c3633cea675c5f6db7c80344eaeec8c80b3d86a7d
     home: https://kestra.io
     icon: https://kestra.io/favicon-192x192.png
     keywords:
@@ -91,7 +91,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.4
-    created: "2022-09-02T14:11:30.84802795Z"
+    created: "2022-09-02T15:27:41.089213853Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -152,7 +152,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.3
-    created: "2022-09-02T14:11:30.831978965Z"
+    created: "2022-09-02T15:27:41.071332128Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -213,7 +213,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.2
-    created: "2022-09-02T14:11:30.81582328Z"
+    created: "2022-09-02T15:27:41.054906813Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -274,7 +274,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.1
-    created: "2022-09-02T14:11:30.801351704Z"
+    created: "2022-09-02T15:27:41.039248903Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -339,7 +339,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.0
-    created: "2022-09-02T14:11:30.787523931Z"
+    created: "2022-09-02T15:27:41.024188998Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -404,7 +404,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.3.1
-    created: "2022-09-02T14:11:30.774918965Z"
+    created: "2022-09-02T15:27:41.009196493Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -434,7 +434,7 @@ entries:
     version: 0.2.6
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.764711111Z"
+    created: "2022-09-02T15:27:40.999973628Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -453,7 +453,7 @@ entries:
     version: 0.2.5
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.754675859Z"
+    created: "2022-09-02T15:27:40.989788557Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -472,7 +472,7 @@ entries:
     version: 0.2.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.746278214Z"
+    created: "2022-09-02T15:27:40.980435792Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -491,7 +491,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.737094266Z"
+    created: "2022-09-02T15:27:40.969128612Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -510,7 +510,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.72839332Z"
+    created: "2022-09-02T15:27:40.959520145Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -529,7 +529,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.718186567Z"
+    created: "2022-09-02T15:27:40.948593369Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -548,7 +548,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.709069819Z"
+    created: "2022-09-02T15:27:40.938162596Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -567,7 +567,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.703972092Z"
+    created: "2022-09-02T15:27:40.932243254Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -586,7 +586,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.698883865Z"
+    created: "2022-09-02T15:27:40.926267712Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -605,7 +605,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.692698132Z"
+    created: "2022-09-02T15:27:40.915325036Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -624,7 +624,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2022-09-02T14:11:30.686930202Z"
+    created: "2022-09-02T15:27:40.910002399Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -641,4 +641,4 @@ entries:
     urls:
     - kestra-0.1.0.tgz
     version: 0.1.0
-generated: "2022-09-02T14:11:30.68076407Z"
+generated: "2022-09-02T15:27:40.900753434Z"
