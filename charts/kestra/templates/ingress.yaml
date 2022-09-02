@@ -1,5 +1,7 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "kestra.fullname" . -}}
+{{ $merged := (merge (dict "Component" "ingress") $) -}}
+{{- $fullName := include "kestra.fullname" (merge (dict "Component" "ingress") $) -}}
+{{- $fullNameService := include "kestra.fullname" (merge (dict "Component" "service") $) -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -17,7 +19,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "kestra.labels" . | nindent 4 }}
+{{ include "kestra.labels" $merged | indent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -49,11 +51,11 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ $fullName }}
+                name: {{ $fullNameService }}
                 port:
                   number: {{ $svcPort }}
               {{- else }}
-              serviceName: {{ $fullName }}
+              serviceName: {{ $fullNameService }}
               servicePort: {{ $svcPort }}
               {{- end }}
           {{- end }}
