@@ -75,9 +75,25 @@ Form the Minio URL.
 {{- end -}}
 
 {{/*
+Form the Postgres URL.
+*/}}
+{{- define "kestra.postgres.url" }}
+{{- $port := $.Values.postgresql.primary.service.ports.postgresql | toString }}
+{{- printf "%s-%s:%s" .Release.Name "postgresql" $port -}}
+{{- end -}}
+
+{{/*
 k8s-config vars
 */}}
 {{- define "kestra.k8s-config" -}}
+{{- if .Values.postgresql.enabled }}
+datasources:
+  postgres:
+    url: jdbc:postgresql://{{ include "kestra.postgres.url" . }}/{{ .Values.postgresql.auth.database }}
+    driverClassName: org.postgresql.Driver
+    username: {{ .Values.postgresql.auth.username }}
+    password: {{ .Values.postgresql.auth.password }}
+{{ end }}
 {{- if or .Values.elasticsearch.enabled .Values.kafka.enabled .Values.minio.enabled -}}
 kestra:
 {{- if .Values.elasticsearch.enabled }}
@@ -94,6 +110,12 @@ kestra:
     client:
       properties:
         bootstrap.servers: {{ include "kestra.kafka.url" . }}
+{{- end }}
+{{- if .Values.postgresql.enabled }}
+  queue:
+    type: postgres
+  repository:
+    type: postgres
 {{- end }}
 {{- if .Values.minio.enabled }}
   storage:
@@ -120,7 +142,7 @@ Env vars
 {{- else }}
   {{- if $.Values.configuration }}{{ $configurations = append $configurations "/app/confs/application.yml" }}{{- end }}
   {{- if $.Values.secrets }}{{ $configurations = append $configurations "/app/secrets/application-secrets.yml" }}{{- end }}
-  {{- if include "kestra.k8s-config" $ }}{{ $configurations = append $configurations "/app/confs/application-k8s.yml" }}{{- end }}
+  {{- if include "kestra.k8s-config" $ }}{{ $configurations = append $configurations "/app/secrets/application-k8s.yml" }}{{- end }}
 {{- end -}}
 
 - name: MICRONAUT_CONFIG_FILES

@@ -68,11 +68,11 @@ spec:
             {{- include "kestra.configurationPath" $ | nindent 12 }}
           volumeMounts:
             {{- if $.Values.extraVolumeMounts }}{{ toYaml $.Values.extraVolumeMounts | trim | nindent 12 }}{{ end }}
-            {{- if or $.Values.configuration (include "kestra.k8s-config" $) }}
+            {{- if $.Values.configuration }}
             - name: config
               mountPath: /app/confs/
             {{- end }}
-            {{- if $.Values.secrets }}
+            {{- if or $.Values.secrets (include "kestra.k8s-config" $) }}
             - name: secrets
               mountPath: /app/secrets/
             {{- end }}
@@ -151,7 +151,7 @@ spec:
       {{- end }}
       volumes:
         {{- if $.Values.extraVolumes }}{{ toYaml $.Values.extraVolumes | trim | nindent 8 }}{{ end }}
-        {{- if or $.Values.configuration (include "kestra.k8s-config" $) }}
+        {{- if $.Values.configuration }}
         - name: config
           configMap:
             name: {{ template "kestra.fullname" (merge (dict "Component" "configmap") $) }}
@@ -160,18 +160,20 @@ spec:
               - key: application.yml
                 path: application.yml
               {{- end }}
-              {{- if include "kestra.k8s-config" $ }}
-              - key: application-k8s.yml
-                path: application-k8s.yml
-              {{- end }}
         {{- end }}
-        {{- if $.Values.secrets }}
+        {{- if or $.Values.secrets (include "kestra.k8s-config" $) }}
         - name: secrets
           secret:
             secretName: {{ template "kestra.fullname" (merge (dict "Component" "secret") $) }}
             items:
-            - key:  application-secrets.yml
-              path: application-secrets.yml
+            {{- if $.Values.secrets }}
+              - key: application-secrets.yml
+                path: application-secrets.yml
+            {{- end }}
+            {{- if (include "kestra.k8s-config" $) }}
+              - key: application-k8s.yml
+                path: application-k8s.yml
+            {{- end }}
         {{- end }}
         {{- if $dind }}
         - name: docker-dind-socket

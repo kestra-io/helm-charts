@@ -11,8 +11,4 @@ data:
   application.yml: |
 {{ .Values.configuration | toYaml | indent 4}}
 {{- end }}
-{{- if include "kestra.k8s-config" $ }}
-  application-k8s.yml: |
-    {{- include "kestra.k8s-config" $ | nindent 4 }}
-{{- end }}
 {{- end }}
