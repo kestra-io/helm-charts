@@ -38,6 +38,7 @@ deployments:
     podSecurityContext: {}
     securityContext: {}
     terminationGracePeriodSeconds: 30
+    extraContainers: []
     autoscaler:
       enabled: false
       minReplicas: 1
@@ -212,6 +213,8 @@ extraVolumeMounts: []
 extraVolumes: []
 
 extraEnv: []
+
+extraContainers: []
 
 podSecurityContext: {}
 # fsGroup: 2000
