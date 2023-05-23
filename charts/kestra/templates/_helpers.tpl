@@ -94,7 +94,7 @@ datasources:
     username: {{ .Values.postgresql.auth.username }}
     password: {{ .Values.postgresql.auth.password }}
 {{ end }}
-{{- if or .Values.elasticsearch.enabled .Values.kafka.enabled .Values.minio.enabled -}}
+{{- if or .Values.elasticsearch.enabled .Values.kafka.enabled .Values.postgresql.enabled .Values.minio.enabled -}}
 kestra:
 {{- if .Values.elasticsearch.enabled }}
   repository:
