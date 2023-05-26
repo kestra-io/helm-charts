@@ -1,8 +1,12 @@
 {{ range $name, $deployment := .Values.deployments }}
   {{- if $deployment.autoscaler  -}}
     {{- if $deployment.autoscaler.enabled -}}
-{{ $merged := (merge (dict "Component" $name) $) -}}
+{{- if semverCompare ">=1.23-0" $.Capabilities.KubeVersion.GitVersion -}}
+apiVersion: autoscaling/v2
+{{- else -}}
 apiVersion: autoscaling/v2beta2
+{{- end }}
+{{ $merged := (merge (dict "Component" $name) $) -}}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "kestra.fullname" $merged }}-autoscaler
