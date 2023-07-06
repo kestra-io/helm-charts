@@ -124,6 +124,8 @@ spec:
           env:
             - name: DOCKER_HOST
               value: unix://{{ $.Values.dind.socketPath }}/docker.sock
+            - name: DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS
+              value: "--pidns --reaper auto"
           securityContext:
             privileged: true
             {{- if $.Values.dind.securityContext }}
