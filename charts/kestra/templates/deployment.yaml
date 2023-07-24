@@ -1,8 +1,10 @@
 {{ range $name, $deployment := .Values.deployments }}
   {{- if $deployment.enabled -}}
-
 {{ $merged := (merge (dict "Component" $name) $) -}}
-{{ $dind := and ($.Values.dind.enabled) (or (eq $name "worker") (eq $name "standalone")) }}
+{{- if eq $name "workerGroup" -}}
+{{- $_ := set $merged "Component" $deployment.group -}}
+{{- end }}
+{{ $dind := and ($.Values.dind.enabled) (or (eq $name "worker") (eq $name "workerGroup") (eq $name "standalone")) }}
 apiVersion: apps/v1
 kind: {{ $deployment.kind }}
 metadata:
