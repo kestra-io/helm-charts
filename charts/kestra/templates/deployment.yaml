@@ -122,6 +122,7 @@ spec:
           args:
             {{- toYaml $.Values.dind.args | nindent 12 }}
           env:
+            {{- if $.Values.dind.extraEnv }}{{ toYaml $.Values.dind.extraEnv | trim | nindent 12 }}{{ end }}
             - name: DOCKER_HOST
               value: unix://{{ $.Values.dind.socketPath }}/docker.sock
           securityContext:
@@ -130,6 +131,7 @@ spec:
             {{- toYaml $.Values.dind.securityContext | nindent 12 }}
             {{- end }}
           volumeMounts:
+            {{- if $.Values.dind.extraVolumeMounts }}{{ toYaml $.Values.dind.extraVolumeMounts | trim | nindent 12 }}{{ end }}
             - name: docker-dind-socket
               mountPath: {{ $.Values.dind.socketPath }}
             - name: docker-tmp

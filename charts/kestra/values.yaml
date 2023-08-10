@@ -86,7 +86,7 @@ deployments:
     terminationGracePeriodSeconds: 60
 
 
-# for io.kestra.core.tasks.scripts.Bash task, attach a docker dind container in order to isolate in a container
+# for io.kestra.core.tasks.scripts.Bash task or io.kestra.plugin.scripts.*, attach a docker dind container in order to isolate in a container
 # every command launch
 dind:
   enabled: true
@@ -103,7 +103,8 @@ dind:
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
-
+  extraVolumeMounts: []
+  extraEnv: []
 
 ### Kafka
 kafka:
