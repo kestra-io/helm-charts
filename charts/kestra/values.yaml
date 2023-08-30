@@ -87,6 +87,15 @@ deployments:
     terminationGracePeriodSeconds: 60
     workerThreads: 128
 
+# EE only - Define additional group of workers.
+# Must be used in addition to default workers (in standalone or separate worker deployment).
+workerGroup:
+  workergroupname: # name of the worker group
+    enabled: false
+    kind: Deployment
+    command: "server worker --thread={{ .Values.workerGroup.workergroupname.workerThreads }} --worker-group={{ .WorkerGroup }}"
+    terminationGracePeriodSeconds: 60
+    workerThreads: 128
 
 # for io.kestra.core.tasks.scripts.Bash task or io.kestra.plugin.scripts.*, attach a docker dind container in order to isolate in a container
 # every command launch
