@@ -62,7 +62,7 @@ spec:
           command:
             - sh
             - -c
-            - "exec {{ $.Values.executable }} {{ $deployment.command }}"
+            - "exec {{ $.Values.executable }} {{ tpl $deployment.command $ }}"
           env:
             {{- if $.Values.extraEnv }}{{ toYaml $.Values.extraEnv | trim | nindent 12 }}{{ end }}
             {{- include "kestra.configurationPath" $ | nindent 12 }}

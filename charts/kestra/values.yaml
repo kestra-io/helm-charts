@@ -76,14 +76,16 @@ deployments:
   worker:
     enabled: false
     kind: Deployment
-    command: "server worker --thread=128"
+    command: "server worker --thread={{ .Values.deployments.worker.workerThreads }}"
     terminationGracePeriodSeconds: 60
+    workerThreads: 128
 
   standalone:
     enabled: true
     kind: Deployment
-    command: "server standalone --worker-thread=128"
+    command: "server standalone --worker-thread={{ .Values.deployments.standalone.workerThreads }}"
     terminationGracePeriodSeconds: 60
+    workerThreads: 128
 
 
 # for io.kestra.core.tasks.scripts.Bash task or io.kestra.plugin.scripts.*, attach a docker dind container in order to isolate in a container
