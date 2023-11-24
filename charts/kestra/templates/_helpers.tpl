@@ -238,7 +238,7 @@ spec:
             {{- end }}
             {{- if $dind }}
             - name: docker-dind-socket
-              mountPath: {{ $.Values.dind.socketPath }}
+              mountPath: /dind
             - name: docker-tmp
               mountPath: {{ $.Values.dind.tmpPath }}
             {{- end }}
