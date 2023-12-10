@@ -150,7 +150,9 @@ minio:
     - name: kestra
       policy: none
       purge: false
-
+  resources:
+    requests:
+      memory: 512Mi
 
 ### Postgresql
 postgresql:
