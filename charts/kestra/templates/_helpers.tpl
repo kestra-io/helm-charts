@@ -249,6 +249,18 @@ spec:
             - name: management
               containerPort: 8081
               protocol: TCP
+          {{- if $.Values.startupProbe.enabled }}
+          startupProbe:
+            httpGet:
+              path: {{ $.Values.startupProbe.path }}
+              port: {{ $.Values.startupProbe.port }}
+              {{- if $.Values.readinessProbe.httpGetExtra }}{{ toYaml $.Values.startupProbe.httpGetExtra | trim | nindent 14 }}{{ end }}
+            initialDelaySeconds: {{ $.Values.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ $.Values.startupProbe.timeoutSeconds }}
+            successThreshold: {{ $.Values.startupProbe.successThreshold }}
+            failureThreshold: {{ $.Values.startupProbe.failureThreshold }}
+          {{- end }}
           {{- if $.Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:

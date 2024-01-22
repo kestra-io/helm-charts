@@ -242,15 +242,15 @@ securityContext:
   runAsUser: 1000
   runAsGroup: 1000
 
-### Readiness / Liveness probe config.
+### Startup / Readiness / Liveness probe config.
 ### ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 readinessProbe:
   enabled: true
   path: /health
   port: management
-  initialDelaySeconds: 5
-  periodSeconds: 10
-  timeoutSeconds: 5
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  timeoutSeconds: 3
   successThreshold: 1
   failureThreshold: 3
   httpGetExtra: {}
@@ -259,9 +259,21 @@ livenessProbe:
   enabled: true
   path: /health
   port: management
-  initialDelaySeconds: 5
-  periodSeconds: 10
-  timeoutSeconds: 5
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  timeoutSeconds: 3
   successThreshold: 1
   failureThreshold: 3
   httpGetExtra: {}
+
+startupProbe:
+  enabled: true
+  path: /health
+  port: management
+  initialDelaySeconds: 1
+  periodSeconds: 1
+  timeoutSeconds: 1
+  successThreshold: 1
+  failureThreshold: 120
+  httpGetExtra: {}
+
