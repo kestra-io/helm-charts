@@ -254,7 +254,7 @@ spec:
             httpGet:
               path: {{ $.Values.startupProbe.path }}
               port: {{ $.Values.startupProbe.port }}
-              {{- if $.Values.readinessProbe.httpGetExtra }}{{ toYaml $.Values.startupProbe.httpGetExtra | trim | nindent 14 }}{{ end }}
+              {{- if $.Values.startupProbe.httpGetExtra }}{{ toYaml $.Values.startupProbe.httpGetExtra | trim | nindent 14 }}{{ end }}
             initialDelaySeconds: {{ $.Values.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ $.Values.startupProbe.periodSeconds }}
             timeoutSeconds: {{ $.Values.startupProbe.timeoutSeconds }}
