@@ -24,9 +24,71 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/10-Logs.png
         - title: Documentation
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
+    apiVersion: v2
+    appVersion: 0.14.0
+    created: "2024-01-22T08:01:28.956526643Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: ^7.17.3
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: ^18.3.1
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.min.io/
+      version: ^4.0.13
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~11.9.2
+    description: Infinitely scalable, event-driven, language-agnostic orchestration
+      and scheduling platform to manage millions of workflows declaratively in code.
+    digest: d6a7c7116069c2b56e2911942f8efcaaef53ea6d40c7e513dbc71ab05e63cfc7
+    home: https://kestra.io
+    icon: https://kestra.io/favicon-192x192.png
+    keywords:
+    - orchestrator
+    - scheduler
+    - workflow
+    maintainers:
+    - email: tchiot.ludo@gmail.com
+      name: tchiotludo
+    name: kestra
+    sources:
+    - https://github.com/kestra-io/helm-charts
+    type: application
+    urls:
+    - kestra-0.14.0.tgz
+    version: 0.14.0
+  - annotations:
+      artifacthub.io/links: |
+        - name: Documentation
+          url: https://kestra.io/docs/
+      artifacthub.io/screenshots: |
+        - title: Home page
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/02-Homepage-Empty.png
+        - title: Flows list
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/04-Flows.png
+        - title: Flow page
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/05-Flows-Flow.png
+        - title: Execution list
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/08-Executions.png
+        - title: Execution page
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/09-Executions-Execution.png
+        - title: Execution gantt
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/27-Executions-Gantt.png
+        - title: Namespaces list
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/14-EE-Namespace.png
+        - title: Global logs
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/10-Logs.png
+        - title: Documentation
+          url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v1
     appVersion: 0.13.0
-    created: "2023-12-10T21:54:08.378408322Z"
+    created: "2024-01-22T08:01:28.943375411Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -88,7 +150,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v1
     appVersion: 0.11.0
-    created: "2023-12-10T21:54:08.364850495Z"
+    created: "2024-01-22T08:01:28.930131788Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -153,7 +215,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.5.1
-    created: "2023-12-10T21:54:08.493059667Z"
+    created: "2024-01-22T08:01:29.073631627Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -218,7 +280,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.5.0
-    created: "2023-12-10T21:54:08.478584799Z"
+    created: "2024-01-22T08:01:29.05970432Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -279,7 +341,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.4
-    created: "2023-12-10T21:54:08.46939402Z"
+    created: "2024-01-22T08:01:29.049929524Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -340,7 +402,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.3
-    created: "2023-12-10T21:54:08.459799401Z"
+    created: "2024-01-22T08:01:29.03935953Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -401,7 +463,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.2
-    created: "2023-12-10T21:54:08.450011598Z"
+    created: "2024-01-22T08:01:29.029702451Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -462,7 +524,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.1
-    created: "2023-12-10T21:54:08.440581083Z"
+    created: "2024-01-22T08:01:29.019945874Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -527,7 +589,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.0
-    created: "2023-12-10T21:54:08.43111707Z"
+    created: "2024-01-22T08:01:29.010233124Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -592,7 +654,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.3.1
-    created: "2023-12-10T21:54:08.421519471Z"
+    created: "2024-01-22T08:01:29.000125757Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -622,7 +684,7 @@ entries:
     version: 0.2.6
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.415537173Z"
+    created: "2024-01-22T08:01:28.99426983Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -641,7 +703,7 @@ entries:
     version: 0.2.5
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.408993738Z"
+    created: "2024-01-22T08:01:28.987526823Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -660,7 +722,7 @@ entries:
     version: 0.2.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.40251163Z"
+    created: "2024-01-22T08:01:28.981859208Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -679,7 +741,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.396047993Z"
+    created: "2024-01-22T08:01:28.975341683Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -698,7 +760,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.390422342Z"
+    created: "2024-01-22T08:01:28.968849309Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -717,7 +779,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.383975293Z"
+    created: "2024-01-22T08:01:28.963186102Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -736,7 +798,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.350688842Z"
+    created: "2024-01-22T08:01:28.916222879Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -755,7 +817,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.347111501Z"
+    created: "2024-01-22T08:01:28.911922078Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -774,7 +836,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.3435018Z"
+    created: "2024-01-22T08:01:28.908071556Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -793,7 +855,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.339263694Z"
+    created: "2024-01-22T08:01:28.903704483Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -812,7 +874,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2023-12-10T21:54:08.335522557Z"
+    created: "2024-01-22T08:01:28.900277934Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -829,4 +891,4 @@ entries:
     urls:
     - kestra-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-10T21:54:08.331099155Z"
+generated: "2024-01-22T08:01:28.896575649Z"
