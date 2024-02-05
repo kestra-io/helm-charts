@@ -230,9 +230,16 @@ extraEnv: []
 
 extraContainers: []
 
-extraConfigMapEnvFrom: []
+extraConfigMapEnvFrom:
+  # - name: my-existing-configmap-no-prefix
+  # - name: my-existing-configmap-with-prefix
+  #   prefix: PREFIX_
 
-extraSecretEnvFrom: [] 
+extraSecretEnvFrom:
+  # - name: my-existing-no-prefix
+  # - name: my-existing-with-prefix
+  #   prefix: SECRET_
+
 
 podSecurityContext: {}
 # fsGroup: 2000
