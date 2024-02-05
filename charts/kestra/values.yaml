@@ -39,7 +39,6 @@ deployments:
     securityContext: {}
     terminationGracePeriodSeconds: 30
     extraContainers: []
-    extraSecretEnvFrom: asd
     autoscaler:
       enabled: false
       minReplicas: 1
@@ -75,7 +74,7 @@ deployments:
     command: "server scheduler"
 
   worker:
-    enabled: true
+    enabled: false
     kind: Deployment
     command: "server worker --thread={{ .Values.deployments.worker.workerThreads }}"
     terminationGracePeriodSeconds: 60
