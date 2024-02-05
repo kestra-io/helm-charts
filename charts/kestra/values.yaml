@@ -39,6 +39,7 @@ deployments:
     securityContext: {}
     terminationGracePeriodSeconds: 30
     extraContainers: []
+    extraSecretEnvFrom: asd
     autoscaler:
       enabled: false
       minReplicas: 1
@@ -74,7 +75,7 @@ deployments:
     command: "server scheduler"
 
   worker:
-    enabled: false
+    enabled: true
     kind: Deployment
     command: "server worker --thread={{ .Values.deployments.worker.workerThreads }}"
     terminationGracePeriodSeconds: 60
@@ -229,6 +230,10 @@ extraVolumes: []
 extraEnv: []
 
 extraContainers: []
+
+extraConfigMapEnvFrom: []
+
+extraSecretEnvFrom: [] 
 
 podSecurityContext: {}
 # fsGroup: 2000

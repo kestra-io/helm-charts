@@ -226,6 +226,15 @@ spec:
           env:
             {{- if $.Values.extraEnv }}{{ toYaml $.Values.extraEnv | trim | nindent 12 }}{{ end }}
             {{- include "kestra.configurationPath" $ | nindent 12 }}
+          envFrom:
+            {{- if $.Values.extraConfigMapEnvFrom }}
+            - configMapRef:
+                name: {{ $.Values.extraConfigMapEnvFrom }}
+            {{- end }}
+            {{- if $.Values.extraSecretEnvFrom }}
+            - secretRef:
+                name: {{ $.Values.extraSecretEnvFrom }}
+            {{- end }}
           volumeMounts:
             {{- if $.Values.extraVolumeMounts }}{{ toYaml $.Values.extraVolumeMounts | trim | nindent 12 }}{{ end }}
             {{- if $.Values.configuration }}
