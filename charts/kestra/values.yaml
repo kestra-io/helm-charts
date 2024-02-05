@@ -230,10 +230,12 @@ extraEnv: []
 
 extraContainers: []
 
+
+# https://kestra.io/docs/administrator-guide/configuration/others#kestravariablesenv-vars-prefix
 extraConfigMapEnvFrom:
   # - name: my-existing-configmap-no-prefix
   # - name: my-existing-configmap-with-prefix
-  #   prefix: PREFIX_
+  #   prefix: KESTRA_
 
 extraSecretEnvFrom:
   # - name: my-existing-no-prefix
