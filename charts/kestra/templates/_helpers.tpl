@@ -226,7 +226,9 @@ spec:
           env:
             {{- if $.Values.extraEnv }}{{ toYaml $.Values.extraEnv | trim | nindent 12 }}{{ end }}
             {{- include "kestra.configurationPath" $ | nindent 12 }}
+          {{- if or .Values.extraConfigMapEnvFrom .Values.extraSecretEnvFrom }}
           envFrom:
+          {{- end }}
             {{- with .Values.extraConfigMapEnvFrom }}
             {{- range . }}
             - configMapRef:
