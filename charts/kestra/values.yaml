@@ -230,6 +230,19 @@ extraEnv: []
 
 extraContainers: []
 
+
+# https://kestra.io/docs/administrator-guide/configuration/others#kestravariablesenv-vars-prefix
+extraConfigMapEnvFrom:
+  # - name: my-existing-configmap-no-prefix
+  # - name: my-existing-configmap-with-prefix
+  #   prefix: KESTRA_
+
+extraSecretEnvFrom:
+  # - name: my-existing-no-prefix
+  # - name: my-existing-with-prefix
+  #   prefix: SECRET_
+
+
 podSecurityContext: {}
 # fsGroup: 2000
 
