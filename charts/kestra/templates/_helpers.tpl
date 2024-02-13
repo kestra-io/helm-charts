@@ -233,18 +233,18 @@ spec:
             {{- range . }}
             - configMapRef:
                 name: {{ .name }}
-              {{- if .prefix }}
-                prefix: {{ .prefix }}
-              {{- end }}
+            {{- if .prefix }}
+              prefix: {{ .prefix }}
+            {{- end }}
             {{- end }}
             {{- end }}
             {{- with .Values.extraSecretEnvFrom }}
             {{- range . }}
             - secretRef:
                 name: {{ .name }}
-              {{- if .prefix }}
-                prefix: {{ .prefix }}
-              {{- end }}
+            {{- if .prefix }}
+              prefix: {{ .prefix }}
+            {{- end }}
             {{- end }}
             {{- end }}
           volumeMounts:
