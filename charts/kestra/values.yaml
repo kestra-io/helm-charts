@@ -171,6 +171,7 @@ postgresql:
 service:
   type: ClusterIP
   port: 8080
+  loadBalancerIP: ""
   annotations: {}
 
 
