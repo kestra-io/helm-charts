@@ -40,7 +40,7 @@
 
 ## Documentation
 * Full documentation can be found under [kestra.io/docs](https://kestra.io/docs)
-* Deployment on Kubernetes documentation can be found [here](https://kestra.io/docs/administrator-guide/deployment/kubernetes/)
+* Deployment on Kubernetes documentation can be found [here](https://kestra.io/docs/installation/kubernetes)
 
 
 ## License
