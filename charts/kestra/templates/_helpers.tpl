@@ -146,6 +146,7 @@ Env vars
   {{- if $.Values.configuration }}{{ $configurations = append $configurations "/app/confs/application.yml" }}{{- end }}
   {{- if $.Values.secrets }}{{ $configurations = append $configurations "/app/secrets/application-secrets.yml" }}{{- end }}
   {{- if include "kestra.k8s-config" $ }}{{ $configurations = append $configurations "/app/secrets/application-k8s.yml" }}{{- end }}
+  {{- if $.Values.externalSecret }}{{ $configurations = append $configurations "/app/secrets/external/application-secrets-external.yml" }}{{- end }}
 {{- end -}}
 
 - name: MICRONAUT_CONFIG_FILES
@@ -257,6 +258,11 @@ spec:
             - name: secrets
               mountPath: /app/secrets/
             {{- end }}
+            {{- if $.Values.externalSecret }}
+            - name: external-secret
+              mountPath: /app/secrets/external/
+            {{- end }}
+  
             {{- if $dind }}
             - name: docker-dind-socket
               mountPath: /dind
@@ -372,6 +378,14 @@ spec:
               - key: application-k8s.yml
                 path: application-k8s.yml
             {{- end }}
+        {{- end }}
+        {{- if $.Values.externalSecret }}
+        - name: external-secret
+          secret:
+            secretName: {{ $.Values.externalSecret.secretName }}
+            items:
+              - key: {{ $.Values.externalSecret.key }}
+                path: application-secrets-external.yml
         {{- end }}
         {{- if $dind }}
         - name: docker-dind-socket
