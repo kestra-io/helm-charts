@@ -14,6 +14,10 @@ configuration: {}
 ### Secrets for deployments
 secrets: {}
 
+### Load configuration from existing secret
+externalSecret: {}
+  #secretName: secret-name
+  #key: key-inside-the-secret.yml
 
 ### configuration files
 configurationPath:
