@@ -43,6 +43,7 @@ deployments:
     securityContext: {}
     terminationGracePeriodSeconds: 30
     extraContainers: []
+    extraEnv: []
     autoscaler:
       enabled: false
       minReplicas: 1

@@ -225,7 +225,9 @@ spec:
             - -c
             - "exec {{ $.Values.executable }} {{ tpl $deployment.command $ }}"
           env:
-            {{- if $.Values.extraEnv }}{{ toYaml $.Values.extraEnv | trim | nindent 12 }}{{ end }}
+            {{- with default $.Values.extraEnv $deployment.extraEnv }}
+            {{- toYaml . | trim | nindent 12 }}
+            {{- end }}
             {{- include "kestra.configurationPath" $ | nindent 12 }}
           {{- if or .Values.extraConfigMapEnvFrom .Values.extraSecretEnvFrom }}
           envFrom:
