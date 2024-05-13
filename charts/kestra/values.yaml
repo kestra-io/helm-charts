@@ -34,6 +34,8 @@ deployments:
     kind: Deployment
     replicaCount: 1
     command: "server webserver"
+    labels: {}
+    annotations: {}
     resources: {}
     nodeSelector: {}
     tolerations: []

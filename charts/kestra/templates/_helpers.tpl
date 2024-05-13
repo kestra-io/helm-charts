@@ -170,10 +170,16 @@ metadata:
   name: {{ include "kestra.fullname" $merged }}
   labels:
     {{- include "kestra.labels" $merged | nindent 4 }}
-  {{- with $.Values.annotations }}
+    {{- with $deployment.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with $.Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $deployment.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   {{- if eq $deployment.kind "Deployment" }}
   replicas: {{ $deployment.replicaCount | default 1 }}
