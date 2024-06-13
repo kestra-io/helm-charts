@@ -274,6 +274,7 @@ readinessProbe:
   timeoutSeconds: 3
   successThreshold: 1
   failureThreshold: 3
+  httpGetEnabled: true
   httpGetExtra: {}
 
 livenessProbe:
@@ -285,6 +286,7 @@ livenessProbe:
   timeoutSeconds: 3
   successThreshold: 1
   failureThreshold: 3
+  httpGetEnabled: true
   httpGetExtra: {}
 
 startupProbe:
@@ -296,5 +298,6 @@ startupProbe:
   timeoutSeconds: 1
   successThreshold: 1
   failureThreshold: 120
+  httpGetEnabled: true
   httpGetExtra: {}
 
