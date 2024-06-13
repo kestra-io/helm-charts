@@ -286,11 +286,16 @@ spec:
               protocol: TCP
           {{- if $.Values.startupProbe.enabled }}
           startupProbe:
+            {{- if $.Values.startupProbe.httpGetEnabled }}
             httpGet:
               path: {{ $.Values.startupProbe.path }}
               port: {{ $.Values.startupProbe.port }}
               {{- if $.Values.startupProbe.httpGetExtra }}{{ toYaml $.Values.startupProbe.httpGetExtra | trim | nindent 14 }}{{ end }}
             initialDelaySeconds: {{ $.Values.startupProbe.initialDelaySeconds }}
+            {{- end }}
+            {{- if $.Values.startupProbe.exec }}
+            exec: {{- toYaml $.Values.startupProbe.exec | nindent 14 }}
+            {{- end }}
             periodSeconds: {{ $.Values.startupProbe.periodSeconds }}
             timeoutSeconds: {{ $.Values.startupProbe.timeoutSeconds }}
             successThreshold: {{ $.Values.startupProbe.successThreshold }}
@@ -298,10 +303,15 @@ spec:
           {{- end }}
           {{- if $.Values.livenessProbe.enabled }}
           livenessProbe:
+            {{- if $.Values.livenessProbe.httpGetEnabled }}
             httpGet:
               path: {{ $.Values.livenessProbe.path }}
               port: {{ $.Values.livenessProbe.port }}
               {{- if $.Values.livenessProbe.httpGetExtra }}{{ toYaml $.Values.livenessProbe.httpGetExtra | trim | nindent 14 }}{{ end }}
+            {{- end }}
+            {{- if $.Values.livenessProbe.exec }}
+            exec: {{- toYaml $.Values.livenessProbe.exec | nindent 14 }}
+            {{- end }}
             initialDelaySeconds: {{ $.Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ $.Values.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ $.Values.livenessProbe.timeoutSeconds }}
@@ -310,10 +320,15 @@ spec:
           {{- end }}
           {{- if $.Values.readinessProbe.enabled }}
           readinessProbe:
+            {{- if $.Values.readinessProbe.httpGetEnabled }}
             httpGet:
               path: {{ $.Values.readinessProbe.path }}
               port: {{ $.Values.readinessProbe.port }}
               {{- if $.Values.readinessProbe.httpGetExtra }}{{ toYaml $.Values.readinessProbe.httpGetExtra | trim | nindent 14 }}{{ end }}
+            {{- end }}
+            {{- if $.Values.readinessProbe.exec }}
+            exec: {{- toYaml $.Values.readinessProbe.exec | nindent 14 }}
+            {{- end }}
             initialDelaySeconds: {{ $.Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ $.Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ $.Values.readinessProbe.timeoutSeconds }}
