@@ -12,7 +12,7 @@
 
 ## Install the chart
 
-Use the following commands to insatll the chart:
+Use the following commands to install the chart:
 
 ```bash
 helm repo add kestra https://helm.kestra.io/
@@ -69,11 +69,9 @@ secrets:
           bootstrap.servers: "localhost:9092"
 ```
 
-## Docker in Docker (DinD) Worker side car
+## Docker in Docker (DinD) Worker sidecar
 
-By default, Docker in Docker (DinD) is installed on the worker in the `rootless` version. This can be restricted on some environment due to security limitations.
-
-Some solutions you may try:
+By default, Docker in Docker (DinD) is installed on the worker in the `rootless` version. This can be restricted in some environments due to security limitations. Here is how:
 
 * On Google Kubernetes Engine (GKE), use a node pool based on `UBUNTU_CONTAINERD` that works well with Docker DinD, even rootless
 * Some Kubernetes clusters support only a root version of DinD; to make your Kestra deployment work, [disable the rootless version](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L102-L106) using the following Helm chart values:
