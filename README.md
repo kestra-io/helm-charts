@@ -4,7 +4,7 @@
   <img width="460" src="https://kestra.io/logo.svg"  alt="Kestra workflow orchestrator" />
 </p>
 
-![Kestra orchestrator](https://kestra.io/adding-tasks.gif)
+![Kestra orchestrator](https://kestra.io/video.gif)
 
 ## Documentation
 
