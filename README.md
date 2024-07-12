@@ -7,19 +7,20 @@
 ![Kestra orchestrator](https://kestra.io/adding-tasks.gif)
 
 ## Documentation
-* The official Kestra documentation can be found under: [kestra.io](https://kestra.io)
-* Deployment on Kubernetes documentation can be found [here](https://kestra.io/docs/administrator-guide/deployment/kubernetes/)
+
+* The official [Kestra documentation](https://kestra.io/docs)
+* The installation [guide](https://kestra.io/docs/installation/kubernetes) for Kubernetes deployments.
 
 ## Install the chart
 
-Use the following commands to install the chart:
+Use the following commands to install the Helm chart:
 
 ```bash
 helm repo add kestra https://helm.kestra.io/
 helm install kestra kestra/kestra
 ```
 
-By default, the chart will only deploy one standalone Kestra service with one replica. This means that all Kestra server components will be deployed within a single pod. You can change that default behavior and deploy each service independently using the following [Helm chart values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml):
+By default, the chart will deploy one standalone Kestra service with one replica i.e. all Kestra server components will be deployed in a single pod. You can change that default behavior and deploy each service independently using the following [Helm chart values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml):
 
 ```yaml
 deployments:
