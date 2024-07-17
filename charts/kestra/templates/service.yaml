@@ -20,5 +20,11 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    {{- if .Values.service.management.enabled }}
+    - port: {{ .Values.service.management.port }}
+      targetPort: management
+      protocol: TCP
+      name: management
+    {{ end }}
   selector:
     {{- include "kestra.selectorsLabels" (merge (dict "Component" $selector) $) | nindent 6 }}
