@@ -3,8 +3,8 @@ name: kestra
 
 description: Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 home: https://kestra.io
-version: 0.17.0
-appVersion: "0.17.0"
+version: 0.18.0
+appVersion: "0.18.0"
 keywords:
   - orchestrator
   - scheduler
