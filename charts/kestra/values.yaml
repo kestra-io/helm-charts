@@ -304,3 +304,5 @@ startupProbe:
   httpGetEnabled: true
   httpGetExtra: {}
 
+# -- Extra Kubernetes Manifests
+extraManifests: []
