@@ -270,7 +270,7 @@ spec:
             - name: external-secret
               mountPath: /app/secrets/external/
             {{- end }}
-  
+
             {{- if $dind }}
             - name: docker-dind-socket
               mountPath: /dind
@@ -419,3 +419,15 @@ spec:
 {{- end -}}
 
 
+{{/*
+Renders a value that contains template.
+Usage:
+{{ include "kestra.extra-render" ( dict "value" .Values.path.to.the.Value "context" $) }}
+*/}}
+{{- define "kestra.extra-render" -}}
+    {{- if typeIs "string" .value }}
+        {{- tpl .value .context }}
+    {{- else }}
+        {{- tpl (.value | toYaml) .context }}
+    {{- end }}
+{{- end -}}
