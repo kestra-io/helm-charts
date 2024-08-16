@@ -15,23 +15,25 @@ imagePullSecrets: []
 ### This creates a config map of the Kestra configuration
 configuration: {}
 # Example: Setting the plugin defaults for the Docker runner
-# plugins:
-#   configurations:
-#     - type:  io.kestra.plugin.scripts.runner.docker.Docker 
-#       values:
-#         volume-enabled: true
+#   kestra:
+#     plugins:
+#       configurations:
+#         - type:  io.kestra.plugin.scripts.runner.docker.Docker 
+#           values:
+#             volume-enabled: true
 
 
 ### This will create a Kubernetes Secret for the values provided
+## This will be appended to kestra-secret with the key application-secrets.yml
 secrets: {}
 # Example: Store your postgres backend credentials in a secret
-# secrets:
-#   kestra:
-#     datasources:
-#       postgres:
-#         username: pguser
-#         password: mypass123
-#         url: jdbc:postgresql://pghost:5432/db
+#   secrets:
+#     kestra:
+#       datasources:
+#         postgres:
+#           username: pguser
+#           password: mypass123
+#           url: jdbc:postgresql://pghost:5432/db
 
 ### Load Kestra configuration from existing secret
 ## Here this assumes the secret is already deployed and the following apply:
