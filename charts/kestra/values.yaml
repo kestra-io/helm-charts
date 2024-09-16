@@ -153,36 +153,33 @@ dind:
 ### Kafka
 kafka:
   enabled: false
+  listeners:
+    client:
+      protocol: PLAINTEXT
+    controller:
+      protocol: PLAINTEXT
+    interbroker:
+      protocol: PLAINTEXT
+    external:
+      protocol: PLAINTEXT
 
 ### ElasticSearch
 elasticsearch:
   enabled: false
   clusterName: "es-kestra"
-
+  createCert: false
+  protocol: http
   esConfig:
     elasticsearch.yml: |
-      xpack:
-        security:
-          enabled: false
-
-  antiAffinity: "soft"
-
-  roles:
-    ml: "false"
-
+      xpack.security.enabled: false
 
 ### Minio
 minio:
   enabled: true
-  rootUser: please-change-me
-  rootPassword: its-not-a-secret
-  mode: standalone
-  persistence:
-    size: 8Gi
-  buckets:
-    - name: kestra
-      policy: none
-      purge: false
+  auth:
+    rootUser: please-change-me
+    rootPassword: its-not-a-secret
+  defaultBuckets: kestra
   resources:
     requests:
       memory: 512Mi

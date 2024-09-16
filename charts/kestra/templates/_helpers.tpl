@@ -126,8 +126,8 @@ kestra:
     minio:
       endpoint: {{ include "kestra.minio.url" . }}
       port: 9000
-      access-key: {{ .Values.minio.rootUser }}
-      secret-key: {{ .Values.minio.rootPassword }}
+      access-key: {{ .Values.minio.auth.rootUser }}
+      secret-key: {{ .Values.minio.auth.rootPassword }}
       secure: false
       bucket: kestra
 {{- end }}
