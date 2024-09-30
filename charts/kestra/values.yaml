@@ -133,6 +133,13 @@ workerGroup:
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     #workerThreads: 128
 
+# EE only - the Kestra Kubernetes Operator
+operator:
+  enabled: false
+  image: registry.kestra.io/docker/kestra-operator
+  apiKey: ""
+  basicAuth: ""
+
 # for io.kestra.core.tasks.scripts.Bash task or io.kestra.plugin.scripts.*, attach a docker dind container in order to isolate in a container
 # every command launch
 dind:
