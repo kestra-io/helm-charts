@@ -242,22 +242,20 @@ spec:
               value: http://{{ include "kestra.fullname" $service }}:8080
             {{- if and .Values.operator.apiKeyExistingSecretName .Values.operator.apiKeyExistingSecretKey }}
             - name: KESTRA_API_API_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ .Values.operator.apiKeyExistingSecretName }}
-                      key: {{ .Values.operator.apiKeyExistingSecretKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.operator.apiKeyExistingSecretName }}
+                  key: {{ .Values.operator.apiKeyExistingSecretKey }}
             {{- else if .Values.operator.apiKey }}
             - name: KESTRA_API_API_KEY
-              value: {{ .Values.operator.apiKey }}
-            {{- else if .Values.operator.apiKey }}
               value: {{ .Values.operator.apiKey }}
             {{- end }}
             {{- if and .Values.operator.basicAuthExistingSecretName .Values.operator.basicAuthExistingSecretKey }}
             - name: KESTRA_API_BASIC_AUTH
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ .Values.operator.basicAuthExistingSecretName }}
-                      key: {{ .Values.operator.basicAuthExistingSecretKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.operator.basicAuthExistingSecretName }}
+                  key: {{ .Values.operator.basicAuthExistingSecretKey }}
             {{- else if .Values.operator.basicAuth }}
             - name: KESTRA_API_BASIC_AUTH
               value: {{ .Values.operator.basicAuth }}
