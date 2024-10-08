@@ -138,7 +138,11 @@ operator:
   enabled: false
   image: registry.kestra.io/docker/kestra-operator
   apiKey: ""
+  apiKeyExistingSecretName: ""
+  apiKeyExistingSecretKey: "apiKey"
   basicAuth: ""
+  basicAuthExistingSecretName: ""
+  basicAuthExistingSecretKey: "basicAuth"
 
 # for io.kestra.core.tasks.scripts.Bash task or io.kestra.plugin.scripts.*, attach a docker dind container in order to isolate in a container
 # every command launch
