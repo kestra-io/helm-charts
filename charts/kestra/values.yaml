@@ -18,7 +18,7 @@ configuration: {}
 #   kestra:
 #     plugins:
 #       configurations:
-#         - type:  io.kestra.plugin.scripts.runner.docker.Docker 
+#         - type:  io.kestra.plugin.scripts.runner.docker.Docker
 #           values:
 #             volume-enabled: true
 
@@ -39,13 +39,13 @@ secrets: {}
 ## Here this assumes the secret is already deployed and the following apply:
 ## 1. The secret type is "Opaque"
 ## 2. The secret has a single key
-## 3. The value of the secret is the base64 encoded Kestra configuration.
+## 3. The value of the secret is the Kestra configuration.
 externalSecret: {}
   #secretName: secret-name
   #key: application-kestra.yml
 
 ### configuration files
-## This option allows you to reference existing local files to configure Kestra, e.g. 
+## This option allows you to reference existing local files to configure Kestra, e.g.
 configurationPath:
 # configurationPath: /app/application.yml,/app/application-secrets.yml
 
