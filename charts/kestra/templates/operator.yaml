@@ -236,6 +236,8 @@ spec:
           env:
             - name: QUARKUS_OPERATOR_SDK_CRD_APPLY
               value: "true"
+            - name: QUARKUS_OPERATOR_SDK_CRD_GENERATE
+              value: "true"
             - name: QUARKUS_OPERATOR_SDK_CRD_VALIDATE
               value: "false"
             - name: KESTRA_API_URL
