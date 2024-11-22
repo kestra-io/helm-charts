@@ -306,7 +306,7 @@ securityContext:
 ### ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 readinessProbe:
   enabled: true
-  path: /health
+  path: /health/readiness
   port: management
   initialDelaySeconds: 0
   periodSeconds: 5
@@ -318,7 +318,7 @@ readinessProbe:
 
 livenessProbe:
   enabled: true
-  path: /health
+  path: /health/liveness
   port: management
   initialDelaySeconds: 0
   periodSeconds: 5
