@@ -330,7 +330,7 @@ securityContext:
 ## The following config is applied to all deployments by default. You can override this in each deployment.
 readinessProbe:
   enabled: true
-  path: /health
+  path: /health/readiness
   port: management
   initialDelaySeconds: 0
   periodSeconds: 5
@@ -342,7 +342,7 @@ readinessProbe:
 
 livenessProbe:
   enabled: true
-  path: /health
+  path: /health/liveness
   port: management
   initialDelaySeconds: 0
   periodSeconds: 5
