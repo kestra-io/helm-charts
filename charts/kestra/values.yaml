@@ -1,7 +1,6 @@
 ### Image
 image:
   image: kestra/kestra
-  tag: latest
   pullPolicy: Always
 
 imagePullSecrets: []
