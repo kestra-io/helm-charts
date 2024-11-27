@@ -1,8 +1,10 @@
 ### Image
 image:
   image: kestra/kestra
-  tag: latest
   pullPolicy: Always
+  # The tag of the image is taken from AppVersion by default.
+  # If you want to use a specific tag, add image.tag below.
+  # tag: "your-specific-tag"
 
 imagePullSecrets: []
 # - name: regcred
