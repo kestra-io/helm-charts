@@ -227,7 +227,7 @@ spec:
         - name: {{ $.Chart.Name }}-{{ $name }}
           securityContext:
           {{- toYaml (default $.Values.securityContext $deployment.securityContext) | nindent 12 }}
-          image: "{{ $.Values.image.image }}:{{ $.Chart.AppVersion }}"
+          image: "{{ $.Values.image.image }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
           command:
             - sh
