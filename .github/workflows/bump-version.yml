@@ -43,7 +43,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: master
-      - name: Update Tag in YAML File
+      - name: Check latest version
+        id: check-latest-version
+        run: |
+          LATEST_VERSION=$(yq eval '.version' charts/kestra/Chart.yaml)
+          echo "LATEST_VERSION = ${LATEST_VERSION}"
+          echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
+      - name: Compare versions
+        uses: jackbilestech/semver-compare@1.0.4
+        with:
+            head: ${{ env.HELM_CHART_VERSION }}
+            base: ${{ env.LATEST_VERSION }}
+            operator: '>'
+      - name: Update version and appVersion in Chart.yaml File
         id: edit-chart-version
         run: |
           git config user.name "${{ env.CI_COMMIT_AUTHOR }}"
