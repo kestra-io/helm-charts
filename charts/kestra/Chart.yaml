@@ -1,10 +1,9 @@
 apiVersion: v2
 name: kestra
-
 description: Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 home: https://kestra.io
-version: 0.20.4
-appVersion: "v0.20.4"
+version: 0.20.0
+appVersion: "v0.20.0"
 keywords:
   - orchestrator
   - scheduler
@@ -15,9 +14,7 @@ sources:
 maintainers:
   - name: tchiotludo
     email: tchiot.ludo@gmail.com
-
 type: application
-
 annotations:
   artifacthub.io/links: |
     - name: Documentation
@@ -41,7 +38,6 @@ annotations:
       url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/10-Logs.png
     - title: Documentation
       url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
-
 dependencies:
   - name: elasticsearch
     version: ^8.5.1
@@ -59,4 +55,3 @@ dependencies:
     condition: postgresql.enabled
     repository: https://charts.bitnami.com/bitnami
     version: ^15.5.31
-
