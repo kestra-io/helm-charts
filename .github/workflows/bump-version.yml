@@ -30,6 +30,9 @@ jobs:
         id: set-helm-version
         run: |
           if [ -n "${{ github.event.client_payload.new_version }}" ]; then
+            echo "Event of type update-helm-chart-version received from ${{ github.event.client_payload.new_version }}"
+            echo "new_version=${{ github.event.client_payload.new_version }}"
+            echo "Trigger: ${{ github.event.client_payload.github_actor }}"
             HELM_VERSION=${{ github.event.client_payload.new_version }}
             echo "HELM_VERSION=${{ github.event.client_payload.new_version }}" >> $GITHUB_ENV
           else
@@ -39,42 +42,46 @@ jobs:
           echo "version: ${HELM_VERSION#v}"
           echo "appVersion: ${HELM_VERSION}"
           echo "HELM_CHART_VERSION=${HELM_VERSION#v}" >> $GITHUB_ENV
+
       - name: Checkout master branch
         uses: actions/checkout@v4
         with:
           ref: master
+
       - name: Check latest version
         id: check-latest-version
         run: |
           LATEST_VERSION=$(yq eval '.version' charts/kestra/Chart.yaml)
           echo "LATEST_VERSION = ${LATEST_VERSION}"
           echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
+
       - name: Compare versions
+        id: compare_versions
         uses: jackbilestech/semver-compare@1.0.4
+        continue-on-error: true
         with:
             head: ${{ env.HELM_CHART_VERSION }}
             base: ${{ env.LATEST_VERSION }}
             operator: '>'
+
       - name: Update version and appVersion in Chart.yaml File
         id: edit-chart-version
         run: |
           git config user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config user.email "${{ env.CI_COMMIT_EMAIL }}"
-          # Update the appVersion with the new tag
           yq e -i ".appVersion = \"${{ env.HELM_VERSION }}\"" ${{ env.CHART_FILE }}
-          # Update the version with the new tag, removing the leading 'v'
           yq e -i ".version = \"${{ env.HELM_CHART_VERSION }}\"" ${{ env.CHART_FILE }}
           git add ${{ env.CHART_FILE }}
           git commit -m "Update version to ${{ env.HELM_CHART_VERSION }} and appVersion to ${{ env.HELM_VERSION }}"
 
       - name: Create Pull Request
-        id: create-pr
+        if: ${{ steps.compare_versions.outcome == 'success' }}
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
           branch: ${{ env.HELM_BRANCH_MERGE }}${{ env.HELM_VERSION }}
           delete-branch: true
-          title: 'Helm chart update to ${{ env.HELM_CHART_VERSION }}'
+          title: 'Helm chart update from ${{ env.LATEST_VERSION }} to ${{ env.HELM_CHART_VERSION }}'
           body: |
             Helm Chart update to new version:
             - In `${{ env.CHART_FILE }}` new `version` is ${{ env.HELM_CHART_VERSION }}
