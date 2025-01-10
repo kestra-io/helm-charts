@@ -92,21 +92,33 @@ deployments:
       #      target:
       #        type: AverageValue
       #        averageValue: 100Mi
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   executor:
     enabled: false
     kind: Deployment
     command: "server executor"
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   indexer:
     enabled: false
     kind: Deployment
     command: "server indexer"
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   scheduler:
     enabled: false
     kind: Deployment
     command: "server scheduler"
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   worker:
     enabled: false
@@ -115,6 +127,9 @@ deployments:
     terminationGracePeriodSeconds: 60
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     #workerThreads: 128
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   standalone:
     enabled: true
@@ -123,6 +138,9 @@ deployments:
     terminationGracePeriodSeconds: 60
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     #workerThreads: 128
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
 # EE only - Define additional group of workers.
 # Must be used in addition to default workers (in standalone or separate worker deployment).
