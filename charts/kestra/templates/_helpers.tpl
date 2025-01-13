@@ -288,55 +288,64 @@ spec:
               containerPort: 8081
               protocol: TCP
           {{- if or $.Values.startupProbe.enabled $deployment.startupProbe.enabled }}
+          {{- $startupProbe := merge $deployment.startupProbe $.Values.startupProbe }}
           startupProbe:
-            {{- if default $.Values.startupProbe.httpGetEnabled $deployment.startupProbe.httpGetEnabled }}
+            {{- if $startupProbe.httpGetEnabled }}
             httpGet:
-              path: {{ default $.Values.startupProbe.path $deployment.startupProbe.path }}
-              port: {{ default $.Values.startupProbe.port $deployment.startupProbe.port }}
-              {{- if (default $.Values.startupProbe.httpGetExtra $deployment.startupProbe.httpGetExtra) }}{{ toYaml (default $.Values.startupProbe.httpGetExtra $deployment.startupProbe.httpGetExtra) | trim | nindent 14 }}{{ end }}
+              path: {{ $startupProbe.path }}
+              port: {{ $startupProbe.port }}
+              {{- with $startupProbe.httpGetExtra }}
+              {{- toYaml . | nindent 4 }}
+              {{- end }}
             {{- end }}
-            {{- if default $.Values.startupProbe.exec $deployment.startupProbe.exec }}
-            exec: {{- toYaml (default $.Values.startupProbe.exec $deployment.startupProbe.exec) | nindent 14 }}
+            {{- with $startupProbe.exec }}
+            exec: {{- toYaml . | nindent 4 }}
             {{- end }}
-            initialDelaySeconds: {{ default $.Values.startupProbe.initialDelaySeconds $deployment.startupProbe.initialDelaySeconds }}
-            periodSeconds: {{ default $.Values.startupProbe.periodSeconds $deployment.startupProbe.periodSeconds }}
-            timeoutSeconds: {{ default $.Values.startupProbe.timeoutSeconds $deployment.startupProbe.timeoutSeconds }}
-            successThreshold: {{ default $.Values.startupProbe.successThreshold $deployment.startupProbe.successThreshold }}
-            failureThreshold: {{ default $.Values.startupProbe.failureThreshold $deployment.startupProbe.failureThreshold }}
+            initialDelaySeconds: {{ $startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ $startupProbe.periodSeconds }}
+            timeoutSeconds: {{ $startupProbe.timeoutSeconds }}
+            successThreshold: {{ $startupProbe.successThreshold }}
+            failureThreshold: {{ $startupProbe.failureThreshold }}
           {{- end }}
           {{- if or $.Values.livenessProbe.enabled $deployment.livenessProbe.enabled }}
+          {{- $livenessProbe := merge $deployment.livenessProbe $.Values.livenessProbe }}
           livenessProbe:
-            {{- if default $.Values.livenessProbe.httpGetEnabled $deployment.livenessProbe.httpGetEnabled }}
+            {{- if $livenessProbe.httpGetEnabled }}
             httpGet:
-              path: {{ default $.Values.livenessProbe.path $deployment.livenessProbe.path }}
-              port: {{ default $.Values.livenessProbe.port $deployment.livenessProbe.port }}
-              {{- if (default $.Values.livenessProbe.httpGetExtra $deployment.livenessProbe.httpGetExtra) }}{{ toYaml (default $.Values.livenessProbe.httpGetExtra $deployment.livenessProbe.httpGetExtra) | trim | nindent 14 }}{{ end }}
+              path: {{ $livenessProbe.path }}
+              port: {{ $livenessProbe.port }}
+              {{- with $livenessProbe.httpGetExtra }}
+              {{- toYaml . | nindent 4 }}
+              {{- end }}
             {{- end }}
-            {{- if default $.Values.livenessProbe.exec $deployment.livenessProbe.exec }}
-            exec: {{- toYaml (default $.Values.livenessProbe.exec $deployment.livenessProbe.exec) | nindent 14 }}
+            {{- with $livenessProbe.exec }}
+            exec: {{- toYaml . | nindent 4 }}
             {{- end }}
-            initialDelaySeconds: {{ default $.Values.livenessProbe.initialDelaySeconds $deployment.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ default $.Values.livenessProbe.periodSeconds $deployment.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ default $.Values.livenessProbe.timeoutSeconds $deployment.livenessProbe.timeoutSeconds }}
-            successThreshold: {{ default $.Values.livenessProbe.successThreshold $deployment.livenessProbe.successThreshold }}
-            failureThreshold: {{ default $.Values.livenessProbe.failureThreshold $deployment.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ $livenessProbe.timeoutSeconds }}
+            successThreshold: {{ $livenessProbe.successThreshold }}
+            failureThreshold: {{ $livenessProbe.failureThreshold }}
           {{- end }}
           {{- if or $.Values.readinessProbe.enabled $deployment.readinessProbe.enabled }}
+          {{- $readinessProbe := merge $deployment.readinessProbe $.Values.readinessProbe }}
           readinessProbe:
-            {{- if default $.Values.readinessProbe.httpGetEnabled $deployment.readinessProbe.httpGetEnabled }}
+            {{- if $readinessProbe.httpGetEnabled }}
             httpGet:
-              path: {{ default $.Values.readinessProbe.path $deployment.readinessProbe.path }}
-              port: {{ default $.Values.readinessProbe.port $deployment.readinessProbe.port }}
-              {{- if (default $.Values.readinessProbe.httpGetExtra $deployment.readinessProbe.httpGetExtra) }}{{ toYaml (default $.Values.readinessProbe.httpGetExtra $deployment.readinessProbe.httpGetExtra) | trim | nindent 14 }}{{ end }}
+              path: {{ $readinessProbe.path }}
+              port: {{ $readinessProbe.port }}
+              {{- with $readinessProbe.httpGetExtra }}
+              {{- toYaml . | nindent 4 }}
+              {{- end }}
             {{- end }}
-            {{- if default $.Values.readinessProbe.exec $deployment.readinessProbe.exec }}
-            exec: {{- toYaml (default $.Values.readinessProbe.exec $deployment.readinessProbe.exec) | nindent 14 }}
+            {{- with $readinessProbe.exec }}
+            exec: {{- toYaml . | nindent 4 }}
             {{- end }}
-            initialDelaySeconds: {{ default $.Values.readinessProbe.initialDelaySeconds $deployment.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ default $.Values.readinessProbe.periodSeconds $deployment.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ default $.Values.readinessProbe.timeoutSeconds $deployment.readinessProbe.timeoutSeconds }}
-            successThreshold: {{ default $.Values.readinessProbe.successThreshold $deployment.readinessProbe.successThreshold }}
-            failureThreshold: {{ default $.Values.readinessProbe.failureThreshold $deployment.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ $readinessProbe.timeoutSeconds }}
+            successThreshold: {{ $readinessProbe.successThreshold }}
+            failureThreshold: {{ $readinessProbe.failureThreshold }}
           {{- end }}
           resources:
             {{- toYaml (default $.Values.resources $deployment.resources) | nindent 12 }}

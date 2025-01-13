@@ -74,6 +74,9 @@ deployments:
     terminationGracePeriodSeconds: 30
     extraContainers: []
     extraEnv: []
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
     autoscaler:
       enabled: false
       minReplicas: 1
@@ -92,9 +95,6 @@ deployments:
       #      target:
       #        type: AverageValue
       #        averageValue: 100Mi
-    readinessProbe: {}
-    livenessProbe: {}
-    startupProbe: {}
 
   executor:
     enabled: false
