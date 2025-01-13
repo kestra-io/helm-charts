@@ -323,7 +323,8 @@ securityContext:
   runAsGroup: 1000
 
 ### Startup / Readiness / Liveness probe config.
-### ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+## The following config is applied to all deployments by default. You can override this in each deployment.
 readinessProbe:
   enabled: true
   path: /health
@@ -360,5 +361,11 @@ startupProbe:
   httpGetEnabled: true
   httpGetExtra: {}
 
-# -- Extra Kubernetes Manifests
+### Extra Kubernetes Manifests
 extraManifests: []
+  # - apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: demo
+  #   data:
+  #     key: pass123
