@@ -74,6 +74,9 @@ deployments:
     terminationGracePeriodSeconds: 30
     extraContainers: []
     extraEnv: []
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
     autoscaler:
       enabled: false
       minReplicas: 1
@@ -97,32 +100,47 @@ deployments:
     enabled: false
     kind: Deployment
     command: "server executor"
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   indexer:
     enabled: false
     kind: Deployment
     command: "server indexer"
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   scheduler:
     enabled: false
     kind: Deployment
     command: "server scheduler"
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   worker:
     enabled: false
     kind: Deployment
-    command: "server worker {{- if $.Values.deployments.worker.workerThreads }}--thread={{ .Values.deployments.worker.workerThreads }}{{- end }}"
+    command: "server worker{{ if $.Values.deployments.worker.workerThreads }} --thread={{ .Values.deployments.worker.workerThreads }}{{ end }}"
     terminationGracePeriodSeconds: 60
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
-    #workerThreads: 128
+    workerThreads: 128
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
   standalone:
     enabled: true
     kind: Deployment
-    command: "server standalone {{- if $.Values.deployments.standalone.workerThreads }}--worker-thread={{ .Values.deployments.standalone.workerThreads }}{{- end }}"
+    command: "server standalone{{ if $.Values.deployments.standalone.workerThreads }} --worker-thread={{ .Values.deployments.standalone.workerThreads }}{{ end }}"
     terminationGracePeriodSeconds: 60
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     #workerThreads: 128
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
 
 # EE only - Define additional group of workers.
 # Must be used in addition to default workers (in standalone or separate worker deployment).
@@ -130,8 +148,11 @@ workerGroup:
   workergroupname: # name of the worker group
     enabled: false
     kind: Deployment
-    command: "server worker {{- if $.Values.workerGroup.workergroupname.workerThreads }}--thread={{ .Values.workerGroup.workergroupname.workerThreads }}{{- end }} --worker-group={{ .WorkerGroup }}"
+    command: "server worker{{ if $.Values.workerGroup.workergroupname.workerThreads }} --thread={{ .Values.workerGroup.workergroupname.workerThreads }}{{ end }} --worker-group={{ .WorkerGroup }}"
     terminationGracePeriodSeconds: 60
+    readinessProbe: {}
+    livenessProbe: {}
+    startupProbe: {}
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     #workerThreads: 128
 
@@ -305,7 +326,8 @@ securityContext:
   runAsGroup: 1000
 
 ### Startup / Readiness / Liveness probe config.
-### ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+## The following config is applied to all deployments by default. You can override this in each deployment.
 readinessProbe:
   enabled: true
   path: /health
@@ -342,5 +364,11 @@ startupProbe:
   httpGetEnabled: true
   httpGetExtra: {}
 
-# -- Extra Kubernetes Manifests
+### Extra Kubernetes Manifests
 extraManifests: []
+  # - apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: demo
+  #   data:
+  #     key: pass123
