@@ -2,8 +2,8 @@ apiVersion: v2
 name: kestra
 description: Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 home: https://kestra.io
-version: 0.21.2
-appVersion: "v0.21.2"
+version: 0.21.3
+appVersion: "v0.21.3"
 keywords:
   - orchestrator
   - scheduler
