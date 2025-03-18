@@ -288,7 +288,7 @@ spec:
               containerPort: 8081
               protocol: TCP
           {{- if or $.Values.startupProbe.enabled $deployment.startupProbe.enabled }}
-          {{- $startupProbe := merge $deployment.startupProbe $.Values.startupProbe }}
+          {{- $startupProbe := merge (or $deployment.startupProbe dict) $.Values.startupProbe }}
           startupProbe:
             {{- if $startupProbe.httpGetEnabled }}
             httpGet:
@@ -308,7 +308,7 @@ spec:
             failureThreshold: {{ $startupProbe.failureThreshold }}
           {{- end }}
           {{- if or $.Values.livenessProbe.enabled $deployment.livenessProbe.enabled }}
-          {{- $livenessProbe := merge $deployment.livenessProbe $.Values.livenessProbe }}
+          {{- $livenessProbe := merge (or $deployment.livenessProbe dict) $.Values.livenessProbe }}
           livenessProbe:
             {{- if $livenessProbe.httpGetEnabled }}
             httpGet:
@@ -328,7 +328,7 @@ spec:
             failureThreshold: {{ $livenessProbe.failureThreshold }}
           {{- end }}
           {{- if or $.Values.readinessProbe.enabled $deployment.readinessProbe.enabled }}
-          {{- $readinessProbe := merge $deployment.readinessProbe $.Values.readinessProbe }}
+          {{- $readinessProbe := merge (or $deployment.readinessProbe dict) $.Values.readinessProbe }}
           readinessProbe:
             {{- if $readinessProbe.httpGetEnabled }}
             httpGet:

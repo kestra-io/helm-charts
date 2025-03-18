@@ -100,34 +100,22 @@ deployments:
     enabled: false
     kind: Deployment
     command: "server executor"
-    readinessProbe: {}
-    livenessProbe: {}
-    startupProbe: {}
 
   indexer:
     enabled: false
     kind: Deployment
     command: "server indexer"
-    readinessProbe: {}
-    livenessProbe: {}
-    startupProbe: {}
 
   scheduler:
     enabled: false
     kind: Deployment
     command: "server scheduler"
-    readinessProbe: {}
-    livenessProbe: {}
-    startupProbe: {}
 
   worker:
     enabled: false
     kind: Deployment
     command: "server worker{{ if $.Values.deployments.worker.workerThreads }} --thread={{ .Values.deployments.worker.workerThreads }}{{ end }}"
     terminationGracePeriodSeconds: 60
-    readinessProbe: {}
-    livenessProbe: {}
-    startupProbe: {}
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     #workerThreads: 128
 
@@ -136,9 +124,6 @@ deployments:
     kind: Deployment
     command: "server standalone{{ if $.Values.deployments.standalone.workerThreads }} --worker-thread={{ .Values.deployments.standalone.workerThreads }}{{ end }}"
     terminationGracePeriodSeconds: 60
-    readinessProbe: {}
-    livenessProbe: {}
-    startupProbe: {}
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     #workerThreads: 128
 
@@ -150,9 +135,6 @@ workerGroup:
     kind: Deployment
     command: "server worker{{ if $.Values.workerGroup.workergroupname.workerThreads }} --thread={{ .Values.workerGroup.workergroupname.workerThreads }}{{ end }} --worker-group={{ .WorkerGroup }}"
     terminationGracePeriodSeconds: 60
-    readinessProbe: {}
-    livenessProbe: {}
-    startupProbe: {}
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     #workerThreads: 128
 
