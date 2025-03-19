@@ -295,7 +295,7 @@ spec:
               path: {{ $startupProbe.path }}
               port: {{ $startupProbe.port }}
               {{- with $startupProbe.httpGetExtra }}
-              {{- toYaml . | nindent 4 }}
+              {{ toYaml . | nindent 14  }}
               {{- end }}
             {{- end }}
             {{- with $startupProbe.exec }}
@@ -315,7 +315,7 @@ spec:
               path: {{ $livenessProbe.path }}
               port: {{ $livenessProbe.port }}
               {{- with $livenessProbe.httpGetExtra }}
-              {{- toYaml . | nindent 4 }}
+              {{- toYaml . | nindent 14 }}
               {{- end }}
             {{- end }}
             {{- with $livenessProbe.exec }}
@@ -335,7 +335,7 @@ spec:
               path: {{ $readinessProbe.path }}
               port: {{ $readinessProbe.port }}
               {{- with $readinessProbe.httpGetExtra }}
-              {{- toYaml . | nindent 4 }}
+              {{- toYaml . | nindent 14 }}
               {{- end }}
             {{- end }}
             {{- with $readinessProbe.exec }}
