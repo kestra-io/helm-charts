@@ -279,6 +279,10 @@ extraEnv: []
 
 extraContainers: []
 
+# extraPorts:
+# - name: jmxremote
+#   containerPort: 8686
+#   protocol: TCP
 extraPorts: []
 
 # https://kestra.io/docs/administrator-guide/configuration/others#kestravariablesenv-vars-prefix
