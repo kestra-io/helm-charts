@@ -287,6 +287,7 @@ spec:
             - name: management
               containerPort: 8081
               protocol: TCP
+            {{- if $.Values.extraPorts }}{{ toYaml $.Values.extraPorts | trim | nindent 12 }}{{ end }}
           {{- if or $.Values.startupProbe.enabled $deployment.startupProbe.enabled }}
           {{- $startupProbe := merge (or $deployment.startupProbe dict) $.Values.startupProbe }}
           startupProbe:
