@@ -23,13 +23,13 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  replicas: {{ default 1 (default $global.common.replicas $config.replicas) }}
+  replicas: {{ ternary $config.replicas $global.common.replicas (hasKey $config "replicas") }}
   selector:
     matchLabels:
       {{- include "kestra.selectorLabels" $ | nindent 6 }}
       app.kubernetes.io/component: {{ $name }}
   strategy:
-    {{- toYaml (default $global.common.strategy $config.strategy) | nindent 4 }}
+    {{- toYaml (ternary $config.strategy $global.common.strategy (hasKey $config "strategy")) | nindent 4 }}
   template:
     metadata:
       labels:
@@ -49,42 +49,48 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- $serviceAccountName := default $global.common.serviceAccountName $config.serviceAccountName }}
+      {{- $serviceAccountName := ternary $config.serviceAccountName $global.common.serviceAccountName (hasKey $config "serviceAccountName") }}
       {{- if $serviceAccountName }}
       serviceAccountName: {{ $serviceAccountName }}
       {{- end }}
-      {{- $imagePullSecrets := default $global.common.imagePullSecrets $config.imagePullSecrets }}
+      {{- $imagePullSecrets := ternary $config.imagePullSecrets $global.common.imagePullSecrets (hasKey $config "imagePullSecrets") }}
       {{- if $imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml $imagePullSecrets | nindent 8 }}
       {{- end }}
-      terminationGracePeriodSeconds: {{ default $global.common.terminationGracePeriodSeconds $config.terminationGracePeriodSeconds }}
-      {{- $podSecurityContext := default $global.common.podSecurityContext $config.podSecurityContext }}
+      terminationGracePeriodSeconds: {{ ternary $config.terminationGracePeriodSeconds $global.common.terminationGracePeriodSeconds (hasKey $config "terminationGracePeriodSeconds") }}
+      {{- $podSecurityContext := ternary $config.podSecurityContext $global.common.podSecurityContext (hasKey $config "podSecurityContext") }}
       {{- if $podSecurityContext }}
       securityContext:
         {{- toYaml $podSecurityContext | nindent 8 }}
       {{- end }}
-      {{- $nodeSelector := default $global.common.nodeSelector $config.nodeSelector }}
+      {{- $nodeSelector := ternary $config.nodeSelector $global.common.nodeSelector (hasKey $config "nodeSelector") }}
       {{- if $nodeSelector }}
       nodeSelector:
         {{- toYaml $nodeSelector | nindent 8 }}
       {{- end }}
-      {{- $affinity := default $global.common.affinity $config.affinity }}
+      {{- $affinity := ternary $config.affinity $global.common.affinity (hasKey $config "affinity") }}
       {{- if $affinity }}
       affinity:
         {{- toYaml $affinity | nindent 8 }}
       {{- end }}
-      {{- $tolerations := default $global.common.tolerations $config.tolerations }}
+      {{- $tolerations := ternary $config.tolerations $global.common.tolerations (hasKey $config "tolerations") }}
       {{- if $tolerations }}
       tolerations:
         {{- toYaml $tolerations | nindent 8 }}
       {{- end }}
-      {{- $volumes := default $global.common.extraVolumes $config.extraVolumes }}
-      {{- if $volumes }}
       volumes:
-        {{- toYaml $volumes | nindent 8 }}
-      {{- end }}
-      {{- $initContainers := default $global.common.initContainers $config.initContainers }}
+        - name: {{ template "kestra.fullname" $ }}-config
+          configMap:
+            name: {{ template "kestra.fullname" $ }}-config
+            items:
+              - key: application.yml
+                path: application.yml
+        {{- $volumes := ternary $config.extraVolumes $global.common.extraVolumes (hasKey $config "extraVolumes") }}
+        {{- if $volumes }}
+          {{- toYaml $volumes | nindent 8 }}
+        {{- end }}
+      {{- $initContainers := ternary $config.initContainers $global.common.initContainers (hasKey $config "initContainers") }}
       {{- if $initContainers }}
       initContainers:
         {{- toYaml $initContainers | nindent 8 }}
@@ -93,25 +99,34 @@ spec:
         - name: kestra-{{ $name }}
           image: "{{ $global.image.repository }}:{{ default $.Chart.AppVersion $global.image.tag }}"
           imagePullPolicy: {{ $global.image.pullPolicy }}
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              exec /app/kestra {{ $config.command }}
-          {{- $resources := default $global.common.resources $config.resources }}
+          command:
+            - "sh"
+            - "-c"
+            - | 
+                exec /app/kestra server {{ $name }} \
+                {{- if eq $name "standalone" -}}
+                --worker-thread={{ $config.workerThreads }}
+                {{- end -}}
+          {{- $resources := ternary $config.resources $global.common.resources (hasKey $config "resources") }}
           {{- if $resources }}
           resources:
             {{- toYaml $resources | nindent 12 }}
           {{- end }}
-          {{- $env := default $global.common.extraEnv $config.extraEnv }}
-          {{- if $env }}
           env:
+            - name: MICRONAUT_CONFIG_FILES
+              value: "/app/application.yml"
+          {{- $env := ternary $config.extraEnv $global.common.extraEnv (hasKey $config "extraEnv") }}
+          {{- if $env }}
             {{- toYaml $env | nindent 12 }}
           {{- end }}
-          {{- $volumeMounts := default $global.common.extraVolumeMounts $config.extraVolumeMounts }}
-          {{- if $volumeMounts }}
           volumeMounts:
-            {{- toYaml $volumeMounts | nindent 12 }}
-          {{- end }}
+            - name: {{ template "kestra.fullname" $ }}-config
+              mountPath: /app/application.yml
+              subPath: application.yml
+            {{- $volumeMounts := ternary $config.extraVolumeMounts $global.common.extraVolumeMounts (hasKey $config "extraVolumeMounts") }}
+            {{- if $volumeMounts }}
+              {{- toYaml $volumeMounts | nindent 12 }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8080
@@ -119,27 +134,27 @@ spec:
             - name: management
               containerPort: 8081
               protocol: TCP
-          {{- $securityContext := default $global.common.securityContext $config.securityContext }}
+          {{- $securityContext := ternary $config.securityContext $global.common.securityContext (hasKey $config "securityContext") }}
           {{- if $securityContext }}
           securityContext:
             {{- toYaml $securityContext | nindent 12 }}
           {{- end }}
-          {{- $startupProbe := default $global.common.startupProbe $config.startupProbe }}
+          {{- $startupProbe := ternary $config.startupProbe $global.common.startupProbe (hasKey $config "startupProbe") }}
           {{- if $startupProbe }}
           startupProbe:
             {{- toYaml $startupProbe | nindent 12 }}
           {{- end }}
-          {{- $livenessProbe := default $global.common.livenessProbe $config.livenessProbe }}
+          {{- $livenessProbe := ternary $config.livenessProbe $global.common.livenessProbe (hasKey $config "livenessProbe") }}
           {{- if $livenessProbe }}
           livenessProbe:
             {{- toYaml $livenessProbe | nindent 12 }}
           {{- end }}
-          {{- $readinessProbe := default $global.common.readinessProbe $config.readinessProbe }}
+          {{- $readinessProbe := ternary $config.readinessProbe $global.common.readinessProbe (hasKey $config "readinessProbe") }}
           {{- if $readinessProbe }}
           readinessProbe:
             {{- toYaml $readinessProbe | nindent 12 }}
           {{- end }}
-        {{- $extraContainers := default $global.common.extraContainers $config.extraContainers }}
+        {{- $extraContainers := ternary $config.extraContainers $global.common.extraContainers (hasKey $config "extraContainers") }}
         {{- range $extraContainers }}
         - {{- toYaml . | nindent 10 }}
         {{- end }}

@@ -35,7 +35,6 @@ Common labels
 */}}
 {{- define "kestra.labels" -}}
 app.kubernetes.io/name: {{ include "kestra.name" . }}
-app.kubernetes.io/component: {{ .Component }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -49,6 +48,5 @@ Selectors labels
 */}}
 {{- define "kestra.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "kestra.name" . }}
-app.kubernetes.io/component: {{ .Component }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}

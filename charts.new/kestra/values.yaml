@@ -122,7 +122,6 @@ configurations:
 deployments:
   standalone:
     enabled: true
-    command: "server standalone"
     # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     workerThreads: 128
   webserver:

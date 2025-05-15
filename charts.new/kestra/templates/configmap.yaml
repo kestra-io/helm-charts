@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "kestra.fullname" . }}
+  name: {{ template "kestra.fullname" . }}-config
   labels:
     {{- include "kestra.labels" . | nindent 4 }}
     {{- with .Values.common.labels }}
