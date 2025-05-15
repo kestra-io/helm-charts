@@ -1,0 +1,13 @@
+
+{{ range $name, $deployment := .Values.deployments }}
+  {{- if $deployment.enabled -}}
+    {{- include "kestra.deployment" (merge (dict "Name" $name "Type" $name "Deployment" $deployment) $) }}
+---
+  {{- end }}
+{{ end }}
+{{ range $name, $deployment := .Values.workerGroup }}
+  {{- if $deployment.enabled -}}
+    {{- include "kestra.deployment" (merge (dict "Name" (print "workergroup-" $name) "Type" "worker" "Deployment" $deployment "WorkerGroup" $name) $) }}
+---
+  {{- end }}
+{{ end }}

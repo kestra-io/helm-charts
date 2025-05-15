@@ -1,20 +1,16 @@
 apiVersion: v2
+type: application
+version: "0.22.5"
+appVersion: "v0.22.5"
 name: kestra
 description: Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 home: https://kestra.io
-version: 1.0.0
-appVersion: "v1.0.0"
-keywords:
-  - orchestrator
-  - scheduler
-  - workflow
 icon: https://kestra.io/favicon-192x192.png
 sources:
   - https://github.com/kestra-io/helm-charts
 maintainers:
   - name: tchiotludo
     email: tchiot.ludo@gmail.com
-type: application
 annotations:
   artifacthub.io/links: |
     - name: Documentation
@@ -38,20 +34,3 @@ annotations:
       url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/10-Logs.png
     - title: Documentation
       url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
-dependencies:
-  - name: elasticsearch
-    version: ^8.5.1
-    repository: https://helm.elastic.co
-    condition: elasticsearch.enabled
-  - name: kafka
-    version: ^30.1.1
-    repository: https://charts.bitnami.com/bitnami
-    condition: kafka.enabled
-  - name: minio
-    version: ^14.7.9
-    repository: https://charts.bitnami.com/bitnami
-    condition: minio.enabled
-  - name: postgresql
-    condition: postgresql.enabled
-    repository: https://charts.bitnami.com/bitnami
-    version: ^15.5.31

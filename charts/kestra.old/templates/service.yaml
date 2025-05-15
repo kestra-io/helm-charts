@@ -1,0 +1,30 @@
+{{ $merged := (merge (dict "Component" "service") $) -}}
+{{ $selector := ternary "standalone" "webserver" $.Values.deployments.standalone.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kestra.fullname" $merged }}
+  labels:
+{{ include "kestra.labels" $merged | indent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if and .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    {{- if .Values.service.management.enabled }}
+    - port: {{ .Values.service.management.port }}
+      targetPort: management
+      protocol: TCP
+      name: management
+    {{ end }}
+  selector:
+    {{- include "kestra.selectorsLabels" (merge (dict "Component" $selector) $) | nindent 6 }}

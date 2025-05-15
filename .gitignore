@@ -7,6 +7,6 @@ Thumbs.db
 *.iws
 .project
 .settings
-
+.tmp
 *.tgz
 values-*.yaml
