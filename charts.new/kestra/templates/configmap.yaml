@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "kestra.fullname" . }}
+  labels:
+    {{- include "kestra.labels" . | nindent 4 }}
+    {{- with .Values.common.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+data:
+{{- if .Values.configurations.application }}
+  application.yml: |
+{{ .Values.configurations.application | toYaml | indent 4}}
+{{- end }}

@@ -1,0 +1,242 @@
+nameOverride: ""
+fullnameOverride: ""
+
+### -------------------------------
+### Image settings
+### -------------------------------
+
+image:
+  repository: kestra/kestra
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+imagePullSecrets: []
+# - name: regcred
+
+### -------------------------------
+### Common settings
+### -------------------------------
+
+common:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  annotations: {}
+  podAnnotations: {}
+  labels: {}
+  podLabels: {}
+  livenessProbe:
+    httpGet:
+      path: /health/liveness
+      port: management
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    timeoutSeconds: 3
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /health/readiness
+      port: management
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    timeoutSeconds: 3
+    successThreshold: 1
+    failureThreshold: 3
+  startupProbe:
+    httpGet:
+      path: /health
+      port: management
+    initialDelaySeconds: 1
+    periodSeconds: 1
+    timeoutSeconds: 1
+    successThreshold: 1
+    failureThreshold: 120
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  terminationGracePeriodSeconds: 60
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  securityContext:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+  podSecurityContext: {}
+    # fsGroup: 2000
+  initContainers: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  extraEnv: []
+  extraContainers: []
+
+### -------------------------------
+### Kestra settings
+### More information can be found here: https://kestra.io/docs/configuration
+### -------------------------------
+
+configurations:
+  application: {}
+    # kestra:
+    #   queue:
+    #     type: h2
+    #   repository:
+    #     type: h2
+    #   storage:
+    #     type: local
+    #     local:
+    #       basePath: "/app/storage"
+    # datasources:
+    #   h2:
+    #     url: jdbc:h2:mem:public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    #     username: kestra
+    #     password: ""
+    #     driverClassName: org.h2.Driver
+  configmaps: []
+  # - name: kestra-config
+  #   key: storage.yml
+  secrets: []
+  # - name: kestra-secret
+  #   key: datasources.yml
+
+### -------------------------------
+### kestra deployments
+### -------------------------------
+
+deployments:
+  standalone:
+    enabled: true
+    command: "server standalone"
+    # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+    workerThreads: 128
+  webserver:
+    enabled: false
+  executor:
+    enabled: false
+  indexer:
+    enabled: false
+  scheduler:
+    enabled: false
+  worker:
+    enabled: false
+    # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+    workerThreads: 128
+  # EE only - Define additional group of workers.
+  # Must be used in addition to default workers (in standalone or separate worker deployment).
+  workerGroups:
+    enabled: false
+    items: []
+      # - name: "my-worker-group"
+      #   # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+      #   workerThreads: 128
+
+
+
+
+
+
+
+### -------------------------------
+### kestra operator
+### -------------------------------
+
+# EE only - the Kestra Kubernetes Operator
+operator:
+  enabled: false
+  image: registry.kestra.io/docker/kestra-operator
+  apiKey: ""
+  basicAuth: ""
+
+# for io.kestra.core.tasks.scripts.Bash task or io.kestra.plugin.scripts.*, attach a docker dind container in order to isolate in a container
+# every command launch
+dind:
+  enabled: true
+  image:
+    image: docker
+    tag: dind-rootless
+    pullPolicy: IfNotPresent
+  socketPath: /dind/
+  tmpPath: /tmp/
+  resources: {}
+  args:
+    - --log-level=fatal
+    - --group=1000
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+  extraVolumeMounts: []
+  extraEnv: []
+
+### Service
+service:
+  type: ClusterIP
+  port: 8080
+  loadBalancerIP: ""
+  annotations: {}
+  management:
+    enabled: false
+    port: 8081
+
+### Ingress
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# You can setup extra ports
+extraPorts:
+  # - name: jmxremote
+  #   containerPort: 8686
+  #   protocol: TCP
+
+# https://kestra.io/docs/administrator-guide/configuration/others#kestravariablesenv-vars-prefix
+extraConfigMapEnvFrom:
+  # - name: my-existing-configmap-no-prefix
+  # - name: my-existing-configmap-with-prefix
+  #   prefix: KESTRA_
+
+extraSecretEnvFrom:
+  # - name: my-existing-no-prefix
+  # - name: my-existing-with-prefix
+  #   prefix: SECRET_
+
+### Application Secrets
+## To pass in secrets of your applications, services etc to Kestra please see the following:
+## https://kestra.io/docs/how-to-guides/kubernetes-secrets
+
+### Extra Kubernetes Manifests
+## You can specify extra manifests to be deployed with this chart.
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: demo
+  #   data:
+  #     key: {{ .Values.demo.key | b64enc }}
