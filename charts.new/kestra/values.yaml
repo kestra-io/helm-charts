@@ -180,7 +180,18 @@ service:
       targetPort: http
       protocol: TCP
 
+### -------------------------------
+### Extra Kubernetes Manifests
+### -------------------------------
 
+## You can specify extra manifests to be deployed with this chart.
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: demo
+  #   data:
+  #     key: {{ .Values.demo.key | b64enc }}
 
 
 
@@ -254,13 +265,3 @@ extraSecretEnvFrom:
 ### Application Secrets
 ## To pass in secrets of your applications, services etc to Kestra please see the following:
 ## https://kestra.io/docs/how-to-guides/kubernetes-secrets
-
-### Extra Kubernetes Manifests
-## You can specify extra manifests to be deployed with this chart.
-extraManifests: []
-  # - apiVersion: v1
-  #   kind: Secret
-  #   metadata:
-  #     name: demo
-  #   data:
-  #     key: {{ .Values.demo.key | b64enc }}
