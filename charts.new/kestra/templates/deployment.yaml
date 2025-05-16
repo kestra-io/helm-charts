@@ -49,10 +49,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- $serviceAccountName := ternary $config.serviceAccountName $global.common.serviceAccountName (hasKey $config "serviceAccountName") }}
-      {{- if $serviceAccountName }}
-      serviceAccountName: {{ $serviceAccountName }}
-      {{- end }}
+      serviceAccountName: {{ include "kestra.serviceAccountName" $ }}
       {{- $imagePullSecrets := ternary $config.imagePullSecrets $global.common.imagePullSecrets (hasKey $config "imagePullSecrets") }}
       {{- if $imagePullSecrets }}
       imagePullSecrets:

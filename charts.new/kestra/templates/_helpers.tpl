@@ -50,3 +50,14 @@ Selectors labels
 app.kubernetes.io/name: {{ include "kestra.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "kestra.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "kestra.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}

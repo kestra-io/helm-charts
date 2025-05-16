@@ -19,6 +19,7 @@ imagePullSecrets: []
 ### -------------------------------
 
 common:
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -109,11 +110,27 @@ configurations:
     #     password: ""
     #     driverClassName: org.h2.Driver
   configmaps: []
-  # - name: kestra-config
+  # - name: kestra-extra-config
   #   key: storage.yml
   secrets: []
-  # - name: kestra-secret
+  # - name: kestra-extra-secret
   #   key: datasources.yml
+
+### -------------------------------
+### kestra service account
+### -------------------------------
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
 
 ### -------------------------------
 ### kestra deployments
@@ -144,6 +161,24 @@ deployments:
       # - name: "my-worker-group"
       #   # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
       #   workerThreads: 128
+
+### -------------------------------
+### kestra service
+### -------------------------------
+
+service:
+  type: ClusterIP
+  labels: {}
+  annotations: {}
+  ports:
+    management:
+      port: 8081
+      targetPort: management
+      protocol: TCP
+    http:
+      port: 8080
+      targetPort: http
+      protocol: TCP
 
 
 
@@ -181,16 +216,6 @@ dind:
     runAsGroup: 1000
   extraVolumeMounts: []
   extraEnv: []
-
-### Service
-service:
-  type: ClusterIP
-  port: 8080
-  loadBalancerIP: ""
-  annotations: {}
-  management:
-    enabled: false
-    port: 8081
 
 ### Ingress
 ingress:
