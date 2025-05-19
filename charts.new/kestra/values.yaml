@@ -85,6 +85,7 @@ common:
   extraVolumeMounts: []
   extraVolumes: []
   extraEnv: []
+  extraEnvFrom: []
   extraContainers: []
 
 ### -------------------------------

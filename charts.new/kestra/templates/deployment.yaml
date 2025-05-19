@@ -95,9 +95,7 @@ spec:
         - name: {{ .name }}
           secret:
             secretName: {{ .name }}
-            items:
-              - key: {{ .key }}
-                path: {{ .key }}
+            defaultMode: 0444
         {{- end }}
         {{- $volumes := ternary $config.extraVolumes $global.common.extraVolumes (hasKey $config "extraVolumes") }}
         {{- if $volumes }}
@@ -127,17 +125,21 @@ spec:
           {{- end }}
           env:
             - name: MICRONAUT_CONFIG_FILES
-              value: |
-                /app/application.yml,
-                {{- range $global.configurations.configmaps }}
-                /app/{{ .key }},
-                {{- end }}
-                {{- range $global.configurations.secrets }}
-                /app/{{ .key }},
-                {{- end }}
-          {{- $env := ternary $config.extraEnv $global.common.extraEnv (hasKey $config "extraEnv") }}
-          {{- if $env }}
-            {{- toYaml $env | nindent 12 }}
+              value: {{ include "kestra.micronautConfigFiles" $ | quote }}
+          {{- with $global.common.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $config.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with or $global.common.extraEnvFrom $config.extraEnvFrom }}
+          envFrom:
+          {{- with $global.common.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $config.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- end }}
           volumeMounts:
             - name: {{ template "kestra.fullname" $ }}-config

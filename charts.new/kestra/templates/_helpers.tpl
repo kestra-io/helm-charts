@@ -63,6 +63,21 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
+Create the content of MICRONAUT_CONFIG_FILES
+*/}}
+{{- define "kestra.micronautConfigFiles" -}}
+{{- $files := list "/app/application.yml" }}
+{{- range .Values.configurations.configmaps }}
+  {{- $files = append $files (printf "/app/%s" .key) }}
+{{- end }}
+{{- range .Values.configurations.secrets }}
+  {{- $files = append $files (printf "/app/%s" .key) }}
+{{- end }}
+{{- join "," $files }}
+{{- end }}
+
+
+{{/*
 Renders a value that contains template.
 Usage:
 {{ include "kestra.extra-render" ( dict "value" .Values.path.to.the.Value "context" $) }}
