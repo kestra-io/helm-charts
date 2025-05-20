@@ -20,20 +20,31 @@ imagePullSecrets: []
 ### Common settings
 ### -------------------------------
 
-# @section -- common settings
 common:
+  # -- ...
+  # @section -- common settings
   replicas: 1
+  # -- ...
+  # @section -- common settings
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
-  # -- common annotations to be added to all deployments types
+  # -- ...
+  # @section -- common settings
   annotations: {}
-  # -- common annotations to be added to all pods from deployments types
+  # -- ...
+  # @section -- common settings
   podAnnotations: {}
+  # -- ...
+  # @section -- common settings
   labels: {}
+  # -- ...
+  # @section -- common settings
   podLabels: {}
+  # -- ...
+  # @section -- common settings
   livenessProbe:
     httpGet:
       path: /health/liveness
@@ -43,6 +54,8 @@ common:
     timeoutSeconds: 3
     successThreshold: 1
     failureThreshold: 3
+  # -- ...
+  # @section -- common settings
   readinessProbe:
     httpGet:
       path: /health/readiness
@@ -52,6 +65,8 @@ common:
     timeoutSeconds: 3
     successThreshold: 1
     failureThreshold: 3
+  # -- ...
+  # @section -- common settings
   startupProbe:
     httpGet:
       path: /health
@@ -61,6 +76,8 @@ common:
     timeoutSeconds: 1
     successThreshold: 1
     failureThreshold: 120
+  # -- ...
+  # @section -- common settings
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
@@ -72,10 +89,20 @@ common:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
+  # -- ...
+  # @section -- common settings
   terminationGracePeriodSeconds: 60
+  # -- ...
+  # @section -- common settings
   nodeSelector: {}
+  # -- ...
+  # @section -- common settings
   tolerations: []
+  # -- ...
+  # @section -- common settings
   affinity: {}
+  # -- ...
+  # @section -- common settings
   securityContext:
     # capabilities:
     #   drop:
@@ -84,13 +111,27 @@ common:
     # runAsNonRoot: true
     runAsUser: 1000
     runAsGroup: 1000
+  # -- ...
+  # @section -- common settings
   podSecurityContext: {}
     # fsGroup: 2000
+  # -- ...
+  # @section -- common settings
   initContainers: []
+  # -- ...
+  # @section -- common settings
   extraVolumeMounts: []
+  # -- ...
+  # @section -- common settings
   extraVolumes: []
+  # -- ...
+  # @section -- common settings
   extraEnv: []
+  # -- ...
+  # @section -- common settings
   extraEnvFrom: []
+  # -- ...
+  # @section -- common settings
   extraContainers: []
 
 ### -------------------------------
@@ -133,16 +174,16 @@ configurations:
 
 serviceAccount:
   # -- Specifies whether a service account should be created
-  # @section -- serviceAccount
+  # @section -- kubernetes serviceAccount
   create: true
   # -- Automatically mount a ServiceAccount's API credentials?
-  # @section -- serviceAccount
+  # @section -- kubernetes serviceAccount
   automount: true
   # -- Annotations to add to the service account
-  # @section -- serviceAccount
+  # @section -- kubernetes serviceAccount
   annotations: {}
   # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
-  # @section -- serviceAccount
+  # @section -- kubernetes serviceAccount
   name: ""
 
 ### -------------------------------
@@ -269,9 +310,17 @@ dind:
 
 # EE only - the Kestra Kubernetes Operator
 operator:
+  # -- ...
+  # @section -- kestra operator
   enabled: false
+  # -- ...
+  # @section -- kestra operator
   image: registry.kestra.io/docker/kestra-operator
+  # -- ...
+  # @section -- kestra operator
   apiKey: ""
+  # -- ...
+  # @section -- kestra operator
   basicAuth: ""
 
 ### -------------------------------
@@ -279,11 +328,19 @@ operator:
 ### -------------------------------
 
 ingress:
+  # -- ...
+  # @section -- kubernetes ingress
   enabled: false
+  # -- ...
+  # @section -- kubernetes ingress
   className: ""
+  # -- ...
+  # @section -- kubernetes ingress
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+  # -- ...
+  # @section -- kubernetes ingress
   hosts: []
     # - host: chart-example.local
     #   paths: []
@@ -294,6 +351,8 @@ ingress:
     #           name: kestra
     #           port:
     #             number: 8080
+  # -- ...
+  # @section -- kubernetes ingress
   tls: []
     #  - secretName: chart-example-tls
     #    hosts:
