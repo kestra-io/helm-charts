@@ -203,14 +203,16 @@ service:
   # -- ...
   # @section -- kestra service
   annotations: {}
-  # -- ...
-  # @section -- kestra service
   ports:
+    # -- ...
+    # @section -- kestra service
     http:
       port: 8080
       containerPort: 8080
       targetPort: http
       protocol: TCP
+    # -- ...
+    # @section -- kestra service
     management:
       port: 8081
       containerPort: 8081

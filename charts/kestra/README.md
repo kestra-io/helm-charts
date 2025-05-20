@@ -46,7 +46,8 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 |-----|------|---------|-------------|
 | service.annotations | object | `{}` | ... |
 | service.labels | object | `{}` | ... |
-| service.ports | object | `{"http":{"containerPort":8080,"port":8080,"protocol":"TCP","targetPort":"http"},"management":{"containerPort":8081,"port":8081,"protocol":"TCP","targetPort":"management"}}` | ... |
+| service.ports.http | object | `{"containerPort":8080,"port":8080,"protocol":"TCP","targetPort":"http"}` | ... |
+| service.ports.management | object | `{"containerPort":8081,"port":8081,"protocol":"TCP","targetPort":"management"}` | ... |
 | service.type | string | `"ClusterIP"` | ... |
 
 ### serviceAccount
