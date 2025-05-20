@@ -5,14 +5,18 @@ fullnameOverride: ""
 ### Image settings
 ### -------------------------------
 
-# @section -- image settings
 image:
-  # -- Image repository to use for deploying kestra
+  # -- Image repository to use for deploying kestra.
+  # @section -- image settings
   repository: kestra/kestra
   # -- This sets the pull policy for images.
+  # @section -- image settings
   pullPolicy: IfNotPresent
+  # @section -- image settings
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
+# -- ...
+# @section -- image settings
 imagePullSecrets: []
 # - name: regcred
 
