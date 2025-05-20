@@ -224,21 +224,43 @@ service:
 ### -------------------------------
 
 dind:
+  # -- ...
+  # @section -- kestra dind
   enabled: true
   image:
+    # -- ...
+    # @section -- kestra dind
     repository: docker
+    # -- ...
+    # @section -- kestra dind
     tag: dind-rootless
+    # -- ...
+    # @section -- kestra dind
     pullPolicy: IfNotPresent
+  # -- ...
+  # @section -- kestra dind
   socketPath: /dind/
+  # -- ...
+  # @section -- kestra dind
   tmpPath: /tmp/
+  # -- ...
+  # @section -- kestra dind
   resources: {}
+  # -- ...
+  # @section -- kestra dind
   args:
     - --log-level=fatal
     - --group=1000
+  # -- ...
+  # @section -- kestra dind
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
+  # -- ...
+  # @section -- kestra dind
   extraVolumeMounts: []
+  # -- ...
+  # @section -- kestra dind
   extraEnv: []
 
 ### -------------------------------

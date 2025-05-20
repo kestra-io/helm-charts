@@ -40,6 +40,22 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | deployments.worker.enabled | bool | `false` | Whether to deploy kestra in distributed mode, worker will be deployed. |
 | deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
 
+### kestra dind
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| dind.args | list | `["--log-level=fatal","--group=1000"]` | ... |
+| dind.enabled | bool | `true` | ... |
+| dind.extraEnv | list | `[]` | ... |
+| dind.extraVolumeMounts | list | `[]` | ... |
+| dind.image.pullPolicy | string | `"IfNotPresent"` | ... |
+| dind.image.repository | string | `"docker"` | ... |
+| dind.image.tag | string | `"dind-rootless"` | ... |
+| dind.resources | object | `{}` | ... |
+| dind.securityContext | object | `{"runAsGroup":1000,"runAsUser":1000}` | ... |
+| dind.socketPath | string | `"/dind/"` | ... |
+| dind.tmpPath | string | `"/tmp/"` | ... |
+
 ### kestra service
 
 | Key | Type | Default | Description |
@@ -108,19 +124,6 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | common.tolerations | list | `[]` |  |
 | deployments.workerGroups.enabled | bool | `false` |  |
 | deployments.workerGroups.items | list | `[]` |  |
-| dind.args[0] | string | `"--log-level=fatal"` |  |
-| dind.args[1] | string | `"--group=1000"` |  |
-| dind.enabled | bool | `true` |  |
-| dind.extraEnv | list | `[]` |  |
-| dind.extraVolumeMounts | list | `[]` |  |
-| dind.image.pullPolicy | string | `"IfNotPresent"` |  |
-| dind.image.repository | string | `"docker"` |  |
-| dind.image.tag | string | `"dind-rootless"` |  |
-| dind.resources | object | `{}` |  |
-| dind.securityContext.runAsGroup | int | `1000` |  |
-| dind.securityContext.runAsUser | int | `1000` |  |
-| dind.socketPath | string | `"/dind/"` |  |
-| dind.tmpPath | string | `"/tmp/"` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
