@@ -89,3 +89,244 @@ Usage:
         {{- tpl (.value | toYaml) .context }}
     {{- end }}
 {{- end -}}
+
+{{/*
+Create kestra deployment based on all possible deployments
+*/}}
+{{- define "kestra.deployment" -}}
+{{- $name := .Name -}}
+{{- $type := .Type -}}
+{{- $workergroupEnabled := .WorkerGroup }}
+{{- $merged := .Merged -}}
+{{- $global := .Global -}}
+{{- $config := .Config -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
+  labels:
+    {{- include "kestra.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $type }}
+    {{- with $merged.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with $merged.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ $merged.replicas }}
+  selector:
+    matchLabels:
+      {{- include "kestra.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: {{ $type }}
+  strategy:
+    {{- toYaml $merged.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "kestra.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/component: {{ $type }}
+        {{- with $merged.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- with $merged.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "kestra.serviceAccountName" $ }}
+      {{- if $merged.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml $merged.imagePullSecrets | nindent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ $merged.terminationGracePeriodSeconds }}
+      {{- if $merged.podSecurityContext }}
+      securityContext:
+        {{- toYaml $merged.podSecurityContext | nindent 8 }}
+      {{- end }}
+      {{- if $merged.nodeSelector }}
+      nodeSelector:
+        {{- toYaml $merged.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if $merged.affinity }}
+      affinity:
+        {{- toYaml $merged.affinity | nindent 8 }}
+      {{- end }}
+      {{- if $merged.tolerations }}
+      tolerations:
+        {{- with $global.common.tolerations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with $config.tolerations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      volumes:
+        - name: {{ template "kestra.fullname" $ }}-config
+          configMap:
+            name: {{ template "kestra.fullname" $ }}-config
+            items:
+              - key: application.yml
+                path: application.yml
+        {{- range $global.configurations.configmaps }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .name }}
+            items:
+              - key: {{ .key }}
+                path: {{ .key }}
+        {{- end }}
+        {{- range $global.configurations.secrets }}
+        - name: {{ .name }}
+          secret:
+            secretName: {{ .name }}
+            defaultMode: 0444
+        {{- end }}
+        {{- if $global.dind.enabled }}
+        - name: docker-dind-socket
+          emptyDir: {}
+        - name: docker-tmp
+          emptyDir: {}
+        {{- end }}
+        {{- if $merged.extraVolumes }}
+          {{- with $global.common.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- with $config.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+        {{- end }}
+      {{- if $merged.initContainers }}
+      initContainers:
+        {{- with $global.common.initContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with $config.initContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: kestra-{{ $type }}
+          image: "{{ $global.image.repository }}:{{ default $.Chart.AppVersion $global.image.tag }}"
+          imagePullPolicy: {{ $global.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - | 
+                exec /app/kestra server {{ $type }} \
+                {{- if and ($merged.workerThreads) (ne $type "worker") -}}
+                --worker-thread={{ $merged.workerThreads }} \
+                {{- end -}}
+                {{- if and ($merged.workerThreads) (eq $type "worker") (eq $workergroupEnabled false) -}}
+                --thread={{ $merged.workerThreads }} \
+                {{- end -}}
+                {{- if and ($merged.workerThreads) (eq $workergroupEnabled true) -}}
+                --thread={{ $merged.workerThreads }} \
+                {{- end -}}
+                {{- if (eq $workergroupEnabled true) -}}
+                --worker-group={{ $merged.name }} \
+                {{- end -}}
+                {{- range $merged.extraArgs -}}
+                {{ . }} \
+                {{- end -}}
+          {{- if $merged.resources }}
+          resources:
+            {{- toYaml $merged.resources | nindent 12 }}
+          {{- end }}
+          env:
+            - name: MICRONAUT_CONFIG_FILES
+              value: {{ include "kestra.micronautConfigFiles" $ | quote }}
+            {{- with $merged.extraEnv }}
+              {{- with $global.common.extraEnv }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+              {{- with $config.extraEnv }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+            {{- end }}
+          {{- with $merged.extraEnvFrom }}
+          envFrom:
+            {{- with $global.common.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- with $config.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          volumeMounts:
+            - name: {{ template "kestra.fullname" $ }}-config
+              mountPath: /app/application.yml
+              subPath: application.yml
+            {{- range $global.configurations.configmaps }}
+            - name: {{ .name }}
+              mountPath: /app/{{ .key }}
+              subPath: {{ .key }}
+            {{- end }}
+            {{- range $global.configurations.secrets }}
+            - name: {{ .name }}
+              mountPath: /app/{{ .key }}
+              subPath: {{ .key }}
+            {{- end }}
+            {{- if $merged.extraVolumeMounts }}
+              {{- with $global.common.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+              {{- with $config.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+            {{- end }}
+          ports:
+            {{- range $pname, $port := $global.service.ports }}
+            - name: {{ $pname }}
+              containerPort: {{ $port.containerPort }}
+              protocol: {{ $port.protocol | default "TCP" }}
+            {{- end }}
+          {{- if $merged.securityContext }}
+          securityContext:
+            {{- toYaml $merged.securityContext | nindent 12 }}
+          {{- end }}
+          {{- if $merged.startupProbe }}
+          startupProbe:
+            {{- toYaml $merged.startupProbe | nindent 12 }}
+          {{- end }}
+          {{- if $merged.livenessProbe }}
+          livenessProbe:
+            {{- toYaml $merged.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if $merged.readinessProbe }}
+          readinessProbe:
+            {{- toYaml $merged.readinessProbe | nindent 12 }}
+          {{- end }}
+        {{- if or (eq $type "standalone") (eq $type "worker") (eq $type "workergroup") }}
+        {{- if $global.dind.enabled }}
+        - name: {{ $.Chart.Name }}-{{ $type }}-docker-dind
+          image: "{{ $global.dind.image.repository }}:{{ $global.dind.image.tag }}"
+          imagePullPolicy: {{ $global.dind.image.pullPolicy }}
+          args:
+            {{- toYaml $global.dind.args | nindent 12 }}
+          env:
+            - name: DOCKER_HOST
+              value: unix://{{ $global.dind.socketPath }}/docker.sock
+            {{- if $global.dind.extraEnv }}
+            {{ toYaml $global.dind.extraEnv | trim | nindent 12 }}
+            {{ end }}
+          securityContext:
+            privileged: true
+            {{- if $global.dind.securityContext }}
+            {{- toYaml $global.dind.securityContext | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            {{- if $global.dind.extraVolumeMounts }}{{ toYaml $global.dind.extraVolumeMounts | trim | nindent 12 }}{{ end }}
+            - name: docker-dind-socket
+              mountPath: {{ $global.dind.socketPath }}
+            - name: docker-tmp
+              mountPath: {{ $global.dind.tmpPath }}
+          resources:
+            {{- toYaml $global.dind.resources | nindent 12 }}
+        {{- end }}
+        {{- end }}
+        {{- range $merged.extraContainers }}
+        - {{- toYaml . | nindent 10 }}
+        {{- end }}
+{{- end -}}
