@@ -19,5 +19,11 @@ $ helm install my-kestra kestra/kestra --version {{ template "chart.version" . }
 
 {{ template "chart.deprecationWarning" . }}
 
+{{ template "extra.migration01" . }}"
+
 {{ template "chart.valuesSection" . }}
 
+{{ define "extra.migration01" -}}
+## Migration from 0.x.x to 1.0.0
+
+{{- end }}

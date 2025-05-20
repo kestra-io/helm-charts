@@ -5,6 +5,7 @@ fullnameOverride: ""
 ### Image settings
 ### -------------------------------
 
+# @section -- image settings
 image:
   # -- Image repository to use for deploying kestra
   repository: kestra/kestra
@@ -19,6 +20,7 @@ imagePullSecrets: []
 ### Common settings
 ### -------------------------------
 
+# @section -- common settings
 common:
   replicas: 1
   strategy:
@@ -93,12 +95,11 @@ common:
 
 ### -------------------------------
 ### Kestra settings
-### More information can be found here: https://kestra.io/docs/configuration
 ### -------------------------------
 
-# -- This section is used to configure kestra, you can use a direct yaml configuration or use configmaps and secrets.
-# The configmaps and secrets are mounted in the /app/config directory.
 configurations:
+  # -- ...
+  # @section -- kestra configurations
   application: {}
     # kestra:
     #   queue:
@@ -115,9 +116,13 @@ configurations:
     #     username: kestra
     #     password: ""
     #     driverClassName: org.h2.Driver
+  # -- ...
+  # @section -- kestra configurations
   configmaps: []
   # - name: kestra-extra-config
   #   key: storage.yml
+  # -- ...
+  # @section -- kestra configurations
   secrets: []
   # - name: kestra-extra-secret
   #   key: datasources.yml
@@ -126,46 +131,54 @@ configurations:
 ### kestra service account
 ### -------------------------------
 
-# -- This section builds out the service account more information can be found here:
-# https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # -- Specifies whether a service account should be created
+  # @section -- serviceAccount
   create: true
   # -- Automatically mount a ServiceAccount's API credentials?
+  # @section -- serviceAccount
   automount: true
   # -- Annotations to add to the service account
+  # @section -- serviceAccount
   annotations: {}
   # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+  # @section -- serviceAccount
   name: ""
 
 ### -------------------------------
 ### kestra deployments
 ### -------------------------------
 
-# -- deployments are the different components of kestra, you can deploy them separately or all together.
-# -- By default, we deploy all components in standalone mode.
 deployments:
   standalone:
-    # @default -- Whether to deploy kestra in standalone mode.
+    # -- Whether to deploy kestra in standalone mode.
+    # @section -- kestra deployments
     enabled: true
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+    # @section -- kestra deployments
     workerThreads: 128
   webserver:
     # -- Whether to deploy kestra in distributed mode, webserver will be deployed.
+    # @section -- kestra deployments
     enabled: false
   executor:
     # -- Whether to deploy kestra in distributed mode, executor will be deployed.
+    # @section -- kestra deployments
     enabled: false
   indexer:
     # -- Whether to deploy kestra in distributed mode, indexer will be deployed.
+    # @section -- kestra deployments
     enabled: false
   scheduler:
     # -- Whether to deploy kestra in distributed mode, scheduler will be deployed.
+    # @section -- kestra deployments
     enabled: false
   worker:
     # -- Whether to deploy kestra in distributed mode, worker will be deployed.
+    # @section -- kestra deployments
     enabled: false
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+    # @section -- kestra deployments
     workerThreads: 128
   # EE only - Define additional group of workers.
   # Must be used in addition to default workers (in standalone or separate worker deployment).
