@@ -1,0 +1,14 @@
+{{- if or .Values.elasticsearch.enabled .Values.kafka.enabled .Values.configuration -}}
+{{ $merged := (merge (dict "Component" "configmap") $) -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "kestra.fullname" $merged }}
+  labels:
+  {{- include "kestra.labels" $merged | nindent 4 }}
+data:
+{{- if .Values.configuration }}
+  application.yml: |
+{{ .Values.configuration | toYaml | indent 4}}
+{{- end }}
+{{- end }}
