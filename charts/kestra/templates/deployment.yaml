@@ -1,6 +1,7 @@
 {{- $global := .Values }}
 {{- range $name, $config := $global.deployments }}
 {{- if $config.enabled }}
+{{- $merged := merge (deepCopy $global.common) $config }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -9,72 +10,60 @@ metadata:
   labels:
     {{- include "kestra.labels" $ | nindent 4 }}
     app.kubernetes.io/component: {{ $name }}
-    {{- with $global.common.labels }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
-    {{- with $config.labels }}
+    {{- with $merged.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- with $global.common.annotations }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
-    {{- with $config.annotations }}
+    {{- with $merged.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  replicas: {{ ternary $config.replicas $global.common.replicas (hasKey $config "replicas") }}
+  replicas: {{ $merged.replicas }}
   selector:
     matchLabels:
       {{- include "kestra.selectorLabels" $ | nindent 6 }}
       app.kubernetes.io/component: {{ $name }}
   strategy:
-    {{- toYaml (ternary $config.strategy $global.common.strategy (hasKey $config "strategy")) | nindent 4 }}
+    {{- toYaml $merged.strategy | nindent 4 }}
   template:
     metadata:
       labels:
         {{- include "kestra.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: {{ $name }}
-        {{- with $global.common.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- with $config.podLabels }}
+        {{- with $merged.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-        {{- with $global.common.podAnnotations }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- with $config.podAnnotations }}
+        {{- with $merged.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ include "kestra.serviceAccountName" $ }}
-      {{- $imagePullSecrets := ternary $config.imagePullSecrets $global.common.imagePullSecrets (hasKey $config "imagePullSecrets") }}
-      {{- if $imagePullSecrets }}
+      {{- if $merged.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml $imagePullSecrets | nindent 8 }}
+        {{- toYaml $merged.imagePullSecrets | nindent 8 }}
       {{- end }}
-      terminationGracePeriodSeconds: {{ ternary $config.terminationGracePeriodSeconds $global.common.terminationGracePeriodSeconds (hasKey $config "terminationGracePeriodSeconds") }}
-      {{- $podSecurityContext := ternary $config.podSecurityContext $global.common.podSecurityContext (hasKey $config "podSecurityContext") }}
-      {{- if $podSecurityContext }}
+      terminationGracePeriodSeconds: {{ $merged.terminationGracePeriodSeconds }}
+      {{- if $merged.podSecurityContext }}
       securityContext:
-        {{- toYaml $podSecurityContext | nindent 8 }}
+        {{- toYaml $merged.podSecurityContext | nindent 8 }}
       {{- end }}
-      {{- $nodeSelector := ternary $config.nodeSelector $global.common.nodeSelector (hasKey $config "nodeSelector") }}
-      {{- if $nodeSelector }}
+      {{- if $merged.nodeSelector }}
       nodeSelector:
-        {{- toYaml $nodeSelector | nindent 8 }}
+        {{- toYaml $merged.nodeSelector | nindent 8 }}
       {{- end }}
-      {{- $affinity := ternary $config.affinity $global.common.affinity (hasKey $config "affinity") }}
-      {{- if $affinity }}
+      {{- if $merged.affinity }}
       affinity:
-        {{- toYaml $affinity | nindent 8 }}
+        {{- toYaml $merged.affinity | nindent 8 }}
       {{- end }}
-      {{- $tolerations := ternary $config.tolerations $global.common.tolerations (hasKey $config "tolerations") }}
-      {{- if $tolerations }}
+      {{- if $merged.tolerations }}
       tolerations:
-        {{- toYaml $tolerations | nindent 8 }}
+        {{- with $global.common.tolerations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with $config.tolerations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       volumes:
         - name: {{ template "kestra.fullname" $ }}-config
@@ -103,14 +92,22 @@ spec:
         - name: docker-tmp
           emptyDir: {}
         {{- end }}
-        {{- $volumes := ternary $config.extraVolumes $global.common.extraVolumes (hasKey $config "extraVolumes") }}
-        {{- if $volumes }}
-          {{- toYaml $volumes | nindent 8 }}
+        {{- if $merged.extraVolumes }}
+          {{- with $global.common.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- with $config.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
         {{- end }}
-      {{- $initContainers := ternary $config.initContainers $global.common.initContainers (hasKey $config "initContainers") }}
-      {{- if $initContainers }}
+      {{- if $merged.initContainers }}
       initContainers:
-        {{- toYaml $initContainers | nindent 8 }}
+        {{- with $global.common.initContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with $config.initContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       containers:
         - name: kestra-{{ $name }}
@@ -122,30 +119,31 @@ spec:
             - | 
                 exec /app/kestra server {{ $name }} \
                 {{- if eq $name "standalone" -}}
-                --worker-thread={{ $config.workerThreads }}
+                --worker-thread={{ $merged.workerThreads }}
                 {{- end -}}
-          {{- $resources := ternary $config.resources $global.common.resources (hasKey $config "resources") }}
-          {{- if $resources }}
+          {{- if $merged.resources }}
           resources:
-            {{- toYaml $resources | nindent 12 }}
+            {{- toYaml $merged.resources | nindent 12 }}
           {{- end }}
           env:
             - name: MICRONAUT_CONFIG_FILES
               value: {{ include "kestra.micronautConfigFiles" $ | quote }}
-          {{- with $global.common.extraEnv }}
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with $config.extraEnv }}
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with or $global.common.extraEnvFrom $config.extraEnvFrom }}
+            {{- with $merged.extraEnv }}
+              {{- with $global.common.extraEnv }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+              {{- with $config.extraEnv }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+            {{- end }}
+          {{- with $merged.extraEnvFrom }}
           envFrom:
-          {{- with $global.common.extraEnvFrom }}
+            {{- with $global.common.extraEnvFrom }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with $config.extraEnvFrom }}
+            {{- end }}
+            {{- with $config.extraEnvFrom }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- end }}
           {{- end }}
           volumeMounts:
             - name: {{ template "kestra.fullname" $ }}-config
@@ -161,35 +159,35 @@ spec:
               mountPath: /app/{{ .key }}
               subPath: {{ .key }}
             {{- end }}
-            {{- $volumeMounts := ternary $config.extraVolumeMounts $global.common.extraVolumeMounts (hasKey $config "extraVolumeMounts") }}
-            {{- if $volumeMounts }}
-              {{- toYaml $volumeMounts | nindent 12 }}
+            {{- if $merged.extraVolumeMounts }}
+              {{- with $global.common.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
+              {{- with $config.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+              {{- end }}
             {{- end }}
           ports:
-            {{- range $name, $port := $global.service.ports }}
-            - name: {{ $name }}
+            {{- range $pname, $port := $global.service.ports }}
+            - name: {{ $pname }}
               containerPort: {{ $port.containerPort }}
               protocol: {{ $port.protocol | default "TCP" }}
             {{- end }}
-          {{- $securityContext := ternary $config.securityContext $global.common.securityContext (hasKey $config "securityContext") }}
-          {{- if $securityContext }}
+          {{- if $merged.securityContext }}
           securityContext:
-            {{- toYaml $securityContext | nindent 12 }}
+            {{- toYaml $merged.securityContext | nindent 12 }}
           {{- end }}
-          {{- $startupProbe := ternary $config.startupProbe $global.common.startupProbe (hasKey $config "startupProbe") }}
-          {{- if $startupProbe }}
+          {{- if $merged.startupProbe }}
           startupProbe:
-            {{- toYaml $startupProbe | nindent 12 }}
+            {{- toYaml $merged.startupProbe | nindent 12 }}
           {{- end }}
-          {{- $livenessProbe := ternary $config.livenessProbe $global.common.livenessProbe (hasKey $config "livenessProbe") }}
-          {{- if $livenessProbe }}
+          {{- if $merged.livenessProbe }}
           livenessProbe:
-            {{- toYaml $livenessProbe | nindent 12 }}
+            {{- toYaml $merged.livenessProbe | nindent 12 }}
           {{- end }}
-          {{- $readinessProbe := ternary $config.readinessProbe $global.common.readinessProbe (hasKey $config "readinessProbe") }}
-          {{- if $readinessProbe }}
+          {{- if $merged.readinessProbe }}
           readinessProbe:
-            {{- toYaml $readinessProbe | nindent 12 }}
+            {{- toYaml $merged.readinessProbe | nindent 12 }}
           {{- end }}
         {{- if or (eq $name "standalone") (eq $name "worker") }}
         {{- if $global.dind.enabled }}
@@ -219,8 +217,7 @@ spec:
             {{- toYaml $global.dind.resources | nindent 12 }}
         {{- end }}
         {{- end }}
-        {{- $extraContainers := ternary $config.extraContainers $global.common.extraContainers (hasKey $config "extraContainers") }}
-        {{- range $extraContainers }}
+        {{- range $merged.extraContainers }}
         - {{- toYaml . | nindent 10 }}
         {{- end }}
 {{- end }}
