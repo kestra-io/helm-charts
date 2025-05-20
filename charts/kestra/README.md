@@ -40,6 +40,15 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | deployments.worker.enabled | bool | `false` | Whether to deploy kestra in distributed mode, worker will be deployed. |
 | deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
 
+### kestra service
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| service.annotations | object | `{}` | ... |
+| service.labels | object | `{}` | ... |
+| service.ports | object | `{"http":{"containerPort":8080,"port":8080,"protocol":"TCP","targetPort":"http"},"management":{"containerPort":8081,"port":8081,"protocol":"TCP","targetPort":"management"}}` | ... |
+| service.type | string | `"ClusterIP"` | ... |
+
 ### serviceAccount
 
 | Key | Type | Default | Description |
@@ -127,15 +136,4 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | operator.basicAuth | string | `""` |  |
 | operator.enabled | bool | `false` |  |
 | operator.image | string | `"registry.kestra.io/docker/kestra-operator"` |  |
-| service.annotations | object | `{}` |  |
-| service.labels | object | `{}` |  |
-| service.ports.http.containerPort | int | `8080` |  |
-| service.ports.http.port | int | `8080` |  |
-| service.ports.http.protocol | string | `"TCP"` |  |
-| service.ports.http.targetPort | string | `"http"` |  |
-| service.ports.management.containerPort | int | `8081` |  |
-| service.ports.management.port | int | `8081` |  |
-| service.ports.management.protocol | string | `"TCP"` |  |
-| service.ports.management.targetPort | string | `"management"` |  |
-| service.type | string | `"ClusterIP"` |  |
 

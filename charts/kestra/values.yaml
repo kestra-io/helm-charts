@@ -194,9 +194,17 @@ deployments:
 ### -------------------------------
 
 service:
+  # -- ...
+  # @section -- kestra service
   type: ClusterIP
+  # -- ...
+  # @section -- kestra service
   labels: {}
+  # -- ...
+  # @section -- kestra service
   annotations: {}
+  # -- ...
+  # @section -- kestra service
   ports:
     http:
       port: 8080
