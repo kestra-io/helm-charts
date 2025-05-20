@@ -6,10 +6,11 @@ fullnameOverride: ""
 ### -------------------------------
 
 image:
+  # -- Image repository to use for deploying kestra
   repository: kestra/kestra
-  # This sets the pull policy for images.
+  # -- This sets the pull policy for images.
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
 imagePullSecrets: []
 # - name: regcred
@@ -25,7 +26,9 @@ common:
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
+  # -- common annotations to be added to all deployments types
   annotations: {}
+  # -- common annotations to be added to all pods from deployments types
   podAnnotations: {}
   labels: {}
   podLabels: {}
@@ -123,14 +126,13 @@ configurations:
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created
   create: true
-  # Automatically mount a ServiceAccount's API credentials?
+  # -- Automatically mount a ServiceAccount's API credentials?
   automount: true
-  # Annotations to add to the service account
+  # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
 
 ### -------------------------------
@@ -139,20 +141,26 @@ serviceAccount:
 
 deployments:
   standalone:
+    # -- Whether to deploy kestra in standalone mode.
     enabled: true
-    # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+    # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     workerThreads: 128
   webserver:
+    # -- Whether to deploy kestra in distributed mode, webserver will be deployed.
     enabled: false
   executor:
+    # -- Whether to deploy kestra in distributed mode, executor will be deployed.
     enabled: false
   indexer:
+    # -- Whether to deploy kestra in distributed mode, indexer will be deployed.
     enabled: false
   scheduler:
+    # -- Whether to deploy kestra in distributed mode, scheduler will be deployed.
     enabled: false
   worker:
+    # -- Whether to deploy kestra in distributed mode, worker will be deployed.
     enabled: false
-    # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+    # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     workerThreads: 128
   # EE only - Define additional group of workers.
   # Must be used in addition to default workers (in standalone or separate worker deployment).
@@ -226,27 +234,26 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths: []
-        # - path: /
-        #   pathType: Prefix
-        #   backend:
-        #     service:
-        #       name: kestra
-        #       port:
-        #         number: 80
+  hosts: []
+    # - host: chart-example.local
+    #   paths: []
+    #     - path: /
+    #       pathType: Prefix
+    #       backend:
+    #         service:
+    #           name: kestra
+    #           port:
+    #             number: 8080
   tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
 
 ### -------------------------------
 ### Extra Kubernetes Manifests
 ### -------------------------------
 
-## You can specify extra manifests to be deployed with this chart.
+# -- You can specify extra manifests to be deployed with this chart.
 extraManifests: []
   # - apiVersion: v1
   #   kind: Secret
