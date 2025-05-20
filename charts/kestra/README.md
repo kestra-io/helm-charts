@@ -83,6 +83,14 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | dind.socketPath | string | `"/dind/"` | ... |
 | dind.tmpPath | string | `"/tmp/"` | ... |
 
+### image settings
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
+| image.repository | string | `"kestra/kestra"` | Image repository to use for deploying kestra. |
+| imagePullSecrets | list | `[]` | ... |
+
 ### kubernetes ingress
 
 | Key | Type | Default | Description |
@@ -129,9 +137,6 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | deployments.workerGroups.items | list | `[]` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
-| image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
-| image.repository | string | `"kestra/kestra"` | Image repository to use for deploying kestra |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
-| imagePullSecrets | list | `[]` |  |
 | nameOverride | string | `""` |  |
 
