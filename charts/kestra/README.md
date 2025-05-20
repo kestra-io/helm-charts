@@ -62,9 +62,7 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | common.strategy.type | string | `"RollingUpdate"` |  |
 | common.terminationGracePeriodSeconds | int | `60` |  |
 | common.tolerations | list | `[]` |  |
-| configurations.application | object | `{}` |  |
-| configurations.configmaps | list | `[]` |  |
-| configurations.secrets | list | `[]` |  |
+| configurations | object | `{"application":{},"configmaps":[],"secrets":[]}` | This section is used to configure kestra, you can use a direct yaml configuration or use configmaps and secrets. The configmaps and secrets are mounted in the /app/config directory. |
 | deployments | object | `{"executor":{"enabled":false},"indexer":{"enabled":false},"scheduler":{"enabled":false},"standalone":{"enabled":true,"workerThreads":128},"webserver":{"enabled":false},"worker":{"enabled":false,"workerThreads":128},"workerGroups":{"enabled":false,"items":[]}}` | By default, we deploy all components in standalone mode. |
 | deployments.executor.enabled | bool | `false` | Whether to deploy kestra in distributed mode, executor will be deployed. |
 | deployments.indexer.enabled | bool | `false` | Whether to deploy kestra in distributed mode, indexer will be deployed. |
@@ -113,6 +111,7 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | service.ports.management.protocol | string | `"TCP"` |  |
 | service.ports.management.targetPort | string | `"management"` |  |
 | service.type | string | `"ClusterIP"` |  |
+| serviceAccount | object | `{"annotations":{},"automount":true,"create":true,"name":""}` | This section builds out the service account more information can be found here:  https://kubernetes.io/docs/concepts/security/service-accounts/ |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.automount | bool | `true` | Automatically mount a ServiceAccount's API credentials? |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
