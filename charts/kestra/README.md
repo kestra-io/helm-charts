@@ -65,16 +65,14 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | configurations.application | object | `{}` |  |
 | configurations.configmaps | list | `[]` |  |
 | configurations.secrets | list | `[]` |  |
+| deployments | object | `{"executor":{"enabled":false},"indexer":{"enabled":false},"scheduler":{"enabled":false},"standalone":{"enabled":true,"workerThreads":128},"webserver":{"enabled":false},"worker":{"enabled":false,"workerThreads":128},"workerGroups":{"enabled":false,"items":[]}}` | By default, we deploy all components in standalone mode. |
 | deployments.executor.enabled | bool | `false` | Whether to deploy kestra in distributed mode, executor will be deployed. |
 | deployments.indexer.enabled | bool | `false` | Whether to deploy kestra in distributed mode, indexer will be deployed. |
 | deployments.scheduler.enabled | bool | `false` | Whether to deploy kestra in distributed mode, scheduler will be deployed. |
-| deployments.standalone.enabled | bool | `true` |  |
 | deployments.standalone.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
 | deployments.webserver.enabled | bool | `false` | Whether to deploy kestra in distributed mode, webserver will be deployed. |
 | deployments.worker.enabled | bool | `false` | Whether to deploy kestra in distributed mode, worker will be deployed. |
 | deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
-| deployments.workerGroups.enabled | bool | `false` |  |
-| deployments.workerGroups.items | list | `[]` |  |
 | dind.args[0] | string | `"--log-level=fatal"` |  |
 | dind.args[1] | string | `"--group=1000"` |  |
 | dind.enabled | bool | `true` |  |

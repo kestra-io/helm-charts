@@ -139,6 +139,8 @@ serviceAccount:
 ### kestra deployments
 ### -------------------------------
 
+# -- deployments are the different components of kestra, you can deploy them separately or all together.
+# -- By default, we deploy all components in standalone mode.
 deployments:
   standalone:
     # @default -- Whether to deploy kestra in standalone mode.
