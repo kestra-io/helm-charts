@@ -66,6 +66,7 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | deployments.webserver.enabled | bool | `false` | Whether to deploy kestra in distributed mode, webserver will be deployed. |
 | deployments.worker.enabled | bool | `false` | Whether to deploy kestra in distributed mode, worker will be deployed. |
 | deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
+| deployments.workerGroups | object | `{"enabled":false,"items":[]}` | EE only - Define additional group of workers. Must be used in addition to default workers (in standalone or separate worker deployment). |
 
 ### kestra dind
 
@@ -89,6 +90,7 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 |-----|------|---------|-------------|
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
 | image.repository | string | `"kestra/kestra"` | Image repository to use for deploying kestra. |
+| image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | ... |
 
 ### kubernetes ingress
@@ -124,19 +126,16 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+| serviceAccount.annotations | object | `{}` | Annotations to add to the service account. |
 | serviceAccount.automount | bool | `true` | Automatically mount a ServiceAccount's API credentials? |
-| serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
-| serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
+| serviceAccount.create | bool | `true` | Specifies whether a service account should be created. |
+| serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 
 ### Other Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| deployments.workerGroups.enabled | bool | `false` |  |
-| deployments.workerGroups.items | list | `[]` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
-| image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | nameOverride | string | `""` |  |
 

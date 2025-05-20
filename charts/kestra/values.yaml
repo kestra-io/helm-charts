@@ -12,8 +12,8 @@ image:
   # -- This sets the pull policy for images.
   # @section -- image settings
   pullPolicy: IfNotPresent
-  # @section -- image settings
   # -- Overrides the image tag whose default is the chart appVersion.
+  # @section -- image settings
   tag: ""
 # -- ...
 # @section -- image settings
@@ -177,16 +177,16 @@ configurations:
 ### -------------------------------
 
 serviceAccount:
-  # -- Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created.
   # @section -- kubernetes serviceAccount
   create: true
   # -- Automatically mount a ServiceAccount's API credentials?
   # @section -- kubernetes serviceAccount
   automount: true
-  # -- Annotations to add to the service account
+  # -- Annotations to add to the service account.
   # @section -- kubernetes serviceAccount
   annotations: {}
-  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template.
   # @section -- kubernetes serviceAccount
   name: ""
 
@@ -225,8 +225,9 @@ deployments:
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     # @section -- kestra deployments
     workerThreads: 128
-  # EE only - Define additional group of workers.
+  # -- EE only - Define additional group of workers.
   # Must be used in addition to default workers (in standalone or separate worker deployment).
+  # @section -- kestra deployments
   workerGroups:
     enabled: false
     items: []
