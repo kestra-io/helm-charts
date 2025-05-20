@@ -141,7 +141,7 @@ serviceAccount:
 
 deployments:
   standalone:
-    # -- Whether to deploy kestra in standalone mode.
+    # @default -- Whether to deploy kestra in standalone mode.
     enabled: true
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     workerThreads: 128
