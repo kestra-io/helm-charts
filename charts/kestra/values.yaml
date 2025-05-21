@@ -286,7 +286,7 @@ extraPorts: []
 #   containerPort: 8686
 #   protocol: TCP
 
-# https://kestra.io/docs/administrator-guide/configuration/others#kestravariablesenv-vars-prefix
+# https://kestra.io/docs/configuration#environment-variables-prefix
 extraConfigMapEnvFrom:
   # - name: my-existing-configmap-no-prefix
   # - name: my-existing-configmap-with-prefix
