@@ -103,15 +103,6 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | ingress.hosts | list | `[]` | ... |
 | ingress.tls | list | `[]` | ... |
 
-### kestra operator
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| operator.apiKey | string | `""` | ... |
-| operator.basicAuth | string | `""` | ... |
-| operator.enabled | bool | `false` | ... |
-| operator.image | string | `"registry.kestra.io/docker/kestra-operator"` | ... |
-
 ### kestra service
 
 | Key | Type | Default | Description |
@@ -135,6 +126,12 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| deployments.executor.extraArgs | list | `[]` |  |
+| deployments.indexer.extraArgs | list | `[]` |  |
+| deployments.scheduler.extraArgs | list | `[]` |  |
+| deployments.standalone.extraArgs | list | `[]` |  |
+| deployments.webserver.extraArgs | list | `[]` |  |
+| deployments.worker.extraArgs | list | `[]` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |

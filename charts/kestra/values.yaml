@@ -202,22 +202,32 @@ deployments:
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     # @section -- kestra deployments
     workerThreads: 128
+    # @section -- kestra deployments
+    extraArgs: []
   webserver:
     # -- Whether to deploy kestra in distributed mode, webserver will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # @section -- kestra deployments
+    extraArgs: []
   executor:
     # -- Whether to deploy kestra in distributed mode, executor will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # @section -- kestra deployments
+    extraArgs: []
   indexer:
     # -- Whether to deploy kestra in distributed mode, indexer will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # @section -- kestra deployments
+    extraArgs: []
   scheduler:
     # -- Whether to deploy kestra in distributed mode, scheduler will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # @section -- kestra deployments
+    extraArgs: []
   worker:
     # -- Whether to deploy kestra in distributed mode, worker will be deployed.
     # @section -- kestra deployments
@@ -225,15 +235,15 @@ deployments:
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     # @section -- kestra deployments
     workerThreads: 128
+    # @section -- kestra deployments
+    extraArgs: []
   # -- EE only - Define additional group of workers.
   # Must be used in addition to default workers (in standalone or separate worker deployment).
   # @section -- kestra deployments
-  workerGroups:
-    enabled: false
-    items: []
-      # - name: "my-worker-group"
-      #   # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
-      #   workerThreads: 128
+  # workerGroups: []
+    # - name: "my-worker-group"
+    #   workerThreads: 128
+    #   extraArgs: []
 
 ### -------------------------------
 ### kestra service
@@ -308,25 +318,6 @@ dind:
   # -- ...
   # @section -- kestra dind
   extraEnv: []
-
-### -------------------------------
-### kestra operator
-### -------------------------------
-
-# EE only - the Kestra Kubernetes Operator
-operator:
-  # -- ...
-  # @section -- kestra operator
-  enabled: false
-  # -- ...
-  # @section -- kestra operator
-  image: registry.kestra.io/docker/kestra-operator
-  # -- ...
-  # @section -- kestra operator
-  apiKey: ""
-  # -- ...
-  # @section -- kestra operator
-  basicAuth: ""
 
 ### -------------------------------
 ### Ingress
