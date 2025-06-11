@@ -237,13 +237,14 @@ deployments:
     workerThreads: 128
     # @section -- kestra deployments
     extraArgs: []
-  # -- EE only - Define additional group of workers.
-  # Must be used in addition to default workers (in standalone or separate worker deployment).
-  # @section -- kestra deployments
-  # workerGroups: []
-    # - name: "my-worker-group"
-    #   workerThreads: 128
-    #   extraArgs: []
+
+# -- EE only - Define additional group of workers.
+# Must be used in addition to default workers (in standalone or separate worker deployment).
+# @section -- kestra workerGroups
+workerGroups: []
+  # - name: "my-worker-group"
+  #   workerThreads: 128
+  #   extraArgs: []
 
 ### -------------------------------
 ### kestra service

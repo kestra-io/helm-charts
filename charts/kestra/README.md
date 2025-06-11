@@ -66,7 +66,6 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | deployments.webserver.enabled | bool | `false` | Whether to deploy kestra in distributed mode, webserver will be deployed. |
 | deployments.worker.enabled | bool | `false` | Whether to deploy kestra in distributed mode, worker will be deployed. |
 | deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
-| deployments.workerGroups | object | `{"enabled":false,"items":[]}` | EE only - Define additional group of workers. Must be used in addition to default workers (in standalone or separate worker deployment). |
 
 ### kestra dind
 
@@ -121,6 +120,12 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | serviceAccount.automount | bool | `true` | Automatically mount a ServiceAccount's API credentials? |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created. |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
+
+### kestra workerGroups
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| workerGroups | list | `[]` | EE only - Define additional group of workers. Must be used in addition to default workers (in standalone or separate worker deployment). |
 
 ### Other Values
 
