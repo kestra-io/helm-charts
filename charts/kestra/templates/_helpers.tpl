@@ -96,6 +96,7 @@ Create kestra deployment based on all possible deployments
 {{- define "kestra.deployment" -}}
 {{- $name := .Name -}}
 {{- $type := .Type -}}
+{{- $workergroupEnabled := .WorkerGroup }}
 {{- $merged := .Merged -}}
 {{- $global := .Global -}}
 {{- $config := .Config -}}
@@ -217,13 +218,13 @@ spec:
                 {{- if and ($merged.workerThreads) (ne $type "worker") -}}
                 --worker-thread={{ $merged.workerThreads }} \
                 {{- end -}}
-                {{- if and ($merged.workerThreads) (eq $type "worker") -}}
+                {{- if and ($merged.workerThreads) (eq $type "worker") (eq $workergroupEnabled false) -}}
                 --thread={{ $merged.workerThreads }} \
                 {{- end -}}
-                {{- if and ($merged.workerThreads) (eq $type "workergroup") -}}
+                {{- if and ($merged.workerThreads) (eq $workergroupEnabled true) -}}
                 --thread={{ $merged.workerThreads }} \
                 {{- end -}}
-                {{- if (eq $type "workergroup") -}}
+                {{- if (eq $workergroupEnabled true) -}}
                 --worker-group={{ $merged.name }} \
                 {{- end -}}
                 {{- range $merged.extraArgs -}}
