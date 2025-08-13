@@ -15,10 +15,10 @@ image:
   # -- Overrides the image tag whose default is the chart appVersion.
   # @section -- image settings
   tag: ""
-# -- ...
-# @section -- image settings
-imagePullSecrets: []
-# - name: regcred
+  # -- ...
+  # @section -- image settings
+  imagePullSecrets: []
+  # - name: regcred
 
 ### -------------------------------
 ### Common settings
