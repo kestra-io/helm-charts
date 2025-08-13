@@ -3,13 +3,11 @@
 {{- range $name, $config := $global.deployments }}
   {{- if $config.enabled }}
     {{- $merged := merge (deepCopy $global.common) $config }}
----
     {{- include "kestra.deployment" (merge (dict "Name" $name "Type" $name "WorkerGroup" false "Merged" $merged "Global" $global "Config" $config) $) }}
   {{- end }}
 {{- end }}
 
 {{- range $name, $config := $global.workerGroups }}
   {{- $merged := merge (deepCopy $global.common) $config }}
----
   {{- include "kestra.deployment" (merge (dict "Name" (print "workergroup-" $name) "Type" "worker" "WorkerGroup" true "Merged" $merged "Global" $global "Config" $config) $) }}
 {{- end }}

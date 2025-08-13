@@ -100,6 +100,7 @@ Create kestra deployment based on all possible deployments
 {{- $merged := .Merged -}}
 {{- $global := .Global -}}
 {{- $config := .Config -}}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
