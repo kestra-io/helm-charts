@@ -1,6 +1,6 @@
 # kestra
 
-![Version: 0.22.5](https://img.shields.io/badge/Version-0.22.5-informational?style=flat-square) ![AppVersion: v0.22.5](https://img.shields.io/badge/AppVersion-v0.22.5-informational?style=flat-square)
+![Version: 0.24.0](https://img.shields.io/badge/Version-0.24.0-informational?style=flat-square) ![AppVersion: v0.24.0](https://img.shields.io/badge/AppVersion-v0.24.0-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -12,7 +12,7 @@ To install the chart with the release name `kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 0.22.5
+$ helm install my-kestra kestra/kestra --version 0.24.0
 ```
 
 ## Migration from 0.x.x to 1.0.0"
@@ -37,6 +37,7 @@ $ helm install my-kestra kestra/kestra --version 0.22.5
 | common.podAnnotations | object | `{}` | ... |
 | common.podLabels | object | `{}` | ... |
 | common.podSecurityContext | object | `{}` | ... |
+| common.priorityClassName | string | `""` | ... |
 | common.readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/readiness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | ... |
 | common.replicas | int | `1` | ... |
 | common.resources | object | `{}` | ... |
