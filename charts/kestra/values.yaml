@@ -30,6 +30,9 @@ common:
   replicas: 1
   # -- ...
   # @section -- common settings
+  priorityClassName: ""
+  # -- ...
+  # @section -- common settings
   strategy:
     type: RollingUpdate
     rollingUpdate:

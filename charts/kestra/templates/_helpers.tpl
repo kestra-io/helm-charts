@@ -136,6 +136,9 @@ spec:
         {{- end }}
     spec:
       serviceAccountName: {{ include "kestra.serviceAccountName" $ }}
+      {{- if $merged.priorityClassName }}
+      priorityClassName: {{ $merged.priorityClassName }}
+      {{- end }}
       {{- if $merged.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml $merged.imagePullSecrets | nindent 8 }}
