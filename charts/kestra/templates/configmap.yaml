@@ -5,7 +5,6 @@ metadata:
   labels:
     {{- include "kestra.labels" . | nindent 4 }}
 data:
-{{- if .Values.configurations.application }}
   application.yml: |
 {{ .Values.configurations.application | toYaml | indent 4}}
-{{- end }}
+
