@@ -290,7 +290,6 @@ service:
 ### kestra dind
 ### -------------------------------
 
-
 dind:
   # -- Whether to enable dind (Docker in Docker) for running docker containers.
   # @section -- kestra dind
@@ -298,10 +297,9 @@ dind:
   # -- The mode of dind to use, can be 'rootless', 'insecure'.
   # @section -- kestra dind
   mode: 'rootless'
-
   base:
-    # --
-    # @section -- kestra dind
+    # -- ...
+    # @section -- kestra dind rootless
     rootless:
       image:
         repository: docker
@@ -314,8 +312,8 @@ dind:
       args:
         - --log-level=fatal
         - --group=1000
-    # --
-    # @section -- kestra dind
+    # -- ...
+    # @section -- kestra dind insecure
     insecure:
       image:
         repository: docker
@@ -335,7 +333,6 @@ dind:
             - SETGID
       args:
         - '--log-level=fatal'
-
   # --
   # @section -- kestra dind
   socketPath: /dind/
@@ -354,7 +351,6 @@ dind:
 ### -------------------------------
 
 # This block is for setting up the ingress
-# @section -- kubernetes ingress
 ingress:
   # --
   # @section -- kubernetes ingress

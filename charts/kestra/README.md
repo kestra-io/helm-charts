@@ -74,6 +74,18 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | deployments.worker.extraArgs | list | `[]` |  |
 | deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
 
+### kestra dind insecure
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| dind.base.insecure | object | `{"args":["--log-level=fatal"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"allowPrivilegeEscalation":true,"capabilities":{"add":["SYS_ADMIN","NET_ADMIN","DAC_OVERRIDE","SETUID","SETGID"]},"privileged":true,"runAsGroup":0,"runAsUser":0}}` | ... |
+
+### kestra dind rootless
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| dind.base.rootless | object | `{"args":["--log-level=fatal","--group=1000"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"privileged":true,"runAsGroup":1000,"runAsUser":1000}}` | ... |
+
 ### kestra dind
 
 | Key | Type | Default | Description |
@@ -133,27 +145,6 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.base.insecure.args[0] | string | `"--log-level=fatal"` |  |
-| dind.base.insecure.image.pullPolicy | string | `"IfNotPresent"` |  |
-| dind.base.insecure.image.repository | string | `"docker"` |  |
-| dind.base.insecure.image.tag | string | `"dind-rootless"` |  |
-| dind.base.insecure.securityContext.allowPrivilegeEscalation | bool | `true` |  |
-| dind.base.insecure.securityContext.capabilities.add[0] | string | `"SYS_ADMIN"` |  |
-| dind.base.insecure.securityContext.capabilities.add[1] | string | `"NET_ADMIN"` |  |
-| dind.base.insecure.securityContext.capabilities.add[2] | string | `"DAC_OVERRIDE"` |  |
-| dind.base.insecure.securityContext.capabilities.add[3] | string | `"SETUID"` |  |
-| dind.base.insecure.securityContext.capabilities.add[4] | string | `"SETGID"` |  |
-| dind.base.insecure.securityContext.privileged | bool | `true` |  |
-| dind.base.insecure.securityContext.runAsGroup | int | `0` |  |
-| dind.base.insecure.securityContext.runAsUser | int | `0` |  |
-| dind.base.rootless.args[0] | string | `"--log-level=fatal"` |  |
-| dind.base.rootless.args[1] | string | `"--group=1000"` |  |
-| dind.base.rootless.image.pullPolicy | string | `"IfNotPresent"` |  |
-| dind.base.rootless.image.repository | string | `"docker"` |  |
-| dind.base.rootless.image.tag | string | `"dind-rootless"` |  |
-| dind.base.rootless.securityContext.privileged | bool | `true` |  |
-| dind.base.rootless.securityContext.runAsGroup | int | `1000` |  |
-| dind.base.rootless.securityContext.runAsUser | int | `1000` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
