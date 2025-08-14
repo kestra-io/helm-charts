@@ -39,7 +39,7 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | common.podSecurityContext | object | `{}` | ... |
 | common.priorityClassName | string | `""` | Priority class for pod scheduling |
 | common.readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/readiness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | ... |
-| common.replicas | int | `1` | ... |
+| common.replicas | int | `1` | This will set the replicaset count |
 | common.resources | object | `{}` | ... |
 | common.securityContext | object | `{"runAsGroup":1000,"runAsUser":1000}` | ... |
 | common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | ... |
@@ -72,17 +72,15 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.args | list | `["--log-level=fatal","--group=1000"]` | ... |
-| dind.enabled | bool | `true` | ... |
-| dind.extraEnv | list | `[]` | ... |
-| dind.extraVolumeMounts | list | `[]` | ... |
-| dind.image.pullPolicy | string | `"IfNotPresent"` | ... |
-| dind.image.repository | string | `"docker"` | ... |
-| dind.image.tag | string | `"dind-rootless"` | ... |
-| dind.resources | object | `{}` | ... |
-| dind.securityContext | object | `{"runAsGroup":1000,"runAsUser":1000}` | ... |
-| dind.socketPath | string | `"/dind/"` | ... |
-| dind.tmpPath | string | `"/tmp/"` | ... |
+| dind.enabled | bool | `true` | Enabled the docker in docker side container. |
+| dind.extraEnv | list | `[]` |  |
+| dind.extraVolumeMounts | list | `[]` |  |
+| dind.image.pullPolicy | string | `"IfNotPresent"` |  |
+| dind.image.repository | string | `"docker"` |  |
+| dind.image.tag | string | `"dind-rootless"` |  |
+| dind.resources | object | `{}` |  |
+| dind.socketPath | string | `"/dind/"` |  |
+| dind.tmpPath | string | `"/tmp/"` |  |
 
 ### image settings
 
@@ -97,11 +95,11 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| ingress.annotations | object | `{}` | ... |
-| ingress.className | string | `""` | ... |
-| ingress.enabled | bool | `false` | ... |
-| ingress.hosts | list | `[]` | ... |
-| ingress.tls | list | `[]` | ... |
+| ingress.annotations | object | `{}` |  |
+| ingress.className | string | `""` |  |
+| ingress.enabled | bool | `false` |  |
+| ingress.hosts | list | `[]` |  |
+| ingress.tls | list | `[]` |  |
 
 ### kestra service
 
@@ -138,6 +136,10 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | deployments.standalone.extraArgs | list | `[]` |  |
 | deployments.webserver.extraArgs | list | `[]` |  |
 | deployments.worker.extraArgs | list | `[]` |  |
+| dind.args[0] | string | `"--log-level=fatal"` |  |
+| dind.args[1] | string | `"--group=1000"` |  |
+| dind.securityContext.runAsGroup | int | `1000` |  |
+| dind.securityContext.runAsUser | int | `1000` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |

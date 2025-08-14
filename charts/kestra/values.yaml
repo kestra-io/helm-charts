@@ -26,7 +26,7 @@ imagePullSecrets: []
 ### -------------------------------
 
 common:
-  # -- ...
+  # -- This will set the replicaset count
   # @section -- common settings
   replicas: 1
   # -- Priority class for pod scheduling
@@ -285,42 +285,42 @@ service:
 ### -------------------------------
 
 dind:
-  # -- ...
+  # -- Enabled the docker in docker side container.
   # @section -- kestra dind
   enabled: true
   image:
-    # -- ...
+    # --
     # @section -- kestra dind
     repository: docker
-    # -- ...
+    # --
     # @section -- kestra dind
     tag: dind-rootless
-    # -- ...
+    # --
     # @section -- kestra dind
     pullPolicy: IfNotPresent
-  # -- ...
+  # --
   # @section -- kestra dind
   socketPath: /dind/
-  # -- ...
+  # --
   # @section -- kestra dind
   tmpPath: /tmp/
-  # -- ...
+  # --
   # @section -- kestra dind
   resources: {}
-  # -- ...
+  # --
   # @section -- kestra dind
   args:
     - --log-level=fatal
     - --group=1000
-  # -- ...
+  # --
   # @section -- kestra dind
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
-  # -- ...
+  # --
   # @section -- kestra dind
   extraVolumeMounts: []
-  # -- ...
+  # --
   # @section -- kestra dind
   extraEnv: []
 
@@ -328,19 +328,21 @@ dind:
 ### Ingress
 ### -------------------------------
 
+# This block is for setting up the ingress
+# @section -- kubernetes ingress
 ingress:
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   enabled: false
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   className: ""
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   hosts: []
     # - host: chart-example.local
@@ -352,7 +354,7 @@ ingress:
     #           name: kestra
     #           port:
     #             number: 8080
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   tls: []
     #  - secretName: chart-example-tls
