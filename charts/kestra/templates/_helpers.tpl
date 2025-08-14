@@ -304,23 +304,27 @@ spec:
           {{- end }}
         {{- if or (eq $type "standalone") (eq $type "worker") (eq $type "workergroup") }}
         {{- if $global.dind.enabled }}
+        {{- $dindMode := $global.dind.mode | default "rootless" }}
+        {{- $dindConfig := index $global.dind.base $dindMode }}
         - name: {{ $.Chart.Name }}-{{ $type }}-docker-dind
-          image: "{{ $global.dind.image.repository }}:{{ $global.dind.image.tag }}"
-          imagePullPolicy: {{ $global.dind.image.pullPolicy }}
+          image: "{{ $dindConfig.image.repository }}:{{ $dindConfig.image.tag }}"
+          imagePullPolicy: {{ $dindConfig.image.pullPolicy }}
           args:
-            {{- toYaml $global.dind.args | nindent 12 }}
+            {{- toYaml $dindConfig.args | nindent 12 }}
           env:
             - name: DOCKER_HOST
               value: unix://{{ $global.dind.socketPath }}/docker.sock
             {{- if $global.dind.extraEnv }}
             {{ toYaml $global.dind.extraEnv | trim | nindent 12 }}
-            {{ end }}
+            {{- end }}
           securityContext:
-            {{- if $global.dind.securityContext }}
-            {{- toYaml $global.dind.securityContext | nindent 12 }}
+            {{- if $dindConfig.securityContext }}
+            {{- toYaml $dindConfig.securityContext | nindent 12 }}
             {{- end }}
           volumeMounts:
-            {{- if $global.dind.extraVolumeMounts }}{{ toYaml $global.dind.extraVolumeMounts | trim | nindent 12 }}{{ end }}
+            {{- if $global.dind.extraVolumeMounts }}
+            {{ toYaml $global.dind.extraVolumeMounts | trim | nindent 12 }}
+            {{- end }}
             - name: docker-dind-socket
               mountPath: {{ $global.dind.socketPath }}
             - name: docker-tmp
