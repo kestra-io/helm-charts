@@ -66,7 +66,7 @@ Create the name of the service account to use
 Create the content of MICRONAUT_CONFIG_FILES
 */}}
 {{- define "kestra.micronautConfigFiles" -}}
-{{- $files := list "/app/application.yml" }}
+{{- $files := list "/app/_default.yml" }}
 {{- range .Values.configurations.configmaps }}
   {{- $files = append $files (printf "/app/%s" .key) }}
 {{- end }}
@@ -171,8 +171,8 @@ spec:
           configMap:
             name: {{ template "kestra.fullname" $ }}-config
             items:
-              - key: application.yml
-                path: application.yml
+              - key: _default.yml
+                path: _default.yml
         {{- range $global.configurations.configmaps }}
         - name: {{ .name }}
           configMap:
@@ -260,8 +260,8 @@ spec:
           {{- end }}
           volumeMounts:
             - name: {{ template "kestra.fullname" $ }}-config
-              mountPath: /app/application.yml
-              subPath: application.yml
+              mountPath: /app/_default.yml
+              subPath: _default.yml
             {{- range $global.configurations.configmaps }}
             - name: {{ .name }}
               mountPath: /app/{{ .key }}
