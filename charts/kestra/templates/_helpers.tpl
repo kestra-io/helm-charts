@@ -99,7 +99,7 @@ Create kestra deployment based on all possible deployments
 {{- $workergroupEnabled := .WorkerGroup }}
 {{- $merged := .Merged -}}
 {{- $global := .Global -}}
-{{- $config := .Config -}}
+{{- $config := .Config }}
 ---
 apiVersion: apps/v1
 kind: Deployment

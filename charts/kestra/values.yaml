@@ -29,26 +29,26 @@ common:
   # -- ...
   # @section -- common settings
   replicas: 1
-  # -- ...
+  # -- Priority class for pod scheduling
   # @section -- common settings
   priorityClassName: ""
-  # -- ...
+  # -- Deployment update strategy
   # @section -- common settings
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
-  # -- ...
+  # -- Annotations applied to all resources
   # @section -- common settings
   annotations: {}
-  # -- ...
+  # -- Annotations applied specifically to pods
   # @section -- common settings
   podAnnotations: {}
-  # -- ...
+  # -- Labels applied to all resources
   # @section -- common settings
   labels: {}
-  # -- ...
+  # -- Labels applied specifically to pods
   # @section -- common settings
   podLabels: {}
   # -- ...

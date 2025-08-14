@@ -24,26 +24,26 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | common.affinity | object | `{}` | ... |
-| common.annotations | object | `{}` | ... |
+| common.annotations | object | `{}` | Annotations applied to all resources |
 | common.extraContainers | list | `[]` | ... |
 | common.extraEnv | list | `[]` | ... |
 | common.extraEnvFrom | list | `[]` | ... |
 | common.extraVolumeMounts | list | `[]` | ... |
 | common.extraVolumes | list | `[]` | ... |
 | common.initContainers | list | `[]` | ... |
-| common.labels | object | `{}` | ... |
+| common.labels | object | `{}` | Labels applied to all resources |
 | common.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/liveness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | ... |
 | common.nodeSelector | object | `{}` | ... |
-| common.podAnnotations | object | `{}` | ... |
-| common.podLabels | object | `{}` | ... |
+| common.podAnnotations | object | `{}` | Annotations applied specifically to pods |
+| common.podLabels | object | `{}` | Labels applied specifically to pods |
 | common.podSecurityContext | object | `{}` | ... |
-| common.priorityClassName | string | `""` | ... |
+| common.priorityClassName | string | `""` | Priority class for pod scheduling |
 | common.readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/readiness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | ... |
 | common.replicas | int | `1` | ... |
 | common.resources | object | `{}` | ... |
 | common.securityContext | object | `{"runAsGroup":1000,"runAsUser":1000}` | ... |
 | common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | ... |
-| common.strategy | object | `{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}` | ... |
+| common.strategy | object | `{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}` | Deployment update strategy |
 | common.terminationGracePeriodSeconds | int | `60` | ... |
 | common.tolerations | list | `[]` | ... |
 
