@@ -140,9 +140,9 @@ spec:
       {{- if $merged.priorityClassName }}
       priorityClassName: {{ $merged.priorityClassName }}
       {{- end }}
-      {{- if $global.image.imagePullSecrets }}
+      {{- if $global.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml $global.image.imagePullSecrets | nindent 8 }}
+        {{- toYaml $global.imagePullSecrets | nindent 8 }}
       {{- end }}
       terminationGracePeriodSeconds: {{ $merged.terminationGracePeriodSeconds }}
       {{- if $merged.podSecurityContext }}

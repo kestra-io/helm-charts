@@ -91,7 +91,7 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
 | image.repository | string | `"kestra/kestra"` | Image repository to use for deploying kestra. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
-| imagePullSecrets | list | `[]` | ... |
+| imagePullSecrets | list | `[]` | This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 
 ### kubernetes ingress
 
