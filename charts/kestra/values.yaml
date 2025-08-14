@@ -26,29 +26,29 @@ imagePullSecrets: []
 ### -------------------------------
 
 common:
-  # -- ...
+  # -- This will set the replicaset count
   # @section -- common settings
   replicas: 1
-  # -- ...
+  # -- Priority class for pod scheduling
   # @section -- common settings
   priorityClassName: ""
-  # -- ...
+  # -- Deployment update strategy
   # @section -- common settings
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
-  # -- ...
+  # -- Annotations applied to all resources
   # @section -- common settings
   annotations: {}
-  # -- ...
+  # -- Annotations applied specifically to pods
   # @section -- common settings
   podAnnotations: {}
-  # -- ...
+  # -- Labels applied to all resources
   # @section -- common settings
   labels: {}
-  # -- ...
+  # -- Labels applied specifically to pods
   # @section -- common settings
   podLabels: {}
   # -- ...
@@ -206,30 +206,35 @@ deployments:
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     # @section -- kestra deployments
     workerThreads: 128
+    # --
     # @section -- kestra deployments
     extraArgs: []
   webserver:
     # -- Whether to deploy kestra in distributed mode, webserver will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # --
     # @section -- kestra deployments
     extraArgs: []
   executor:
     # -- Whether to deploy kestra in distributed mode, executor will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # --
     # @section -- kestra deployments
     extraArgs: []
   indexer:
     # -- Whether to deploy kestra in distributed mode, indexer will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # --
     # @section -- kestra deployments
     extraArgs: []
   scheduler:
     # -- Whether to deploy kestra in distributed mode, scheduler will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # --
     # @section -- kestra deployments
     extraArgs: []
   worker:
@@ -239,6 +244,7 @@ deployments:
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     # @section -- kestra deployments
     workerThreads: 128
+    # --
     # @section -- kestra deployments
     extraArgs: []
 
@@ -285,42 +291,58 @@ service:
 ### -------------------------------
 
 dind:
-  # -- ...
+  # -- Whether to enable dind (Docker in Docker) for running docker containers.
   # @section -- kestra dind
   enabled: true
-  image:
-    # -- ...
-    # @section -- kestra dind
-    repository: docker
-    # -- ...
-    # @section -- kestra dind
-    tag: dind-rootless
-    # -- ...
-    # @section -- kestra dind
-    pullPolicy: IfNotPresent
-  # -- ...
+  # -- The mode of dind to use, can be 'rootless', 'insecure'.
+  # @section -- kestra dind
+  mode: 'rootless'
+  base:
+    # -- Rootless mode configuration
+    # @section -- kestra dind rootless
+    rootless:
+      image:
+        repository: docker
+        pullPolicy: IfNotPresent
+        tag: dind-rootless
+      securityContext:
+        privileged: true
+        runAsUser: 1000
+        runAsGroup: 1000
+      args:
+        - --log-level=fatal
+        - --group=1000
+    # -- Insecure mode configuration
+    # @section -- kestra dind insecure
+    insecure:
+      image:
+        repository: docker
+        pullPolicy: IfNotPresent
+        tag: dind-rootless
+      securityContext:
+        privileged: true
+        runAsUser: 0
+        runAsGroup: 0
+        allowPrivilegeEscalation: true
+        capabilities:
+          add:
+            - SYS_ADMIN
+            - NET_ADMIN
+            - DAC_OVERRIDE
+            - SETUID
+            - SETGID
+      args:
+        - '--log-level=fatal'
+  # --
   # @section -- kestra dind
   socketPath: /dind/
-  # -- ...
+  # --
   # @section -- kestra dind
   tmpPath: /tmp/
-  # -- ...
+  # --
   # @section -- kestra dind
   resources: {}
-  # -- ...
-  # @section -- kestra dind
-  args:
-    - --log-level=fatal
-    - --group=1000
-  # -- ...
-  # @section -- kestra dind
-  securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-  # -- ...
-  # @section -- kestra dind
-  extraVolumeMounts: []
-  # -- ...
+  # --
   # @section -- kestra dind
   extraEnv: []
 
@@ -328,19 +350,20 @@ dind:
 ### Ingress
 ### -------------------------------
 
+# This block is for setting up the ingress
 ingress:
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   enabled: false
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   className: ""
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   hosts: []
     # - host: chart-example.local
@@ -352,7 +375,7 @@ ingress:
     #           name: kestra
     #           port:
     #             number: 8080
-  # -- ...
+  # --
   # @section -- kubernetes ingress
   tls: []
     #  - secretName: chart-example-tls

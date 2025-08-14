@@ -24,26 +24,26 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | common.affinity | object | `{}` | ... |
-| common.annotations | object | `{}` | ... |
+| common.annotations | object | `{}` | Annotations applied to all resources |
 | common.extraContainers | list | `[]` | ... |
 | common.extraEnv | list | `[]` | ... |
 | common.extraEnvFrom | list | `[]` | ... |
 | common.extraVolumeMounts | list | `[]` | ... |
 | common.extraVolumes | list | `[]` | ... |
 | common.initContainers | list | `[]` | ... |
-| common.labels | object | `{}` | ... |
+| common.labels | object | `{}` | Labels applied to all resources |
 | common.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/liveness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | ... |
 | common.nodeSelector | object | `{}` | ... |
-| common.podAnnotations | object | `{}` | ... |
-| common.podLabels | object | `{}` | ... |
+| common.podAnnotations | object | `{}` | Annotations applied specifically to pods |
+| common.podLabels | object | `{}` | Labels applied specifically to pods |
 | common.podSecurityContext | object | `{}` | ... |
-| common.priorityClassName | string | `""` | ... |
+| common.priorityClassName | string | `""` | Priority class for pod scheduling |
 | common.readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/readiness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | ... |
-| common.replicas | int | `1` | ... |
+| common.replicas | int | `1` | This will set the replicaset count |
 | common.resources | object | `{}` | ... |
 | common.securityContext | object | `{"runAsGroup":1000,"runAsUser":1000}` | ... |
 | common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | ... |
-| common.strategy | object | `{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}` | ... |
+| common.strategy | object | `{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}` | Deployment update strategy |
 | common.terminationGracePeriodSeconds | int | `60` | ... |
 | common.tolerations | list | `[]` | ... |
 
@@ -60,29 +60,42 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | deployments.executor.enabled | bool | `false` | Whether to deploy kestra in distributed mode, executor will be deployed. |
+| deployments.executor.extraArgs | list | `[]` |  |
 | deployments.indexer.enabled | bool | `false` | Whether to deploy kestra in distributed mode, indexer will be deployed. |
+| deployments.indexer.extraArgs | list | `[]` |  |
 | deployments.scheduler.enabled | bool | `false` | Whether to deploy kestra in distributed mode, scheduler will be deployed. |
+| deployments.scheduler.extraArgs | list | `[]` |  |
 | deployments.standalone.enabled | bool | `true` | Whether to deploy kestra in standalone mode. |
+| deployments.standalone.extraArgs | list | `[]` |  |
 | deployments.standalone.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
 | deployments.webserver.enabled | bool | `false` | Whether to deploy kestra in distributed mode, webserver will be deployed. |
+| deployments.webserver.extraArgs | list | `[]` |  |
 | deployments.worker.enabled | bool | `false` | Whether to deploy kestra in distributed mode, worker will be deployed. |
+| deployments.worker.extraArgs | list | `[]` |  |
 | deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
+
+### kestra dind insecure
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| dind.base.insecure | object | `{"args":["--log-level=fatal"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"allowPrivilegeEscalation":true,"capabilities":{"add":["SYS_ADMIN","NET_ADMIN","DAC_OVERRIDE","SETUID","SETGID"]},"privileged":true,"runAsGroup":0,"runAsUser":0}}` | Insecure mode configuration |
+
+### kestra dind rootless
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| dind.base.rootless | object | `{"args":["--log-level=fatal","--group=1000"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"privileged":true,"runAsGroup":1000,"runAsUser":1000}}` | Rootless mode configuration |
 
 ### kestra dind
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.args | list | `["--log-level=fatal","--group=1000"]` | ... |
-| dind.enabled | bool | `true` | ... |
-| dind.extraEnv | list | `[]` | ... |
-| dind.extraVolumeMounts | list | `[]` | ... |
-| dind.image.pullPolicy | string | `"IfNotPresent"` | ... |
-| dind.image.repository | string | `"docker"` | ... |
-| dind.image.tag | string | `"dind-rootless"` | ... |
-| dind.resources | object | `{}` | ... |
-| dind.securityContext | object | `{"runAsGroup":1000,"runAsUser":1000}` | ... |
-| dind.socketPath | string | `"/dind/"` | ... |
-| dind.tmpPath | string | `"/tmp/"` | ... |
+| dind.enabled | bool | `true` | Whether to enable dind (Docker in Docker) for running docker containers. |
+| dind.extraEnv | list | `[]` |  |
+| dind.mode | string | `"rootless"` | The mode of dind to use, can be 'rootless', 'insecure'. |
+| dind.resources | object | `{}` |  |
+| dind.socketPath | string | `"/dind/"` |  |
+| dind.tmpPath | string | `"/tmp/"` |  |
 
 ### image settings
 
@@ -97,11 +110,11 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| ingress.annotations | object | `{}` | ... |
-| ingress.className | string | `""` | ... |
-| ingress.enabled | bool | `false` | ... |
-| ingress.hosts | list | `[]` | ... |
-| ingress.tls | list | `[]` | ... |
+| ingress.annotations | object | `{}` |  |
+| ingress.className | string | `""` |  |
+| ingress.enabled | bool | `false` |  |
+| ingress.hosts | list | `[]` |  |
+| ingress.tls | list | `[]` |  |
 
 ### kestra service
 
@@ -132,12 +145,6 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| deployments.executor.extraArgs | list | `[]` |  |
-| deployments.indexer.extraArgs | list | `[]` |  |
-| deployments.scheduler.extraArgs | list | `[]` |  |
-| deployments.standalone.extraArgs | list | `[]` |  |
-| deployments.webserver.extraArgs | list | `[]` |  |
-| deployments.worker.extraArgs | list | `[]` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |

@@ -5,6 +5,5 @@ metadata:
   labels:
     {{- include "kestra.labels" . | nindent 4 }}
 data:
-  application.yml: |
+  "_default.yml": |
 {{ .Values.configurations.application | toYaml | indent 4}}
-
