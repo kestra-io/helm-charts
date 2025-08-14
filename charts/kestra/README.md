@@ -78,13 +78,13 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.base.insecure | object | `{"args":["--log-level=fatal"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"allowPrivilegeEscalation":true,"capabilities":{"add":["SYS_ADMIN","NET_ADMIN","DAC_OVERRIDE","SETUID","SETGID"]},"privileged":true,"runAsGroup":0,"runAsUser":0}}` | ... |
+| dind.base.insecure | object | `{"args":["--log-level=fatal"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"allowPrivilegeEscalation":true,"capabilities":{"add":["SYS_ADMIN","NET_ADMIN","DAC_OVERRIDE","SETUID","SETGID"]},"privileged":true,"runAsGroup":0,"runAsUser":0}}` | Insecure mode configuration |
 
 ### kestra dind rootless
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.base.rootless | object | `{"args":["--log-level=fatal","--group=1000"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"privileged":true,"runAsGroup":1000,"runAsUser":1000}}` | ... |
+| dind.base.rootless | object | `{"args":["--log-level=fatal","--group=1000"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"privileged":true,"runAsGroup":1000,"runAsUser":1000}}` | Rootless mode configuration |
 
 ### kestra dind
 

@@ -298,7 +298,7 @@ dind:
   # @section -- kestra dind
   mode: 'rootless'
   base:
-    # -- ...
+    # -- Rootless mode configuration
     # @section -- kestra dind rootless
     rootless:
       image:
@@ -312,7 +312,7 @@ dind:
       args:
         - --log-level=fatal
         - --group=1000
-    # -- ...
+    # -- Insecure mode configuration
     # @section -- kestra dind insecure
     insecure:
       image:
