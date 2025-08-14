@@ -60,12 +60,18 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | deployments.executor.enabled | bool | `false` | Whether to deploy kestra in distributed mode, executor will be deployed. |
+| deployments.executor.extraArgs | list | `[]` |  |
 | deployments.indexer.enabled | bool | `false` | Whether to deploy kestra in distributed mode, indexer will be deployed. |
+| deployments.indexer.extraArgs | list | `[]` |  |
 | deployments.scheduler.enabled | bool | `false` | Whether to deploy kestra in distributed mode, scheduler will be deployed. |
+| deployments.scheduler.extraArgs | list | `[]` |  |
 | deployments.standalone.enabled | bool | `true` | Whether to deploy kestra in standalone mode. |
+| deployments.standalone.extraArgs | list | `[]` |  |
 | deployments.standalone.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
 | deployments.webserver.enabled | bool | `false` | Whether to deploy kestra in distributed mode, webserver will be deployed. |
+| deployments.webserver.extraArgs | list | `[]` |  |
 | deployments.worker.enabled | bool | `false` | Whether to deploy kestra in distributed mode, worker will be deployed. |
+| deployments.worker.extraArgs | list | `[]` |  |
 | deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
 
 ### kestra dind
@@ -130,12 +136,6 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| deployments.executor.extraArgs | list | `[]` |  |
-| deployments.indexer.extraArgs | list | `[]` |  |
-| deployments.scheduler.extraArgs | list | `[]` |  |
-| deployments.standalone.extraArgs | list | `[]` |  |
-| deployments.webserver.extraArgs | list | `[]` |  |
-| deployments.worker.extraArgs | list | `[]` |  |
 | dind.args[0] | string | `"--log-level=fatal"` |  |
 | dind.args[1] | string | `"--group=1000"` |  |
 | dind.securityContext.runAsGroup | int | `1000` |  |

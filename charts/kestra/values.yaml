@@ -206,30 +206,35 @@ deployments:
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     # @section -- kestra deployments
     workerThreads: 128
+    # --
     # @section -- kestra deployments
     extraArgs: []
   webserver:
     # -- Whether to deploy kestra in distributed mode, webserver will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # --
     # @section -- kestra deployments
     extraArgs: []
   executor:
     # -- Whether to deploy kestra in distributed mode, executor will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # --
     # @section -- kestra deployments
     extraArgs: []
   indexer:
     # -- Whether to deploy kestra in distributed mode, indexer will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # --
     # @section -- kestra deployments
     extraArgs: []
   scheduler:
     # -- Whether to deploy kestra in distributed mode, scheduler will be deployed.
     # @section -- kestra deployments
     enabled: false
+    # --
     # @section -- kestra deployments
     extraArgs: []
   worker:
@@ -239,6 +244,7 @@ deployments:
     # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
     # @section -- kestra deployments
     workerThreads: 128
+    # --
     # @section -- kestra deployments
     extraArgs: []
 
