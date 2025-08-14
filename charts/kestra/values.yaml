@@ -318,9 +318,10 @@ dind:
   args:
     - --log-level=fatal
     - --group=1000
-  # --
+  # -- Default security context for the dind container. You can override this will all security context options to set your own security context.
   # @section -- kestra dind
   securityContext:
+    privileged: true
     runAsUser: 1000
     runAsGroup: 1000
   # --

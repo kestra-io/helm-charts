@@ -316,7 +316,6 @@ spec:
             {{ toYaml $global.dind.extraEnv | trim | nindent 12 }}
             {{ end }}
           securityContext:
-            privileged: true
             {{- if $global.dind.securityContext }}
             {{- toYaml $global.dind.securityContext | nindent 12 }}
             {{- end }}

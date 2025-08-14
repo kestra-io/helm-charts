@@ -85,6 +85,7 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 | dind.image.repository | string | `"docker"` |  |
 | dind.image.tag | string | `"dind-rootless"` |  |
 | dind.resources | object | `{}` |  |
+| dind.securityContext | object | `{"privileged":true,"runAsGroup":1000,"runAsUser":1000}` | Default security context for the dind container. You can override this will all security context options to set your own security context. |
 | dind.socketPath | string | `"/dind/"` |  |
 | dind.tmpPath | string | `"/tmp/"` |  |
 
@@ -138,8 +139,6 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 |-----|------|---------|-------------|
 | dind.args[0] | string | `"--log-level=fatal"` |  |
 | dind.args[1] | string | `"--group=1000"` |  |
-| dind.securityContext.runAsGroup | int | `1000` |  |
-| dind.securityContext.runAsUser | int | `1000` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
