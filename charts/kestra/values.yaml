@@ -290,20 +290,52 @@ service:
 ### kestra dind
 ### -------------------------------
 
+
 dind:
-  # -- Enabled the docker in docker side container.
+  # -- Whether to enable dind (Docker in Docker) for running docker containers.
   # @section -- kestra dind
   enabled: true
-  image:
+  # -- The mode of dind to use, can be 'rootless', 'insecure'.
+  # @section -- kestra dind
+  mode: 'rootless'
+
+  base:
     # --
     # @section -- kestra dind
-    repository: docker
+    rootless:
+      image:
+        repository: docker
+        pullPolicy: IfNotPresent
+        tag: dind-rootless
+      securityContext:
+        privileged: true
+        runAsUser: 1000
+        runAsGroup: 1000
+      args:
+        - --log-level=fatal
+        - --group=1000
     # --
     # @section -- kestra dind
-    tag: dind-rootless
-    # --
-    # @section -- kestra dind
-    pullPolicy: IfNotPresent
+    insecure:
+      image:
+        repository: docker
+        pullPolicy: IfNotPresent
+        tag: dind-rootless
+      securityContext:
+        privileged: true
+        runAsUser: 0
+        runAsGroup: 0
+        allowPrivilegeEscalation: true
+        capabilities:
+          add:
+            - SYS_ADMIN
+            - NET_ADMIN
+            - DAC_OVERRIDE
+            - SETUID
+            - SETGID
+      args:
+        - '--log-level=fatal'
+
   # --
   # @section -- kestra dind
   socketPath: /dind/
@@ -313,20 +345,6 @@ dind:
   # --
   # @section -- kestra dind
   resources: {}
-  # --
-  # @section -- kestra dind
-  args:
-    - --log-level=fatal
-    - --group=1000
-  # -- Default security context for the dind container. You can override this will all security context options to set your own security context.
-  # @section -- kestra dind
-  securityContext:
-    privileged: true
-    runAsUser: 1000
-    runAsGroup: 1000
-  # --
-  # @section -- kestra dind
-  extraVolumeMounts: []
   # --
   # @section -- kestra dind
   extraEnv: []

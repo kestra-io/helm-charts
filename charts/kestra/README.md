@@ -78,14 +78,10 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.enabled | bool | `true` | Enabled the docker in docker side container. |
+| dind.enabled | bool | `true` | Whether to enable dind (Docker in Docker) for running docker containers. |
 | dind.extraEnv | list | `[]` |  |
-| dind.extraVolumeMounts | list | `[]` |  |
-| dind.image.pullPolicy | string | `"IfNotPresent"` |  |
-| dind.image.repository | string | `"docker"` |  |
-| dind.image.tag | string | `"dind-rootless"` |  |
+| dind.mode | string | `"rootless"` | The mode of dind to use, can be 'rootless', 'insecure'. |
 | dind.resources | object | `{}` |  |
-| dind.securityContext | object | `{"privileged":true,"runAsGroup":1000,"runAsUser":1000}` | Default security context for the dind container. You can override this will all security context options to set your own security context. |
 | dind.socketPath | string | `"/dind/"` |  |
 | dind.tmpPath | string | `"/tmp/"` |  |
 
@@ -137,8 +133,27 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.args[0] | string | `"--log-level=fatal"` |  |
-| dind.args[1] | string | `"--group=1000"` |  |
+| dind.base.insecure.args[0] | string | `"--log-level=fatal"` |  |
+| dind.base.insecure.image.pullPolicy | string | `"IfNotPresent"` |  |
+| dind.base.insecure.image.repository | string | `"docker"` |  |
+| dind.base.insecure.image.tag | string | `"dind-rootless"` |  |
+| dind.base.insecure.securityContext.allowPrivilegeEscalation | bool | `true` |  |
+| dind.base.insecure.securityContext.capabilities.add[0] | string | `"SYS_ADMIN"` |  |
+| dind.base.insecure.securityContext.capabilities.add[1] | string | `"NET_ADMIN"` |  |
+| dind.base.insecure.securityContext.capabilities.add[2] | string | `"DAC_OVERRIDE"` |  |
+| dind.base.insecure.securityContext.capabilities.add[3] | string | `"SETUID"` |  |
+| dind.base.insecure.securityContext.capabilities.add[4] | string | `"SETGID"` |  |
+| dind.base.insecure.securityContext.privileged | bool | `true` |  |
+| dind.base.insecure.securityContext.runAsGroup | int | `0` |  |
+| dind.base.insecure.securityContext.runAsUser | int | `0` |  |
+| dind.base.rootless.args[0] | string | `"--log-level=fatal"` |  |
+| dind.base.rootless.args[1] | string | `"--group=1000"` |  |
+| dind.base.rootless.image.pullPolicy | string | `"IfNotPresent"` |  |
+| dind.base.rootless.image.repository | string | `"docker"` |  |
+| dind.base.rootless.image.tag | string | `"dind-rootless"` |  |
+| dind.base.rootless.securityContext.privileged | bool | `true` |  |
+| dind.base.rootless.securityContext.runAsGroup | int | `1000` |  |
+| dind.base.rootless.securityContext.runAsUser | int | `1000` |  |
 | extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
