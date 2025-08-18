@@ -8,14 +8,6 @@
     Event-Driven Declarative Orchestrator
 </h1>
 
-<div align="center">
- <a href="https://github.com/kestra-io/kestra/releases"><img src="https://img.shields.io/github/tag-pre/kestra-io/kestra.svg?color=blueviolet" alt="Last Version" /></a>
-  <a href="https://github.com/kestra-io/kestra/blob/develop/LICENSE"><img src="https://img.shields.io/github/license/kestra-io/kestra?color=blueviolet" alt="License" /></a>
-  <a href="https://github.com/kestra-io/kestra/stargazers"><img src="https://img.shields.io/github/stars/kestra-io/kestra?color=blueviolet&logo=github" alt="Github star" /></a> <br>
-<a href="https://kestra.io"><img src="https://img.shields.io/badge/Website-kestra.io-192A4E?color=blueviolet" alt="Kestra infinitely scalable orchestration and scheduling platform"></a>
-<a href="https://kestra.io/slack"><img src="https://img.shields.io/badge/Slack-Join%20Community-blueviolet?logo=slack" alt="Slack"></a>
-</div>
-
 <br />
 
 <p align="center">
@@ -32,20 +24,35 @@
 </p>
 <p align="center" style="color:grey;"><i>Get started with Kestra in 4 minutes.</i></p>
 
+{{ template "chart.header" . }}
 
-# Kestra Helm Charts
+{{ template "chart.versionBadge" . }}{{ template "chart.appVersionBadge" . }}
 
-![Kestra orchestrator](https://kestra.io/video.gif)
+{{ template "chart.description" . }}
 
+{{ template "chart.homepageLine" . }}
+
+## Installing the Chart
+
+To install the chart with the release name `my-{{ template "chart.name" . }}`:
+
+```console
+$ helm repo add kestra https://helm.kestra.io/
+$ helm install my-{{ template "chart.name" . }} kestra/{{ template "chart.name" . }} --version {{ template "chart.version" . }}
+```
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.valuesSection" . }}
 
 ## Documentation
 * Full documentation can be found under [kestra.io/docs](https://kestra.io/docs)
 * Deployment on Kubernetes documentation can be found [here](https://kestra.io/docs/installation/kubernetes)
 
-
 ## License
 Apache 2.0 © [Kestra Technologies](https://kestra.io)
-
 
 ## Stay up to date
 

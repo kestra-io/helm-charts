@@ -1,4 +1,0 @@
-{{- range .Values.extraManifests }}
----
-{{ include "kestra.extra-render" (dict "value" . "context" $) }}
-{{- end }}
