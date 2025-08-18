@@ -99,7 +99,6 @@ Create kestra deployment based on all possible deployments
 {{- $workergroupEnabled := .WorkerGroup }}
 {{- $merged := .Merged -}}
 {{- $global := .Global -}}
-{{- $config := .Config }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -156,18 +155,13 @@ spec:
       nodeSelector:
         {{- toYaml $merged.nodeSelector | nindent 8 }}
       {{- end }}
-      {{- if $merged.affinity }}
+      {{- with $merged.affinity }}
       affinity:
-        {{- toYaml $merged.affinity | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if $merged.tolerations }}
+      {{- with $merged.tolerations }}
       tolerations:
-        {{- with $global.common.tolerations }}
         {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- with $config.tolerations }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
       {{- end }}
       volumes:
         - name: {{ template "kestra.fullname" $ }}-config
@@ -196,22 +190,12 @@ spec:
         - name: docker-tmp
           emptyDir: {}
         {{- end }}
-        {{- if $merged.extraVolumes }}
-          {{- with $global.common.extraVolumes }}
+        {{- with $merged.extraVolumes }}
           {{- toYaml . | nindent 8 }}
-          {{- end }}
-          {{- with $config.extraVolumes }}
-          {{- toYaml . | nindent 8 }}
-          {{- end }}
         {{- end }}
-      {{- if $merged.initContainers }}
+      {{- with $merged.initContainers }}
       initContainers:
-        {{- with $global.common.initContainers }}
         {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- with $config.initContainers }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
       {{- end }}
       containers:
         - name: kestra-{{ $type }}
@@ -245,21 +229,11 @@ spec:
             - name: MICRONAUT_CONFIG_FILES
               value: {{ include "kestra.micronautConfigFiles" $ | quote }}
             {{- with $merged.extraEnv }}
-              {{- with $global.common.extraEnv }}
               {{- toYaml . | nindent 12 }}
-              {{- end }}
-              {{- with $config.extraEnv }}
-              {{- toYaml . | nindent 12 }}
-              {{- end }}
             {{- end }}
           {{- with $merged.extraEnvFrom }}
           envFrom:
-            {{- with $global.common.extraEnvFrom }}
             {{- toYaml . | nindent 12 }}
-            {{- end }}
-            {{- with $config.extraEnvFrom }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
           {{- end }}
           volumeMounts:
             - name: {{ template "kestra.fullname" $ }}-config
@@ -275,13 +249,8 @@ spec:
               mountPath: /app/{{ .key }}
               subPath: {{ .key }}
             {{- end }}
-            {{- if $merged.extraVolumeMounts }}
-              {{- with $global.common.extraVolumeMounts }}
+            {{- with $merged.extraVolumeMounts }}
               {{- toYaml . | nindent 12 }}
-              {{- end }}
-              {{- with $config.extraVolumeMounts }}
-              {{- toYaml . | nindent 12 }}
-              {{- end }}
             {{- end }}
           ports:
             {{- range $pname, $port := $global.service.ports }}
