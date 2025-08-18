@@ -41,7 +41,7 @@ common:
       maxSurge: 1
   # -- RevisionHistoryLimit is the number of old ReplicaSets to retain to allow rollback.
   # @section -- common settings
-  revisionHistoryLimit: 5
+  revisionHistoryLimit: 10
   # -- Annotations applied to all resources
   # @section -- common settings
   annotations: {}
