@@ -1,4 +1,4 @@
-# MIGRATE_0.x.x to 1.0.0.md
+# MIGRATE 0.x.x to 1.0.0
 
 ## 🎯 Purpose
 This document explains the structural and configuration changes between the old `values.yaml` and the new chart format for Kestra.  
