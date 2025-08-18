@@ -10,13 +10,13 @@ image:
   # -- Image repository to use for deploying kestra.
   # @section -- image settings
   repository: kestra/kestra
-  # -- This sets the pull policy for images.
+  # -- Policy for pulling container images (Always, IfNotPresent, Never).
   # @section -- image settings
   pullPolicy: IfNotPresent
-  # -- Overrides the image tag whose default is the chart appVersion.
+  # -- Overrides the image tag (defaults to chart appVersion).
   # @section -- image settings
   tag: ""
-# -- This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+# -- References to secrets for pulling images from private registries.
 # @section -- image settings
 imagePullSecrets: []
 # - name: regcred
@@ -26,35 +26,35 @@ imagePullSecrets: []
 ### -------------------------------
 
 common:
-  # -- This will set the replicaset count
+  # -- Number of pod replicas to run.
   # @section -- common settings
   replicas: 1
-  # -- Priority class for pod scheduling
+  # -- Priority class for scheduling pods.
   # @section -- common settings
   priorityClassName: ""
-  # -- Deployment update strategy
+  # -- Deployment update strategy (e.g., RollingUpdate, Recreate).
   # @section -- common settings
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
-  # -- RevisionHistoryLimit is the number of old ReplicaSets to retain to allow rollback.
+  # -- Number of old ReplicaSets to retain for rollback.
   # @section -- common settings
   revisionHistoryLimit: 10
-  # -- Annotations applied to all resources
+  # -- Annotations applied to all resources.
   # @section -- common settings
   annotations: {}
-  # -- Annotations applied specifically to pods
+  # -- Annotations applied specifically to pods.
   # @section -- common settings
   podAnnotations: {}
-  # -- Labels applied to all resources
+  # -- Labels applied to all resources.
   # @section -- common settings
   labels: {}
-  # -- Labels applied specifically to pods
+  # -- Labels applied specifically to pods.
   # @section -- common settings
   podLabels: {}
-  # -- ...
+  # -- Liveness probe configuration for container health checks.
   # @section -- common settings
   livenessProbe:
     httpGet:
@@ -65,7 +65,7 @@ common:
     timeoutSeconds: 3
     successThreshold: 1
     failureThreshold: 3
-  # -- ...
+  # -- Readiness probe configuration to determine pod availability.
   # @section -- common settings
   readinessProbe:
     httpGet:
@@ -76,7 +76,7 @@ common:
     timeoutSeconds: 3
     successThreshold: 1
     failureThreshold: 3
-  # -- ...
+  # -- Startup probe configuration to verify app starts correctly.
   # @section -- common settings
   startupProbe:
     httpGet:
@@ -87,61 +87,45 @@ common:
     timeoutSeconds: 1
     successThreshold: 1
     failureThreshold: 120
-  # -- ...
+  # -- Resource requests and limits for containers.
   # @section -- common settings
   resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-  # -- ...
+  # -- Grace period for pod termination.
   # @section -- common settings
   terminationGracePeriodSeconds: 60
-  # -- ...
+  # -- Node selector constraints for scheduling pods.
   # @section -- common settings
   nodeSelector: {}
-  # -- ...
+  # -- Tolerations for scheduling pods on tainted nodes.
   # @section -- common settings
   tolerations: []
-  # -- ...
+  # -- Affinity rules for pod scheduling.
   # @section -- common settings
   affinity: {}
-  # -- ...
+  # -- Security context settings for containers.
   # @section -- common settings
   securityContext:
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
     runAsUser: 1000
     runAsGroup: 1000
-  # -- ...
+  # -- Security context settings for pods.
   # @section -- common settings
   podSecurityContext: {}
-    # fsGroup: 2000
-  # -- ...
+  # -- Additional init containers to run before main container.
   # @section -- common settings
   initContainers: []
-  # -- ...
+  # -- Extra volume mounts to add to containers.
   # @section -- common settings
   extraVolumeMounts: []
-  # -- ...
+  # -- Extra volumes to add to pods.
   # @section -- common settings
   extraVolumes: []
-  # -- ...
+  # -- Extra environment variables for containers.
   # @section -- common settings
   extraEnv: []
-  # -- ...
+  # -- Import environment variables from ConfigMaps/Secrets.
   # @section -- common settings
   extraEnvFrom: []
-  # -- ...
+  # -- Additional sidecar containers.
   # @section -- common settings
   extraContainers: []
 
@@ -150,50 +134,31 @@ common:
 ### -------------------------------
 
 configurations:
-  # -- ...
+  # -- Application configuration (Kestra settings, DB, storage, etc.).
   # @section -- kestra configurations
   application: {}
-    # kestra:
-    #   queue:
-    #     type: h2
-    #   repository:
-    #     type: h2
-    #   storage:
-    #     type: local
-    #     local:
-    #       basePath: "/app/storage"
-    # datasources:
-    #   h2:
-    #     url: jdbc:h2:mem:public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    #     username: kestra
-    #     password: ""
-    #     driverClassName: org.h2.Driver
-  # -- ...
+  # -- Extra configmaps mounted as configuration files.
   # @section -- kestra configurations
   configmaps: []
-  # - name: kestra-extra-config
-  #   key: storage.yml
-  # -- ...
+  # -- Extra secrets mounted as configuration files.
   # @section -- kestra configurations
   secrets: []
-  # - name: kestra-extra-secret
-  #   key: datasources.yml
 
 ### -------------------------------
 ### kestra service account
 ### -------------------------------
 
 serviceAccount:
-  # -- Specifies whether a service account should be created.
+  # -- Specifies whether to create a ServiceAccount.
   # @section -- kubernetes serviceAccount
   create: true
-  # -- Automatically mount a ServiceAccount's API credentials?
+  # -- Automatically mount API credentials to pods.
   # @section -- kubernetes serviceAccount
   automount: true
-  # -- Annotations to add to the service account.
+  # -- Annotations to add to the ServiceAccount.
   # @section -- kubernetes serviceAccount
   annotations: {}
-  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template.
+  # -- Name of the ServiceAccount to use.
   # @section -- kubernetes serviceAccount
   name: ""
 
@@ -203,85 +168,81 @@ serviceAccount:
 
 deployments:
   standalone:
-    # -- Whether to deploy kestra in standalone mode.
+    # -- Enable standalone Kestra deployment.
     # @section -- kestra deployments
     enabled: true
-    # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+    # -- Number of worker threads for standalone deployment.
     # @section -- kestra deployments
     workerThreads: 128
-    # --
+    # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
   webserver:
-    # -- Whether to deploy kestra in distributed mode, webserver will be deployed.
+    # -- Enable webserver in distributed mode.
     # @section -- kestra deployments
     enabled: false
-    # --
+    # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
   executor:
-    # -- Whether to deploy kestra in distributed mode, executor will be deployed.
+    # -- Enable executor in distributed mode.
     # @section -- kestra deployments
     enabled: false
-    # --
+    # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
   indexer:
-    # -- Whether to deploy kestra in distributed mode, indexer will be deployed.
+    # -- Enable indexer in distributed mode.
     # @section -- kestra deployments
     enabled: false
-    # --
+    # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
   scheduler:
-    # -- Whether to deploy kestra in distributed mode, scheduler will be deployed.
+    # -- Enable scheduler in distributed mode.
     # @section -- kestra deployments
     enabled: false
-    # --
+    # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
   worker:
-    # -- Whether to deploy kestra in distributed mode, worker will be deployed.
+    # -- Enable worker in distributed mode.
     # @section -- kestra deployments
     enabled: false
-    # -- By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
+    # -- Number of worker threads for worker deployment.
     # @section -- kestra deployments
     workerThreads: 128
-    # --
+    # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
 
-# -- EE only - Define additional group of workers.
-# Must be used in addition to default workers (in standalone or separate worker deployment).
+# -- EE only - Define additional worker groups with custom settings.
 # @section -- kestra workerGroups
 workerGroups: []
-  # - name: "my-worker-group"
-  #   workerThreads: 128
-  #   extraArgs: []
 
 ### -------------------------------
 ### kestra service
 ### -------------------------------
 
 service:
-  # -- ...
+  # -- Kubernetes Service type (ClusterIP, NodePort, LoadBalancer).
   # @section -- kestra service
   type: ClusterIP
-  # -- ...
+  # -- Labels to apply to the Service.
   # @section -- kestra service
   labels: {}
-  # -- ...
+  # -- Annotations to apply to the Service.
   # @section -- kestra service
   annotations: {}
   ports:
-    # -- ...
+    # -- HTTP service port mapping.
     # @section -- kestra service
     http:
       port: 8080
       containerPort: 8080
       targetPort: http
       protocol: TCP
-    # -- ...
+    # -- Management (metrics/health) service port mapping.
     # @section -- kestra service
     management:
       port: 8081
@@ -294,14 +255,14 @@ service:
 ### -------------------------------
 
 dind:
-  # -- Whether to enable dind (Docker in Docker) for running docker containers.
+  # -- Enable Docker-in-Docker (dind) sidecar.
   # @section -- kestra dind
   enabled: true
-  # -- The mode of dind to use, can be 'rootless', 'insecure'.
+  # -- Dind mode (rootless or insecure).
   # @section -- kestra dind
   mode: 'rootless'
   base:
-    # -- Rootless mode configuration
+    # -- Rootless dind configuration.
     # @section -- kestra dind rootless
     rootless:
       image:
@@ -315,7 +276,7 @@ dind:
       args:
         - --log-level=fatal
         - --group=1000
-    # -- Insecure mode configuration
+    # -- Insecure dind configuration (privileged).
     # @section -- kestra dind insecure
     insecure:
       image:
@@ -336,16 +297,16 @@ dind:
             - SETGID
       args:
         - '--log-level=fatal'
-  # --
+  # -- Path where dind socket is mounted.
   # @section -- kestra dind
   socketPath: /dind/
-  # --
+  # -- Path for temporary storage in dind.
   # @section -- kestra dind
   tmpPath: /tmp/
-  # --
+  # -- Resource requests and limits for dind sidecar.
   # @section -- kestra dind
   resources: {}
-  # --
+  # -- Extra environment variables for dind container.
   # @section -- kestra dind
   extraEnv: []
 
@@ -355,45 +316,25 @@ dind:
 
 # This block is for setting up the ingress
 ingress:
-  # --
+  # -- Enable Ingress resource.
   # @section -- kubernetes ingress
   enabled: false
-  # --
+  # -- IngressClass name to use.
   # @section -- kubernetes ingress
   className: ""
-  # --
+  # -- Annotations to add to the Ingress.
   # @section -- kubernetes ingress
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  # --
+  # -- Hosts and paths for Ingress routing.
   # @section -- kubernetes ingress
   hosts: []
-    # - host: chart-example.local
-    #   paths: []
-    #     - path: /
-    #       pathType: Prefix
-    #       backend:
-    #         service:
-    #           name: kestra
-    #           port:
-    #             number: 8080
-  # --
+  # -- TLS configuration for Ingress.
   # @section -- kubernetes ingress
   tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
 
 ### -------------------------------
 ### Extra Kubernetes Manifests
 ### -------------------------------
 
-# -- You can specify extra manifests to be deployed with this chart.
+# -- Extra Kubernetes manifests to deploy with the chart.
 extraManifests: []
-  # - apiVersion: v1
-  #   kind: Secret
-  #   metadata:
-  #     name: demo
-  #   data:
-  #     key: {{ .Values.demo.key | b64enc }}

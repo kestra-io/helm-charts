@@ -17,11 +17,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Copy for helm
-      - name: Add some files
-        run: |
-          cp LICENSE charts/kestra/LICENSE
-          cp README.md charts/kestra/README.md
+      # # Copy for helm
+      # - name: Add some files
+      #   run: |
+      #     cp LICENSE charts/kestra/LICENSE
+      #     cp README.md charts/kestra/README.md
 
       # Better to switch to this one in the near future
       # - name: Helm Chart Releaser

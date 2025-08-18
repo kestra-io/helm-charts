@@ -116,6 +116,9 @@ metadata:
     {{- end }}
 spec:
   replicas: {{ $merged.replicas }}
+  {{- if $merged.revisionHistoryLimit }}
+  revisionHistoryLimit: {{ $merged.revisionHistoryLimit }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "kestra.selectorLabels" $ | nindent 6 }}
@@ -138,9 +141,6 @@ spec:
       serviceAccountName: {{ include "kestra.serviceAccountName" $ }}
       {{- if $merged.priorityClassName }}
       priorityClassName: {{ $merged.priorityClassName }}
-      {{- end }}
-      {{- if $merged.revisionHistoryLimit }}
-      revisionHistoryLimit: {{ $merged.revisionHistoryLimit }}
       {{- end }}
       {{- if $global.imagePullSecrets }}
       imagePullSecrets:

@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kestra-operator.fullname" . }}
+  labels:
+    app: {{ include "kestra-operator.fullname" . }}
+    {{- with .Values.labels }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+    annotations:
+      {{- with .Values.annotations }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "kestra-operator.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "kestra-operator.fullname" . }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: kestra-operator
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: kestra-operator
+          image: {{ .Values.image.repository }}:{{ default $.Chart.AppVersion .Values.image.tag }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: QUARKUS_OPERATOR_SDK_CRD_APPLY
+              value: "true"
+            - name: QUARKUS_OPERATOR_SDK_CRD_GENERATE
+              value: "true"
+            - name: QUARKUS_OPERATOR_SDK_CRD_VALIDATE
+              value: "false"
+            - name: KESTRA_API_URL
+              value: {{ .Values.configuration.kestra.url }}
+            - name: KESTRA_API_API_KEY
+              {{- if .Values.configuration.kestra.apiKey.fromSecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.configuration.kestra.apiKey.fromSecret.name }}"
+                  key: "{{ .Values.configuration.kestra.apiKey.fromSecret.key }}"
+              {{- else }}
+              value: "{{ .Values.configuration.kestra.apiKey.value }}"
+              {{- end }}  
+            - name: KESTRA_API_BASIC_AUTH
+              {{- if .Values.configuration.kestra.basicAuth.fromSecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.configuration.kestra.basicAuth.fromSecret.name }}"
+                  key: "{{ .Values.configuration.kestra.basicAuth.fromSecret.key }}"
+              {{- else }}
+              value: "{{ .Values.configuration.kestra.basicAuth.value }}"
+              {{- end }}
+            {{- with .Values.extraEnv }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.extraEnvFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

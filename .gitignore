@@ -10,3 +10,6 @@ Thumbs.db
 .tmp
 *.tgz
 
+charts/kestra-starter/charts
+charts/kestra/charts
+charts/kestra-operator/charts
