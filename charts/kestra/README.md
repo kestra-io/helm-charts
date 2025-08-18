@@ -23,129 +23,130 @@ $ helm install my-kestra kestra/kestra --version 0.24.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| common.affinity | object | `{}` | ... |
-| common.annotations | object | `{}` | Annotations applied to all resources |
-| common.extraContainers | list | `[]` | ... |
-| common.extraEnv | list | `[]` | ... |
-| common.extraEnvFrom | list | `[]` | ... |
-| common.extraVolumeMounts | list | `[]` | ... |
-| common.extraVolumes | list | `[]` | ... |
-| common.initContainers | list | `[]` | ... |
-| common.labels | object | `{}` | Labels applied to all resources |
-| common.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/liveness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | ... |
-| common.nodeSelector | object | `{}` | ... |
-| common.podAnnotations | object | `{}` | Annotations applied specifically to pods |
-| common.podLabels | object | `{}` | Labels applied specifically to pods |
-| common.podSecurityContext | object | `{}` | ... |
-| common.priorityClassName | string | `""` | Priority class for pod scheduling |
-| common.readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/readiness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | ... |
-| common.replicas | int | `1` | This will set the replicaset count |
-| common.resources | object | `{}` | ... |
-| common.securityContext | object | `{"runAsGroup":1000,"runAsUser":1000}` | ... |
-| common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | ... |
-| common.strategy | object | `{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}` | Deployment update strategy |
-| common.terminationGracePeriodSeconds | int | `60` | ... |
-| common.tolerations | list | `[]` | ... |
+| common.affinity | object | `{}` | Affinity rules for pod scheduling. |
+| common.annotations | object | `{}` | Annotations applied to all resources. |
+| common.extraContainers | list | `[]` | Additional sidecar containers. |
+| common.extraEnv | list | `[]` | Extra environment variables for containers. |
+| common.extraEnvFrom | list | `[]` | Import environment variables from ConfigMaps/Secrets. |
+| common.extraVolumeMounts | list | `[]` | Extra volume mounts to add to containers. |
+| common.extraVolumes | list | `[]` | Extra volumes to add to pods. |
+| common.initContainers | list | `[]` | Additional init containers to run before main container. |
+| common.labels | object | `{}` | Labels applied to all resources. |
+| common.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/liveness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | Liveness probe configuration for container health checks. |
+| common.nodeSelector | object | `{}` | Node selector constraints for scheduling pods. |
+| common.podAnnotations | object | `{}` | Annotations applied specifically to pods. |
+| common.podLabels | object | `{}` | Labels applied specifically to pods. |
+| common.podSecurityContext | object | `{}` | Security context settings for pods. |
+| common.priorityClassName | string | `""` | Priority class for scheduling pods. |
+| common.readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/readiness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | Readiness probe configuration to determine pod availability. |
+| common.replicas | int | `1` | Number of pod replicas to run. |
+| common.resources | object | `{}` | Resource requests and limits for containers. |
+| common.revisionHistoryLimit | int | `10` | Number of old ReplicaSets to retain for rollback. |
+| common.securityContext | object | `{"runAsGroup":1000,"runAsUser":1000}` | Security context settings for containers. |
+| common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | Startup probe configuration to verify app starts correctly. |
+| common.strategy | object | `{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}` | Deployment update strategy (e.g., RollingUpdate, Recreate). |
+| common.terminationGracePeriodSeconds | int | `60` | Grace period for pod termination. |
+| common.tolerations | list | `[]` | Tolerations for scheduling pods on tainted nodes. |
 
 ### kestra configurations
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| configurations.application | object | `{}` | ... |
-| configurations.configmaps | list | `[]` | ... |
-| configurations.secrets | list | `[]` | ... |
+| configurations.application | object | `{}` | Application configuration (Kestra settings, DB, storage, etc.). |
+| configurations.configmaps | list | `[]` | Extra configmaps mounted as configuration files. |
+| configurations.secrets | list | `[]` | Extra secrets mounted as configuration files. |
 
 ### kestra deployments
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| deployments.executor.enabled | bool | `false` | Whether to deploy kestra in distributed mode, executor will be deployed. |
-| deployments.executor.extraArgs | list | `[]` |  |
-| deployments.indexer.enabled | bool | `false` | Whether to deploy kestra in distributed mode, indexer will be deployed. |
-| deployments.indexer.extraArgs | list | `[]` |  |
-| deployments.scheduler.enabled | bool | `false` | Whether to deploy kestra in distributed mode, scheduler will be deployed. |
-| deployments.scheduler.extraArgs | list | `[]` |  |
-| deployments.standalone.enabled | bool | `true` | Whether to deploy kestra in standalone mode. |
-| deployments.standalone.extraArgs | list | `[]` |  |
-| deployments.standalone.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
-| deployments.webserver.enabled | bool | `false` | Whether to deploy kestra in distributed mode, webserver will be deployed. |
-| deployments.webserver.extraArgs | list | `[]` |  |
-| deployments.worker.enabled | bool | `false` | Whether to deploy kestra in distributed mode, worker will be deployed. |
-| deployments.worker.extraArgs | list | `[]` |  |
-| deployments.worker.workerThreads | int | `128` | By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value. |
+| deployments.executor.enabled | bool | `false` | Enable executor in distributed mode. |
+| deployments.executor.extraArgs | list | `[]` | Extra arguments to pass to the container. |
+| deployments.indexer.enabled | bool | `false` | Enable indexer in distributed mode. |
+| deployments.indexer.extraArgs | list | `[]` | Extra arguments to pass to the container. |
+| deployments.scheduler.enabled | bool | `false` | Enable scheduler in distributed mode. |
+| deployments.scheduler.extraArgs | list | `[]` | Extra arguments to pass to the container. |
+| deployments.standalone.enabled | bool | `true` | Enable standalone Kestra deployment. |
+| deployments.standalone.extraArgs | list | `[]` | Extra arguments to pass to the container. |
+| deployments.standalone.workerThreads | int | `128` | Number of worker threads for standalone deployment. |
+| deployments.webserver.enabled | bool | `false` | Enable webserver in distributed mode. |
+| deployments.webserver.extraArgs | list | `[]` | Extra arguments to pass to the container. |
+| deployments.worker.enabled | bool | `false` | Enable worker in distributed mode. |
+| deployments.worker.extraArgs | list | `[]` | Extra arguments to pass to the container. |
+| deployments.worker.workerThreads | int | `128` | Number of worker threads for worker deployment. |
 
 ### kestra dind insecure
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.base.insecure | object | `{"args":["--log-level=fatal"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"allowPrivilegeEscalation":true,"capabilities":{"add":["SYS_ADMIN","NET_ADMIN","DAC_OVERRIDE","SETUID","SETGID"]},"privileged":true,"runAsGroup":0,"runAsUser":0}}` | Insecure mode configuration |
+| dind.base.insecure | object | `{"args":["--log-level=fatal"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"allowPrivilegeEscalation":true,"capabilities":{"add":["SYS_ADMIN","NET_ADMIN","DAC_OVERRIDE","SETUID","SETGID"]},"privileged":true,"runAsGroup":0,"runAsUser":0}}` | Insecure dind configuration (privileged). |
 
 ### kestra dind rootless
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.base.rootless | object | `{"args":["--log-level=fatal","--group=1000"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"privileged":true,"runAsGroup":1000,"runAsUser":1000}}` | Rootless mode configuration |
+| dind.base.rootless | object | `{"args":["--log-level=fatal","--group=1000"],"image":{"pullPolicy":"IfNotPresent","repository":"docker","tag":"dind-rootless"},"securityContext":{"privileged":true,"runAsGroup":1000,"runAsUser":1000}}` | Rootless dind configuration. |
 
 ### kestra dind
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dind.enabled | bool | `true` | Whether to enable dind (Docker in Docker) for running docker containers. |
-| dind.extraEnv | list | `[]` |  |
-| dind.mode | string | `"rootless"` | The mode of dind to use, can be 'rootless', 'insecure'. |
-| dind.resources | object | `{}` |  |
-| dind.socketPath | string | `"/dind/"` |  |
-| dind.tmpPath | string | `"/tmp/"` |  |
+| dind.enabled | bool | `true` | Enable Docker-in-Docker (dind) sidecar. |
+| dind.extraEnv | list | `[]` | Extra environment variables for dind container. |
+| dind.mode | string | `"rootless"` | Dind mode (rootless or insecure). |
+| dind.resources | object | `{}` | Resource requests and limits for dind sidecar. |
+| dind.socketPath | string | `"/dind/"` | Path where dind socket is mounted. |
+| dind.tmpPath | string | `"/tmp/"` | Path for temporary storage in dind. |
 
 ### image settings
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
+| image.pullPolicy | string | `"IfNotPresent"` | Policy for pulling container images (Always, IfNotPresent, Never). |
 | image.repository | string | `"kestra/kestra"` | Image repository to use for deploying kestra. |
-| image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
-| imagePullSecrets | list | `[]` | This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
+| image.tag | string | `""` | Overrides the image tag (defaults to chart appVersion). |
+| imagePullSecrets | list | `[]` | References to secrets for pulling images from private registries. |
 
 ### kubernetes ingress
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| ingress.annotations | object | `{}` |  |
-| ingress.className | string | `""` |  |
-| ingress.enabled | bool | `false` |  |
-| ingress.hosts | list | `[]` |  |
-| ingress.tls | list | `[]` |  |
+| ingress.annotations | object | `{}` | Annotations to add to the Ingress. |
+| ingress.className | string | `""` | IngressClass name to use. |
+| ingress.enabled | bool | `false` | Enable Ingress resource. |
+| ingress.hosts | list | `[]` | Hosts and paths for Ingress routing. |
+| ingress.tls | list | `[]` | TLS configuration for Ingress. |
 
 ### kestra service
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| service.annotations | object | `{}` | ... |
-| service.labels | object | `{}` | ... |
-| service.ports.http | object | `{"containerPort":8080,"port":8080,"protocol":"TCP","targetPort":"http"}` | ... |
-| service.ports.management | object | `{"containerPort":8081,"port":8081,"protocol":"TCP","targetPort":"management"}` | ... |
-| service.type | string | `"ClusterIP"` | ... |
+| service.annotations | object | `{}` | Annotations to apply to the Service. |
+| service.labels | object | `{}` | Labels to apply to the Service. |
+| service.ports.http | object | `{"containerPort":8080,"port":8080,"protocol":"TCP","targetPort":"http"}` | HTTP service port mapping. |
+| service.ports.management | object | `{"containerPort":8081,"port":8081,"protocol":"TCP","targetPort":"management"}` | Management (metrics/health) service port mapping. |
+| service.type | string | `"ClusterIP"` | Kubernetes Service type (ClusterIP, NodePort, LoadBalancer). |
 
 ### kubernetes serviceAccount
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| serviceAccount.annotations | object | `{}` | Annotations to add to the service account. |
-| serviceAccount.automount | bool | `true` | Automatically mount a ServiceAccount's API credentials? |
-| serviceAccount.create | bool | `true` | Specifies whether a service account should be created. |
-| serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
+| serviceAccount.annotations | object | `{}` | Annotations to add to the ServiceAccount. |
+| serviceAccount.automount | bool | `true` | Automatically mount API credentials to pods. |
+| serviceAccount.create | bool | `true` | Specifies whether to create a ServiceAccount. |
+| serviceAccount.name | string | `""` | Name of the ServiceAccount to use. |
 
 ### kestra workerGroups
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| workerGroups | list | `[]` | EE only - Define additional group of workers. Must be used in addition to default workers (in standalone or separate worker deployment). |
+| workerGroups | list | `[]` | EE only - Define additional worker groups with custom settings. |
 
 ### Other Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| extraManifests | list | `[]` | You can specify extra manifests to be deployed with this chart. |
+| extraManifests | list | `[]` | Extra Kubernetes manifests to deploy with the chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
 
