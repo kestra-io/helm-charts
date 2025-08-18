@@ -140,6 +140,9 @@ spec:
       {{- if $merged.priorityClassName }}
       priorityClassName: {{ $merged.priorityClassName }}
       {{- end }}
+      {{- if $merged.revisionHistoryLimit }}
+      revisionHistoryLimit: {{ $merged.revisionHistoryLimit }}
+      {{- end }}
       {{- if $global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml $global.imagePullSecrets | nindent 8 }}
