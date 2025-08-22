@@ -1,3 +1,29 @@
+<p align="center">
+  <a href="https://www.kestra.io">
+    <img src="https://kestra.io/banner.png"  alt="Kestra workflow orchestrator" />
+  </a>
+</p>
+
+<h1 align="center" style="border-bottom: none">
+    Event-Driven Declarative Orchestrator
+</h1>
+
+<br />
+
+<p align="center">
+    <a href="https://twitter.com/kestra_io"><img height="25" src="https://kestra.io/twitter.svg" alt="twitter" /></a> &nbsp;
+    <a href="https://www.linkedin.com/company/kestra/"><img height="25" src="https://kestra.io/linkedin.svg" alt="linkedin" /></a> &nbsp;
+<a href="https://www.youtube.com/@kestra-io"><img height="25" src="https://kestra.io/youtube.svg" alt="youtube" /></a> &nbsp;
+</p>
+
+<br />
+<p align="center">
+    <a href="https://go.kestra.io/video/product-overview" target="_blank">
+        <img src="https://kestra.io/startvideo.png" alt="Get started in 4 minutes with Kestra" width="640px" />
+    </a>
+</p>
+<p align="center" style="color:grey;"><i>Get started with Kestra in 4 minutes.</i></p>
+
 # kestra
 
 ![Version: 0.24.1](https://img.shields.io/badge/Version-0.24.1-informational?style=flat-square) ![AppVersion: v0.24.1](https://img.shields.io/badge/AppVersion-v0.24.1-informational?style=flat-square)
