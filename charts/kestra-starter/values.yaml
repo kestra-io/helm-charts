@@ -79,12 +79,20 @@ minio:
       user: "kestra"
 
 kestra:
+  # -- see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations
+  # @section -- Kestra Configuration
   fullnameOverride: "kestra-starter"
+  # -- see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations
+  # @section -- Kestra Configuration
   common:
     revisionHistoryLimit: 5
+  # -- see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations
+  # @section -- Kestra Configuration
   dind:
     enabled: true
     mode: "insecure"
+  # -- see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations
+  # @section -- Kestra Configuration
   configurations:
     application:
       datasources:

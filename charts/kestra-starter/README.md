@@ -25,6 +25,15 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 
 ## Values
 
+### Kestra Configuration
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| kestra.common | object | `{"revisionHistoryLimit":5}` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
+| kestra.configurations | object | `{"application":{"datasources":{"postgres":{"driverClassName":"org.postgresql.Driver","password":"ChangeMe#1234","url":"jdbc:postgresql://kestra-starter-postgres:5432/kestra","username":"kestra"}},"kestra":{"queue":{"type":"postgres"},"repository":{"type":"postgres"},"storage":{"minio":{"access-key":"kestra","bucket":"kestra","endpoint":"kestra-starter-minio","port":"9000","secret-key":"kestra-1234","secure":"false"},"type":"minio"},"tutorialFlows":{"enabled":true}}}}` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
+| kestra.dind | object | `{"enabled":true,"mode":"insecure"}` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
+| kestra.fullnameOverride | string | `"kestra-starter"` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
+
 ### MinIO Configuration
 
 | Key | Type | Default | Description |
@@ -54,24 +63,6 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| kestra.common.revisionHistoryLimit | int | `5` |  |
-| kestra.configurations.application.datasources.postgres.driverClassName | string | `"org.postgresql.Driver"` |  |
-| kestra.configurations.application.datasources.postgres.password | string | `"ChangeMe#1234"` |  |
-| kestra.configurations.application.datasources.postgres.url | string | `"jdbc:postgresql://kestra-starter-postgres:5432/kestra"` |  |
-| kestra.configurations.application.datasources.postgres.username | string | `"kestra"` |  |
-| kestra.configurations.application.kestra.queue.type | string | `"postgres"` |  |
-| kestra.configurations.application.kestra.repository.type | string | `"postgres"` |  |
-| kestra.configurations.application.kestra.storage.minio.access-key | string | `"kestra"` |  |
-| kestra.configurations.application.kestra.storage.minio.bucket | string | `"kestra"` |  |
-| kestra.configurations.application.kestra.storage.minio.endpoint | string | `"kestra-starter-minio"` |  |
-| kestra.configurations.application.kestra.storage.minio.port | string | `"9000"` |  |
-| kestra.configurations.application.kestra.storage.minio.secret-key | string | `"kestra-1234"` |  |
-| kestra.configurations.application.kestra.storage.minio.secure | string | `"false"` |  |
-| kestra.configurations.application.kestra.storage.type | string | `"minio"` |  |
-| kestra.configurations.application.kestra.tutorialFlows.enabled | bool | `true` |  |
-| kestra.dind.enabled | bool | `true` |  |
-| kestra.dind.mode | string | `"insecure"` |  |
-| kestra.fullnameOverride | string | `"kestra-starter"` |  |
 | minio.svcaccts[0].accessKey | string | `"kestra-svcacct"` |  |
 | minio.svcaccts[0].secretKey | string | `"kestra-svcacct-1234"` |  |
 | minio.svcaccts[0].user | string | `"kestra"` |  |
