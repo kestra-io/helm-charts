@@ -25,7 +25,22 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 
 ## Values
 
-### PostgreSQL Configuration --
+### MinIO Configuration
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| minio.buckets | list | `[{"name":"kestra","policy":"public"}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.deploymentUpdate | object | `{"type":"Recreate"}` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.fullnameOverride | string | `"kestra-starter-minio"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.mode | string | `"standalone"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.policies | list | `[{"name":"KestraWritePolicy","statements":[{"actions":["s3:*"],"effect":"Allow","resources":["arn:aws:s3:::kestra/*"]}]}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.replicas | int | `1` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.resources | object | `{}` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.rootPassword | string | `"SuperChangeMe#1234"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.rootUser | string | `"root"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.users | list | `[{"accessKey":"console","policy":"consoleAdmin","secretKey":"console-1234"},{"accessKey":"kestra","policy":"KestraWritePolicy","secretKey":"kestra-1234"}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+
+### PostgreSQL Configuration
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -57,25 +72,6 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 | kestra.dind.enabled | bool | `true` |  |
 | kestra.dind.mode | string | `"insecure"` |  |
 | kestra.fullnameOverride | string | `"kestra-starter"` |  |
-| minio.buckets[0].name | string | `"kestra"` |  |
-| minio.buckets[0].policy | string | `"public"` |  |
-| minio.deploymentUpdate.type | string | `"Recreate"` |  |
-| minio.fullnameOverride | string | `"kestra-starter-minio"` |  |
-| minio.mode | string | `"standalone"` |  |
-| minio.policies[0].name | string | `"KestraWritePolicy"` |  |
-| minio.policies[0].statements[0].actions[0] | string | `"s3:*"` |  |
-| minio.policies[0].statements[0].effect | string | `"Allow"` |  |
-| minio.policies[0].statements[0].resources[0] | string | `"arn:aws:s3:::kestra/*"` |  |
-| minio.replicas | int | `1` |  |
-| minio.resources | object | `{}` |  |
-| minio.rootPassword | string | `"SuperChangeMe#1234"` |  |
-| minio.rootUser | string | `"root"` |  |
 | minio.svcaccts[0].accessKey | string | `"kestra-svcacct"` |  |
 | minio.svcaccts[0].secretKey | string | `"kestra-svcacct-1234"` |  |
 | minio.svcaccts[0].user | string | `"kestra"` |  |
-| minio.users[0].accessKey | string | `"console"` |  |
-| minio.users[0].policy | string | `"consoleAdmin"` |  |
-| minio.users[0].secretKey | string | `"console-1234"` |  |
-| minio.users[1].accessKey | string | `"kestra"` |  |
-| minio.users[1].policy | string | `"KestraWritePolicy"` |  |
-| minio.users[1].secretKey | string | `"kestra-1234"` |  |

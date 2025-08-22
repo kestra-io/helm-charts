@@ -1,23 +1,23 @@
 postgres:
   # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
-  # @section -- PostgreSQL Configuration --
+  # @section -- PostgreSQL Configuration
   fullnameOverride: "kestra-starter-postgres"
   # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
-  # @section -- PostgreSQL Configuration --
+  # @section -- PostgreSQL Configuration
   serviceAccount:
     create: true
   # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
-  # @section -- PostgreSQL Configuration --
+  # @section -- PostgreSQL Configuration
   revisionHistoryLimit: 5
   # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
-  # @section -- PostgreSQL Configuration --
+  # @section -- PostgreSQL Configuration
   settings:
     superuser:
       value: "postgres"
     superuserPassword:
       value: "SuperChangeMe#1234"
   # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
-  # @section -- PostgreSQL Configuration --
+  # @section -- PostgreSQL Configuration
   userDatabase:
     name:
       value: "kestra"
@@ -27,14 +27,30 @@ postgres:
       value: "ChangeMe#1234"
 
 minio:
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   fullnameOverride: "kestra-starter-minio"
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   mode: "standalone"
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   rootUser: "root"
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   rootPassword: "SuperChangeMe#1234"
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   replicas: 1
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   resources: {}
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   deploymentUpdate:
     type: "Recreate"
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   users:
     - accessKey: "console"
       secretKey: "console-1234"
@@ -42,6 +58,8 @@ minio:
     - accessKey: "kestra"
       secretKey: "kestra-1234"
       policy: "KestraWritePolicy"
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   policies:
     - name: KestraWritePolicy
       statements:
@@ -50,6 +68,8 @@ minio:
             - 'arn:aws:s3:::kestra/*'
           actions:
             - "s3:*"
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   buckets:
     - name: "kestra"
       policy: "public"
