@@ -73,6 +73,8 @@ minio:
   buckets:
     - name: "kestra"
       policy: "public"
+  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
+  # @section -- MinIO Configuration
   svcaccts:
     - accessKey: "kestra-svcacct"
       secretKey: "kestra-svcacct-1234"

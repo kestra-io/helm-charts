@@ -47,6 +47,7 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 | minio.resources | object | `{}` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
 | minio.rootPassword | string | `"SuperChangeMe#1234"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
 | minio.rootUser | string | `"root"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
+| minio.svcaccts | list | `[{"accessKey":"kestra-svcacct","secretKey":"kestra-svcacct-1234","user":"kestra"}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
 | minio.users | list | `[{"accessKey":"console","policy":"consoleAdmin","secretKey":"console-1234"},{"accessKey":"kestra","policy":"KestraWritePolicy","secretKey":"kestra-1234"}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
 
 ### PostgreSQL Configuration
@@ -58,11 +59,3 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 | postgres.serviceAccount | object | `{"create":true}` | see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations |
 | postgres.settings | object | `{"superuser":{"value":"postgres"},"superuserPassword":{"value":"SuperChangeMe#1234"}}` | see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations |
 | postgres.userDatabase | object | `{"name":{"value":"kestra"},"password":{"value":"ChangeMe#1234"},"user":{"value":"kestra"}}` | see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations |
-
-### Other Values
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| minio.svcaccts[0].accessKey | string | `"kestra-svcacct"` |  |
-| minio.svcaccts[0].secretKey | string | `"kestra-svcacct-1234"` |  |
-| minio.svcaccts[0].user | string | `"kestra"` |  |
