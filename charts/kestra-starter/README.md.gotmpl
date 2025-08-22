@@ -8,22 +8,15 @@
 
 ## Installing the Chart
 
-To install the chart with the release name `my-kestra`:
+To install the chart with the release name `my-kestra-starter`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version {{ template "chart.version" . }}
+$ helm install my-kestra-starter kestra/kestra --version {{ template "chart.version" . }}
 ```
 
 {{ template "chart.requirementsSection" . }}
 
 {{ template "chart.deprecationWarning" . }}
 
-{{ template "extra.migration01" . }}"
-
 {{ template "chart.valuesSection" . }}
-
-{{ define "extra.migration01" -}}
-## Migration from 0.x.x to 1.0.0
-
-{{- end }}

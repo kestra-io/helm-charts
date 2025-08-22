@@ -8,7 +8,7 @@ Infinitely scalable, event-driven, language-agnostic orchestration and schedulin
 
 ## Installing the Chart
 
-To install the chart with the release name `kestra`:
+To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
