@@ -9,8 +9,8 @@ postgres:
   # -- 
   # @section -- PostgreSQL Configuration --
   revisionHistoryLimit: 5
-  # @section -- PostgreSQL Configuration --
   # -- 
+  # @section -- PostgreSQL Configuration --
   settings:
     superuser:
       value: "postgres"
