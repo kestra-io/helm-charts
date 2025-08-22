@@ -12,7 +12,7 @@ To install the chart with the release name `my-kestra-starter`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra-starter kestra/kestra --version 0.24.1
+$ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 ```
 
 ## Requirements

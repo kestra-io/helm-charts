@@ -8,11 +8,11 @@
 
 ## Installing the Chart
 
-To install the chart with the release name `my-kestra-starter`:
+To install the chart with the release name `my-{{ template "chart.name" . }}`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra-starter kestra/kestra --version {{ template "chart.version" . }}
+$ helm install my-{{ template "chart.name" . }} kestra/{{ template "chart.name" . }} --version {{ template "chart.version" . }}
 ```
 
 {{ template "chart.requirementsSection" . }}
