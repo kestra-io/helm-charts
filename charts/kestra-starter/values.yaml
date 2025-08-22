@@ -1,22 +1,22 @@
 postgres:
-  # -- __
+  # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
   # @section -- PostgreSQL Configuration --
   fullnameOverride: "kestra-starter-postgres"
-  # -- __
+  # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
   # @section -- PostgreSQL Configuration --
   serviceAccount:
     create: true
-  # -- __
+  # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
   # @section -- PostgreSQL Configuration --
   revisionHistoryLimit: 5
-  # -- __
+  # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
   # @section -- PostgreSQL Configuration --
   settings:
     superuser:
       value: "postgres"
     superuserPassword:
       value: "SuperChangeMe#1234"
-  # -- __
+  # -- see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations
   # @section -- PostgreSQL Configuration --
   userDatabase:
     name:
