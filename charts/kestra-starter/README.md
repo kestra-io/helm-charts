@@ -29,8 +29,11 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| postgres.fullnameOverride | string | `"kestra-starter-postgres"` |  |
-| postgres.revisionHistoryLimit | int | `5` |  |
+| postgres.fullnameOverride | string | `"kestra-starter-postgres"` | __ |
+| postgres.revisionHistoryLimit | int | `5` | __ |
+| postgres.serviceAccount | object | `{"create":true}` | __ |
+| postgres.settings | object | `{"superuser":{"value":"postgres"},"superuserPassword":{"value":"SuperChangeMe#1234"}}` | __ |
+| postgres.userDatabase | object | `{"name":{"value":"kestra"},"password":{"value":"ChangeMe#1234"},"user":{"value":"kestra"}}` | __ |
 
 ### Other Values
 
@@ -76,9 +79,3 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 | minio.users[1].accessKey | string | `"kestra"` |  |
 | minio.users[1].policy | string | `"KestraWritePolicy"` |  |
 | minio.users[1].secretKey | string | `"kestra-1234"` |  |
-| postgres.serviceAccount.create | bool | `true` |  |
-| postgres.settings.superuser.value | string | `"postgres"` |  |
-| postgres.settings.superuserPassword.value | string | `"SuperChangeMe#1234"` |  |
-| postgres.userDatabase.name.value | string | `"kestra"` |  |
-| postgres.userDatabase.password.value | string | `"ChangeMe#1234"` |  |
-| postgres.userDatabase.user.value | string | `"kestra"` |  |

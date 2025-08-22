@@ -1,22 +1,22 @@
 postgres:
-  # -- 
+  # -- __
   # @section -- PostgreSQL Configuration --
   fullnameOverride: "kestra-starter-postgres"
-  # -- 
+  # -- __
   # @section -- PostgreSQL Configuration --
   serviceAccount:
     create: true
-  # -- 
+  # -- __
   # @section -- PostgreSQL Configuration --
   revisionHistoryLimit: 5
-  # -- 
+  # -- __
   # @section -- PostgreSQL Configuration --
   settings:
     superuser:
       value: "postgres"
     superuserPassword:
       value: "SuperChangeMe#1234"
-  # -- 
+  # -- __
   # @section -- PostgreSQL Configuration --
   userDatabase:
     name:
