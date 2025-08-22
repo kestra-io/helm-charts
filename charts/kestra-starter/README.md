@@ -85,3 +85,16 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 | postgres.serviceAccount | object | `{"create":true}` | see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations |
 | postgres.settings | object | `{"superuser":{"value":"postgres"},"superuserPassword":{"value":"SuperChangeMe#1234"}}` | see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations |
 | postgres.userDatabase | object | `{"name":{"value":"kestra"},"password":{"value":"ChangeMe#1234"},"user":{"value":"kestra"}}` | see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations |
+
+## Documentation
+* Full documentation can be found under [kestra.io/docs](https://kestra.io/docs)
+* Deployment on Kubernetes documentation can be found [here](https://kestra.io/docs/installation/kubernetes)
+
+## License
+Apache 2.0 © [Kestra Technologies](https://kestra.io)
+
+## Stay up to date
+
+We release new versions every month. Give the [main repository](https://github.com/kestra-io/kestra) a star to stay up to date with the latest releases and get notified about future updates.
+
+![Star the repo](https://kestra.io/star.gif)

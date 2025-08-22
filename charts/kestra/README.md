@@ -176,3 +176,15 @@ $ helm install my-kestra kestra/kestra --version 0.24.1
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
 
+## Documentation
+* Full documentation can be found under [kestra.io/docs](https://kestra.io/docs)
+* Deployment on Kubernetes documentation can be found [here](https://kestra.io/docs/installation/kubernetes)
+
+## License
+Apache 2.0 © [Kestra Technologies](https://kestra.io)
+
+## Stay up to date
+
+We release new versions every month. Give the [main repository](https://github.com/kestra-io/kestra) a star to stay up to date with the latest releases and get notified about future updates.
+
+![Star the repo](https://kestra.io/star.gif)
