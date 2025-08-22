@@ -25,6 +25,14 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 
 ## Values
 
+### PostgreSQL Configuration --
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| postgres.fullnameOverride | string | `"kestra-starter-postgres"` |  |
+
+### Other Values
+
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | kestra.common.revisionHistoryLimit | int | `5` |  |
@@ -67,7 +75,6 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 0.24.1
 | minio.users[1].accessKey | string | `"kestra"` |  |
 | minio.users[1].policy | string | `"KestraWritePolicy"` |  |
 | minio.users[1].secretKey | string | `"kestra-1234"` |  |
-| postgres.fullnameOverride | string | `"kestra-starter-postgres"` |  |
 | postgres.revisionHistoryLimit | int | `5` |  |
 | postgres.serviceAccount.create | bool | `true` |  |
 | postgres.settings.superuser.value | string | `"postgres"` |  |
