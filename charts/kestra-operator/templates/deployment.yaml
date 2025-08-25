@@ -4,6 +4,13 @@ metadata:
   name: {{ include "kestra-operator.fullname" . }}
   labels:
     app: {{ include "kestra-operator.fullname" . }}
+    {{- with .Values.labels }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+    annotations:
+      {{- with .Values.annotations }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
 spec:
   replicas: 1
   selector:
@@ -13,6 +20,13 @@ spec:
     metadata:
       labels:
         app: {{ include "kestra-operator.fullname" . }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       serviceAccountName: kestra-operator
       {{- with .Values.imagePullSecrets }}
@@ -69,9 +83,23 @@ spec:
               value: {{ .Values.configuration.kestra.url }}
             {{- if .Values.configuration.kestra.apiKey }}
             - name: KESTRA_API_API_KEY
-              value: {{ .Values.configuration.kestra.apiKey.name }}
+              {{- if .Values.configuration.kestra.apiKey.fromSecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.configuration.kestra.apiKey.fromSecret.name }}"
+                  key: "{{ .Values.configuration.kestra.apiKey.fromSecret.key }}"
+              {{- else }}
+              value: "{{ .Values.configuration.kestra.apiKey.name }}"
+              {{- end }}  
             {{- end }}
             {{- if .Values.configuration.kestra.basicAuth }}
             - name: KESTRA_API_BASIC_AUTH
-              value: {{ .Values.configuration.kestra.basicAuth.name }}
+              {{- if .Values.configuration.kestra.basicAuth.fromSecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.configuration.kestra.basicAuth.fromSecret.name }}"
+                  key: "{{ .Values.configuration.kestra.basicAuth.fromSecret.key }}"
+              {{- else }}
+              value: "{{ .Values.configuration.kestra.basicAuth.name }}"
+              {{- end }}
             {{- end }}
