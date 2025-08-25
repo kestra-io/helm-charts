@@ -51,7 +51,7 @@ spec:
       {{- end }}
       containers:
         - name: kestra-operator
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: {{ .Values.image.repository }}:{{ default $.Chart.AppVersion .Values.image.tag }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}

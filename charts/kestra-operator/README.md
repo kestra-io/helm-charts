@@ -26,7 +26,7 @@
 
 # kestra-operator
 
-![Version: 0.24.1](https://img.shields.io/badge/Version-0.24.1-informational?style=flat-square) ![AppVersion: v0.24.1](https://img.shields.io/badge/AppVersion-v0.24.1-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: v0.1.2](https://img.shields.io/badge/AppVersion-v0.1.2-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra-operator`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra-operator kestra/kestra-operator --version 0.24.1
+$ helm install my-kestra-operator kestra/kestra-operator --version 1.0.0
 ```
 
 ## Values
@@ -55,7 +55,7 @@ $ helm install my-kestra-operator kestra/kestra-operator --version 0.24.1
 | fullnameOverride | string | `""` | This is to override the chart name. |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
 | image.repository | string | `"registry.kestra.io/docker/kestra-operator"` |  |
-| image.tag | string | `"v0.1.2"` | Overrides the image tag whose default is the chart appVersion. |
+| image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | labels | object | `{}` |  |
 | livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/q/health/live","port":8080,"scheme":"HTTP"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | This is to setup the liveness probe, more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
