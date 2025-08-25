@@ -8,7 +8,7 @@ fullnameOverride: ""
 configuration:
   kestra:
     # -- This is the Kestra API URL the operator will connect to.
-    url: http://localhost:8081
+    url: http://my-kestra:8081
     # -- This is the Kestra API Key the operator will use to authenticate against the Kestra API.
     apiKey:
       value: "[your-api-key]" # Not secure: use fromSecret instead
