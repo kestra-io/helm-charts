@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kestra-operator.fullname" . }}
+  labels:
+    app: {{ include "kestra-operator.fullname" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "kestra-operator.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "kestra-operator.fullname" . }}
+    spec:
+      serviceAccountName: kestra-operator
+      {{- with Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: kestra-operator
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          startupProbe:
+            httpGet:
+              path: /q/health/started
+              port: 8080
+              scheme: HTTP
+            periodSeconds: {{ Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ Values.startupProbe.timeoutSeconds }}
+            successThreshold: {{ Values.startupProbe.successThreshold }}
+            failureThreshold: {{ Values.startupProbe.failureThreshold }}
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: {{ Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ Values.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: {{ Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ Values.readinessProbe.failureThreshold }}
+          env:
+            - name: QUARKUS_OPERATOR_SDK_CRD_APPLY
+              value: "true"
+            - name: QUARKUS_OPERATOR_SDK_CRD_GENERATE
+              value: "true"
+            - name: QUARKUS_OPERATOR_SDK_CRD_VALIDATE
+              value: "false"
+            - name: KESTRA_API_URL
+              value: http://{{ include "kestra-operator.fullname" $service }}:8080
+            {{- if .Values.operator.apiKey }}
+            - name: KESTRA_API_API_KEY
+              value: {{ .Values.operator.apiKey }}
+            {{- end }}
+            {{- if .Values.operator.basicAuth }}
+            - name: KESTRA_API_BASIC_AUTH
+              value: {{ .Values.operator.basicAuth }}
+            {{- end }}

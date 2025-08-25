@@ -45,7 +45,18 @@ $ helm install my-kestra-operator kestra/kestra-operator --version 0.24.1
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{}` |  |
+| image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
+| image.repository | string | `"registry.kestra.io/docker/kestra-operator"` |  |
+| image.tag | string | `"v0.1.2"` | Overrides the image tag whose default is the chart appVersion. |
+| nodeSelector | object | `{}` |  |
+| podAnnotations | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
+| podLabels | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
+| podSecurityContext | object | `{}` |  |
+| resources | object | `{"limits":{"memory":"512Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resource requests and limits for the container |
+| securityContext | object | `{}` |  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+| tolerations | list | `[]` |  |
 
 ## Documentation
 * Full documentation can be found under [kestra.io/docs](https://kestra.io/docs)
