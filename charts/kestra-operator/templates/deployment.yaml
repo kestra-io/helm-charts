@@ -67,11 +67,11 @@ spec:
               value: "false"
             - name: KESTRA_API_URL
               value: {{ .Values.configuration.kestra.url }}
-            {{- if .Values.operator.apiKey }}
+            {{- if .Values.configuration.kestra.apiKey }}
             - name: KESTRA_API_API_KEY
-              value: {{ .Values.operator.apiKey }}
+              value: {{ .Values.configuration.kestra.apiKey.name }}
             {{- end }}
-            {{- if .Values.operator.basicAuth }}
+            {{- if .Values.configuration.kestra.basicAuth }}
             - name: KESTRA_API_BASIC_AUTH
-              value: {{ .Values.operator.basicAuth }}
+              value: {{ .Values.configuration.kestra.basicAuth.name }}
             {{- end }}

@@ -9,6 +9,18 @@ configuration:
   kestra:
     # -- This is the Kestra API URL the operator will connect to.
     url: http://localhost:8081
+    # -- This is the Kestra API Key the operator will use to authenticate against the Kestra API.
+    apiKey:
+      name: ""
+      fromSecret:
+        name: ""
+        key: ""
+    # -- This is the Kestra API Basic Auth the operator will use to authenticate against the Kestra API.
+    basicAuth:
+      name: ""
+      fromSecret:
+        name: ""
+        key: ""
 
 serviceAccount:
   # -- Annotations to add to the service account
@@ -30,6 +42,7 @@ resources:
   limits:
     memory: 512Mi
 
+# -- This is to setup the startup probe
 startupProbe:
   httpGet:
     path: /q/health/started
@@ -41,7 +54,7 @@ startupProbe:
   successThreshold: 1
   failureThreshold: 120
 
-# -- This is to setup the liveness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# -- This is to setup the liveness probe, more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
     path: /q/health/live
@@ -53,7 +66,7 @@ livenessProbe:
   successThreshold: 1
   failureThreshold: 3
 
-# -- This is to setup the readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# -- This is to setup the readiness probe, more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 readinessProbe:
   httpGet:
     path: /q/health/ready
