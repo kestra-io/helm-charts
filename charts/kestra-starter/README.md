@@ -47,7 +47,7 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 1.0.0
 |------------|------|---------|
 | https://charts.min.io/ | minio | 5.4.0 |
 | https://groundhog2k.github.io/helm-charts/ | postgres | 1.5.7 |
-| https://helm.kestra.io/ | kestra | 0.24.1 |
+| https://helm.kestra.io/ | kestra | 1.0.0 |
 
 ## Values
 

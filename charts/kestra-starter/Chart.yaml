@@ -43,4 +43,4 @@ dependencies:
     version: "5.4.0"
   - name: kestra
     repository: https://helm.kestra.io/
-    version: "0.24.1"
+    version: "1.0.0"
