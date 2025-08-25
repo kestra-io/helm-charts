@@ -160,7 +160,11 @@ configurations:
 ```
 
 No need of taking care of `configurationPath:`; It's automatically managed by the chart.
-If you need to add extra environment variables from existing ConfigMaps or Secrets, you can still use `extraEnv` and `extraEnvFrom` under the `common` entry."
+If you need to add extra environment variables from existing ConfigMaps or Secrets, you can still use `extraEnv` and `extraEnvFrom` under the `common` entry.
+
+### We upgrade also the way the dind is managed. It's now under the `dind` entry in the values.yaml.
+
+We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is the default and recommended mode."
 
 ## Values
 
