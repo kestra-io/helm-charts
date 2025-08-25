@@ -46,19 +46,30 @@ $ helm install my-kestra-operator kestra/kestra-operator --version 0.24.1
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| configuration.kestra.url | string | `"http://localhost:8081"` | This is the Kestra API URL the operator will connect to. |
 | fullnameOverride | string | `""` | This is to override the chart name. |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
 | image.repository | string | `"registry.kestra.io/docker/kestra-operator"` |  |
 | image.tag | string | `"v0.1.2"` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
+| livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/q/health/live","port":8080,"scheme":"HTTP"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | This is to setup the liveness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | nameOverride | string | `""` | This is to override the chart name. |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
 | podLabels | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
 | podSecurityContext | object | `{}` |  |
+| readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/q/health/ready","port":8080,"scheme":"HTTP"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | This is to setup the readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | resources | object | `{"limits":{"memory":"512Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resource requests and limits for the container |
 | securityContext | object | `{}` |  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+| startupProbe.failureThreshold | int | `120` |  |
+| startupProbe.httpGet.path | string | `"/q/health/started"` |  |
+| startupProbe.httpGet.port | int | `8080` |  |
+| startupProbe.httpGet.scheme | string | `"HTTP"` |  |
+| startupProbe.initialDelaySeconds | int | `1` |  |
+| startupProbe.periodSeconds | int | `1` |  |
+| startupProbe.successThreshold | int | `1` |  |
+| startupProbe.timeoutSeconds | int | `1` |  |
 | tolerations | list | `[]` |  |
 
 ## Documentation

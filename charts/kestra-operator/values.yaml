@@ -5,6 +5,11 @@ nameOverride: ""
 # -- This is to override the chart name.
 fullnameOverride: ""
 
+configuration:
+  kestra:
+    # -- This is the Kestra API URL the operator will connect to.
+    url: http://localhost:8081
+
 serviceAccount:
   # -- Annotations to add to the service account
   annotations: {}
@@ -24,6 +29,41 @@ resources:
     memory: 256Mi
   limits:
     memory: 512Mi
+
+startupProbe:
+  httpGet:
+    path: /q/health/started
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 1
+  periodSeconds: 1
+  timeoutSeconds: 1
+  successThreshold: 1
+  failureThreshold: 120
+
+# -- This is to setup the liveness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /q/health/live
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  timeoutSeconds: 3
+  successThreshold: 1
+  failureThreshold: 3
+
+# -- This is to setup the readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+readinessProbe:
+  httpGet:
+    path: /q/health/ready
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  timeoutSeconds: 3
+  successThreshold: 1
+  failureThreshold: 3
 
 # This is for setting Kubernetes Annotations to a Pod.
 # -- For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/

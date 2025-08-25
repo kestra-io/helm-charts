@@ -46,35 +46,18 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          startupProbe:
-            httpGet:
-              path: /q/health/started
-              port: 8080
-              scheme: HTTP
-            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.startupProbe.successThreshold }}
-            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          {{- with .Values.livenessProbe }}
           livenessProbe:
-            httpGet:
-              path: /q/health/live
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.livenessProbe.successThreshold }}
-            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
           readinessProbe:
-            httpGet:
-              path: /q/health/ready
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.readinessProbe.successThreshold }}
-            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             - name: QUARKUS_OPERATOR_SDK_CRD_APPLY
               value: "true"
@@ -83,7 +66,7 @@ spec:
             - name: QUARKUS_OPERATOR_SDK_CRD_VALIDATE
               value: "false"
             - name: KESTRA_API_URL
-              value: http://{{ include "kestra-operator.fullname" . }}:8080
+              value: {{ .Values.configuration.kestra.url }}
             {{- if .Values.operator.apiKey }}
             - name: KESTRA_API_API_KEY
               value: {{ .Values.operator.apiKey }}
