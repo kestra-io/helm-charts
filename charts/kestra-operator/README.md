@@ -41,6 +41,12 @@ $ helm repo add kestra https://helm.kestra.io/
 $ helm install my-kestra-operator kestra/kestra-operator --version 0.24.1
 ```
 
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+
 ## Documentation
 * Full documentation can be found under [kestra.io/docs](https://kestra.io/docs)
 * Deployment on Kubernetes documentation can be found [here](https://kestra.io/docs/installation/kubernetes)
