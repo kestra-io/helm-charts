@@ -41,7 +41,126 @@ $ helm repo add kestra https://helm.kestra.io/
 $ helm install my-kestra kestra/kestra --version 0.24.1
 ```
 
-## Migration from 0.x.x to 1.0.0"
+## Migration from 0.x.x to 1.0.0
+
+> Breaking changes have been made to the Helm chart in order to support the new features and improvements introduced in Kestra 1.0.0. Please review the following changes carefully before upgrading:
+
+### We removed postgres, minio, kafka and elasticsearch from the chart dependencies. You can now use your own managed services or deploy them separately.
+
+### Most of the deployment configuration options have been restructured. There is now a common entry in the values.yaml.
+
+Before:
+```yaml
+nodeSelector: {}
+tolerations: []
+affinity: {}
+extraVolumeMounts: []
+extraVolumes: []
+extraEnv: []
+# more...
+```
+
+After:
+```yaml
+common:
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  extraVolumeMounts: []
+  extraVolumes: []
+  extraEnv: []
+  # more...
+```
+
+### You can override all those configuration options in the deployments entry in the values.yaml.
+
+```yaml
+deployments:
+  standalone:
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    extraVolumeMounts: []
+    extraVolumes: []
+    extraEnv: []
+    # more...
+```
+
+### We changed the way to provide custom configuration files to Kestra. It's now all under configurations entry in the values.yaml.
+
+Before:
+```yaml
+### This creates a config map of the Kestra configuration
+configuration: {}
+# Example: Setting the plugin defaults for the Docker runner
+#   kestra:
+#     plugins:
+#       configurations:
+#         - type:  io.kestra.plugin.scripts.runner.docker.Docker
+#           values:
+#             volume-enabled: true
+### This will create a Kubernetes Secret for the values provided
+## This will be appended to kestra-secret with the key application-secrets.yml
+secrets: {}
+# Example: Store your postgres backend credentials in a secret
+#   secrets:
+#     kestra:
+#       datasources:
+#         postgres:
+#           username: pguser
+#           password: mypass123
+#           url: jdbc:postgresql://pghost:5432/db
+### Load Kestra configuration from existing secret
+## Here this assumes the secret is already deployed and the following apply:
+## 1. The secret type is "Opaque"
+## 2. The secret has a single key
+## 3. The value of the secret is the Kestra configuration.
+externalSecret: {}
+  #secretName: secret-name
+  #key: application-kestra.yml
+### configuration files
+## This option allows you to reference existing local files to configure Kestra, e.g.
+configurationPath:
+# configurationPath: /app/application.yml,/app/application-secrets.yml
+extraConfigMapEnvFrom:
+  # - name: my-existing-configmap-no-prefix
+  # - name: my-existing-configmap-with-prefix
+  #   prefix: KESTRA_
+extraSecretEnvFrom:
+  # - name: my-existing-no-prefix
+  # - name: my-existing-with-prefix
+  #   prefix: SECRET_
+```
+
+After:
+```yaml
+configurations:
+  application:
+    kestra:
+      queue:
+        type: h2
+      repository:
+        type: h2
+      storage:
+        type: local
+        local:
+          basePath: "/app/storage"
+    datasources:
+      h2:
+        url: jdbc:h2:mem:public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        username: kestra
+        password: ""
+        driverClassName: org.h2.Driver
+  configmaps:
+    - name: kestra-others
+      key: others.yml
+  secrets:
+    - name: kestra-basic-auth
+      key: basic-auth.yml
+```
+
+No need of taking care of `configurationPath:`; It's automatically managed by the chart. 
+If you need to add extra environment variables from existing ConfigMaps or Secrets, you can still use `extraEnv` and `extraEnvFrom` under the `common` entry."
 
 ## Values
 
