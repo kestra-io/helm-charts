@@ -159,7 +159,7 @@ configurations:
       key: basic-auth.yml
 ```
 
-No need of taking care of `configurationPath:`; It's automatically managed by the chart. 
+No need of taking care of `configurationPath:`; It's automatically managed by the chart.
 If you need to add extra environment variables from existing ConfigMaps or Secrets, you can still use `extraEnv` and `extraEnvFrom` under the `common` entry."
 
 ## Values
