@@ -34,6 +34,11 @@ image:
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: "v0.1.2"
 
+# -- Extra environment variables for containers
+extraEnv: []
+# -- Import environment variables from ConfigMaps/Secrets
+extraEnvFrom: []
+
 # -- Resource requests and limits for the container
 resources:
   requests:
