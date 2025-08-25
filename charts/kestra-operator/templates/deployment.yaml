@@ -15,7 +15,7 @@ spec:
         app: {{ include "kestra-operator.fullname" . }}
     spec:
       serviceAccountName: kestra-operator
-      {{- with Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -38,6 +38,7 @@ spec:
       containers:
         - name: kestra-operator
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -50,30 +51,30 @@ spec:
               path: /q/health/started
               port: 8080
               scheme: HTTP
-            periodSeconds: {{ Values.startupProbe.periodSeconds }}
-            timeoutSeconds: {{ Values.startupProbe.timeoutSeconds }}
-            successThreshold: {{ Values.startupProbe.successThreshold }}
-            failureThreshold: {{ Values.startupProbe.failureThreshold }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.startupProbe.successThreshold }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
           livenessProbe:
             httpGet:
               path: /q/health/live
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: {{ Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ Values.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ Values.livenessProbe.timeoutSeconds }}
-            successThreshold: {{ Values.livenessProbe.successThreshold }}
-            failureThreshold: {{ Values.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           readinessProbe:
             httpGet:
               path: /q/health/ready
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: {{ Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ Values.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ Values.readinessProbe.timeoutSeconds }}
-            successThreshold: {{ Values.readinessProbe.successThreshold }}
-            failureThreshold: {{ Values.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           env:
             - name: QUARKUS_OPERATOR_SDK_CRD_APPLY
               value: "true"
@@ -82,7 +83,7 @@ spec:
             - name: QUARKUS_OPERATOR_SDK_CRD_VALIDATE
               value: "false"
             - name: KESTRA_API_URL
-              value: http://{{ include "kestra-operator.fullname" $service }}:8080
+              value: http://{{ include "kestra-operator.fullname" . }}:8080
             {{- if .Values.operator.apiKey }}
             - name: KESTRA_API_API_KEY
               value: {{ .Values.operator.apiKey }}
