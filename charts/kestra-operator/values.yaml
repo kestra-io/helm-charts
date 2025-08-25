@@ -11,13 +11,13 @@ configuration:
     url: http://localhost:8081
     # -- This is the Kestra API Key the operator will use to authenticate against the Kestra API.
     apiKey:
-      name: "[your-api-key]" # Not secure: use fromSecret instead
+      value: "[your-api-key]" # Not secure: use fromSecret instead
       fromSecret:
         name: ""
         key: ""
     # -- This is the Kestra API Basic Auth the operator will use to authenticate against the Kestra API.
     basicAuth:
-      name: "[your-basic-auth]" # Not secure: use fromSecret instead
+      value: "[your-basic-auth]" # Not secure: use fromSecret instead
       fromSecret:
         name: ""
         key: ""

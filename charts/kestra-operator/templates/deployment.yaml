@@ -89,7 +89,7 @@ spec:
                   name: "{{ .Values.configuration.kestra.apiKey.fromSecret.name }}"
                   key: "{{ .Values.configuration.kestra.apiKey.fromSecret.key }}"
               {{- else }}
-              value: "{{ .Values.configuration.kestra.apiKey.name }}"
+              value: "{{ .Values.configuration.kestra.apiKey.value }}"
               {{- end }}  
             {{- end }}
             {{- if .Values.configuration.kestra.basicAuth }}
@@ -100,7 +100,7 @@ spec:
                   name: "{{ .Values.configuration.kestra.basicAuth.fromSecret.name }}"
                   key: "{{ .Values.configuration.kestra.basicAuth.fromSecret.key }}"
               {{- else }}
-              value: "{{ .Values.configuration.kestra.basicAuth.name }}"
+              value: "{{ .Values.configuration.kestra.basicAuth.value }}"
               {{- end }}
             {{- end }}
             {{- with .Values.extraEnv }}

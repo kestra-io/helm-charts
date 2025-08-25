@@ -47,8 +47,8 @@ $ helm install my-kestra-operator kestra/kestra-operator --version 0.24.1
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | annotations | object | `{}` |  |
-| configuration.kestra.apiKey | object | `{"fromSecret":{"key":"","name":""},"name":"[your-api-key]"}` | This is the Kestra API Key the operator will use to authenticate against the Kestra API. |
-| configuration.kestra.basicAuth | object | `{"fromSecret":{"key":"","name":""},"name":"[your-basic-auth]"}` | This is the Kestra API Basic Auth the operator will use to authenticate against the Kestra API. |
+| configuration.kestra.apiKey | object | `{"fromSecret":{"key":"","name":""},"value":"[your-api-key]"}` | This is the Kestra API Key the operator will use to authenticate against the Kestra API. |
+| configuration.kestra.basicAuth | object | `{"fromSecret":{"key":"","name":""},"value":"[your-basic-auth]"}` | This is the Kestra API Basic Auth the operator will use to authenticate against the Kestra API. |
 | configuration.kestra.url | string | `"http://localhost:8081"` | This is the Kestra API URL the operator will connect to. |
 | extraEnv | list | `[]` | Extra environment variables for containers |
 | extraEnvFrom | list | `[]` | Import environment variables from ConfigMaps/Secrets |
