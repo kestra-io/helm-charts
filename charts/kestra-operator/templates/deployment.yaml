@@ -13,6 +13,9 @@ metadata:
       {{- end }}
 spec:
   replicas: 1
+  {{- if .Values.revisionHistoryLimit }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ include "kestra-operator.fullname" . }}
@@ -29,6 +32,9 @@ spec:
         {{- end }}
     spec:
       serviceAccountName: kestra-operator
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
