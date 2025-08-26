@@ -64,8 +64,10 @@ $ helm install my-kestra-operator kestra/kestra-operator --version 1.0.0
 | podAnnotations | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
 | podLabels | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
 | podSecurityContext | object | `{}` |  |
+| priorityClassName | string | `""` |  |
 | readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/q/health/ready","port":8080,"scheme":"HTTP"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | This is to setup the readiness probe, more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | resources | object | `{"limits":{"memory":"512Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resource requests and limits for the container |
+| revisionHistoryLimit | int | `10` |  |
 | securityContext | object | `{}` |  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/q/health/started","port":8080,"scheme":"HTTP"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | This is to setup the startup probe |
