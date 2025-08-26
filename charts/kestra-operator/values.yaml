@@ -5,6 +5,9 @@ nameOverride: ""
 # -- This is to override the chart name.
 fullnameOverride: ""
 
+priorityClassName: ""
+revisionHistoryLimit: 10
+
 configuration:
   kestra:
     # -- This is the Kestra API URL the operator will connect to.
@@ -36,8 +39,14 @@ image:
 
 # -- Extra environment variables for containers
 extraEnv: []
+  # - name: ENV_VAR_NAME
+  #   value: ENV_VAR_VALUE
 # -- Import environment variables from ConfigMaps/Secrets
 extraEnvFrom: []
+  # - secretRef:
+  #     name: db-credentials
+  # - configMapRef:
+  #     name: app-settings
 
 # -- Resource requests and limits for the container
 resources:
