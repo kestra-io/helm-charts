@@ -34,3 +34,8 @@ annotations:
       url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/10-Logs.png
     - title: Documentation
       url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
+  artifacthub.io/images: |
+    - name: operator
+      image: registry.kestra.io/docker/kestra-operator
+      whitelisted: true
+  artifacthub.io/operator: "true"
