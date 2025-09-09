@@ -45,6 +45,20 @@ $ helm install my-kestra kestra/kestra --version 1.0.0
 
 > Breaking changes have been made to the Helm chart in order to support the new features and improvements introduced in Kestra 1.0.0. Please review the following changes carefully before upgrading:
 
+### If you need to change the kestra docker repository
+
+Before:
+```yaml
+image:
+  image: kestra/kestra
+```
+
+After:
+```yaml
+image:
+  repository: kestra/kestra
+```
+
 ### We removed postgres, minio, kafka and elasticsearch from the chart dependencies. You can now use your own managed services or deploy them separately.
 
 ### Most of the deployment configuration options have been restructured. There is now a common entry in the values.yaml.
