@@ -68,6 +68,22 @@ image:
   repository: kestra/kestra
 ```
 
+### We changed the way to configure service account
+
+Before:
+```yaml
+serviceAccountName: ""
+```
+
+After:
+```yaml
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+```
+
 ### We removed postgres, minio, kafka and elasticsearch from the chart dependencies. You can now use your own managed services or deploy them separately.
 
 ### Most of the deployment configuration options have been restructured. There is now a common entry in the values.yaml.
