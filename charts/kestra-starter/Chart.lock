@@ -5,5 +5,8 @@ dependencies:
 - name: minio
   repository: https://charts.min.io/
   version: 5.4.0
-digest: sha256:23e6055226af25d1217d5aa68c6a6f47cc3e8212b4814454f152610c18aeafa6
-generated: "2025-08-22T10:04:10.329047026+02:00"
+- name: kestra
+  repository: https://helm.kestra.io/
+  version: 1.0.1
+digest: sha256:f0b1a8129cff6dfe33d4758002d382f407c8024ce5017aeb201b2feb7eeddf95
+generated: "2025-09-11T13:50:42.981118855+02:00"
