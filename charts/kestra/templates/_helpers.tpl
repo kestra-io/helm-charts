@@ -252,6 +252,12 @@ spec:
             {{- with $merged.extraVolumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{- if $global.dind.enabled }}
+            - name: docker-dind-socket
+              mountPath: /dind
+            - name: docker-tmp
+              mountPath: {{ $global.dind.tmpPath }}
+            {{- end }}
           ports:
             {{- range $pname, $port := $global.service.ports }}
             - name: {{ $pname }}
