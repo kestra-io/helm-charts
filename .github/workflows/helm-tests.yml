@@ -18,14 +18,13 @@ jobs:
         run: |
           echo "" > .tool-versions
           echo "helm 3.12.3" >> .tool-versions
-          echo "kubectl 1.27.3" >> .tool-versions
-          echo "yamllint 1.26.3" >> .tool-versions
+          echo "kubeconform 0.7.0" >> .tool-versions
       - name: Set up ASDF
         uses: asdf-vm/actions/install@v4
       - name: Run tests
         run: |
-          helm template charts/kestra -f charts/kestra/values-testing.yaml > output.yaml
-          kubectl apply --dry-run=client -f output.yaml
+          helm template charts/kestra -f charts/kestra/values-testing.yaml --validate=false > output.yaml
+          kubeconform -strict -summary output.yaml
   tests-kestra-starter:
     runs-on: ubuntu-latest
     steps:
@@ -35,15 +34,14 @@ jobs:
         run: |
           echo "" > .tool-versions
           echo "helm 3.12.3" >> .tool-versions
-          echo "kubectl 1.27.3" >> .tool-versions
-          echo "yamllint 1.26.3" >> .tool-versions
+          echo "kubeconform 0.7.0" >> .tool-versions
       - name: Set up ASDF
         uses: asdf-vm/actions/install@v4
       - name: Run tests
         run: |
           helm dep up charts/kestra-starter/
-          helm template charts/kestra-starter > output.yaml
-          kubectl apply --dry-run=client -f output.yaml
+          helm template charts/kestra-starter --validate=false > output.yaml
+          kubeconform -strict -summary output.yaml
   tests-kestra-operator:
     runs-on: ubuntu-latest
     steps:
@@ -53,11 +51,10 @@ jobs:
         run: |
           echo "" > .tool-versions
           echo "helm 3.12.3" >> .tool-versions
-          echo "kubectl 1.27.3" >> .tool-versions
-          echo "yamllint 1.26.3" >> .tool-versions
+          echo "kubeconform 0.7.0" >> .tool-versions
       - name: Set up ASDF
         uses: asdf-vm/actions/install@v4
       - name: Run tests
         run: |
-          helm template charts/kestra-operator > output.yaml
-          kubectl apply --dry-run=client -f output.yaml
+          helm template charts/kestra-operator --validate=false > output.yaml
+          kubeconform -strict -summary output.yaml
