@@ -86,6 +86,8 @@ service:
     jmxremote:
       port: 8686
       containerPort: 8686
+      protocol: TCP
+      targetPort: jmxremote
 
 dind:
   enabled: true
