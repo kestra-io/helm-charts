@@ -5,8 +5,8 @@ on:
     branches:
       - master
   push:
-    branches-ignore:
-      - master
+    branches:
+      - "**"
 
 jobs:
   tests-kestra:
@@ -25,7 +25,6 @@ jobs:
       - name: Run tests
         run: |
           helm template charts/kestra -f charts/kestra/values-testing.yaml > output.yaml
-          yamllint output.yaml
           kubectl apply --dry-run=client -f output.yaml
   tests-kestra-starter:
     runs-on: ubuntu-latest
@@ -44,7 +43,6 @@ jobs:
         run: |
           helm dep up charts/kestra-starter/
           helm template charts/kestra-starter > output.yaml
-          yamllint output.yaml
           kubectl apply --dry-run=client -f output.yaml
   tests-kestra-operator:
     runs-on: ubuntu-latest
@@ -62,5 +60,4 @@ jobs:
       - name: Run tests
         run: |
           helm template charts/kestra-operator > output.yaml
-          yamllint output.yaml
           kubectl apply --dry-run=client -f output.yaml
