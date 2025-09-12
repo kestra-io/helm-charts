@@ -43,6 +43,17 @@ deployments:
     extraEnvFrom:
       - configMapRef:
           name: common-config
+  executor:
+    enabled: true
+  indexer:
+    enabled: true
+  scheduler:
+    enabled: true
+  worker:
+    enabled: true
+    workerThreads: 16
+  webserver:
+    enabled: true
 
 configurations:
   application:
