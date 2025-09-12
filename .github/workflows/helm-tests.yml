@@ -1,0 +1,66 @@
+name: Helm tests
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  tests-kestra:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup ASDF
+        run: |
+          echo "" > .tool-versions
+          echo "helm 3.12.3" >> .tool-versions
+          echo "kubectl 1.27.3" >> .tool-versions
+          echo "yamllint 1.26.3" >> .tool-versions
+      - name: Set up ASDF
+        uses: asdf-vm/actions/install@v4
+      - name: Run tests
+        run: |
+          helm template charts/kestra -f charts/kestra/values-testing.yaml > output.yaml
+          yamllint output.yaml
+          kubectl apply --dry-run=client -f output.yaml
+  tests-kestra-starter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup ASDF
+        run: |
+          echo "" > .tool-versions
+          echo "helm 3.12.3" >> .tool-versions
+          echo "kubectl 1.27.3" >> .tool-versions
+          echo "yamllint 1.26.3" >> .tool-versions
+      - name: Set up ASDF
+        uses: asdf-vm/actions/install@v4
+      - name: Run tests
+        run: |
+          helm dep up charts/kestra-starter/
+          helm template charts/kestra-starter > output.yaml
+          yamllint output.yaml
+          kubectl apply --dry-run=client -f output.yaml
+  tests-kestra-operator:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup ASDF
+        run: |
+          echo "" > .tool-versions
+          echo "helm 3.12.3" >> .tool-versions
+          echo "kubectl 1.27.3" >> .tool-versions
+          echo "yamllint 1.26.3" >> .tool-versions
+      - name: Set up ASDF
+        uses: asdf-vm/actions/install@v4
+      - name: Run tests
+        run: |
+          helm template charts/kestra-operator > output.yaml
+          yamllint output.yaml
+          kubectl apply --dry-run=client -f output.yaml
