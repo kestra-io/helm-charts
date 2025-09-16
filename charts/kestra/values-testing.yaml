@@ -55,6 +55,11 @@ deployments:
   webserver:
     enabled: true
 
+workerGroups:
+  test:
+    enabled: true
+    workerThreads: 128
+
 configurations:
   application:
     kestra:
