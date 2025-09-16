@@ -140,9 +140,15 @@ configurations:
   # -- Extra configmaps mounted as configuration files.
   # @section -- kestra configurations
   configmaps: []
+  # configmaps:
+  #   - name: kestra-others
+  #     key: others.yml
   # -- Extra secrets mounted as configuration files.
   # @section -- kestra configurations
   secrets: []
+  # secrets:
+  #   - name: kestra-basic-auth
+  #     key: basic-auth.yml
 
 ### -------------------------------
 ### kestra service account
@@ -173,7 +179,7 @@ deployments:
     enabled: true
     # -- Number of worker threads for standalone deployment.
     # @section -- kestra deployments
-    workerThreads: 128
+    workerThreads: 32
     # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
@@ -211,14 +217,17 @@ deployments:
     enabled: false
     # -- Number of worker threads for worker deployment.
     # @section -- kestra deployments
-    workerThreads: 128
+    workerThreads: 32
     # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
 
 # -- EE only - Define additional worker groups with custom settings.
 # @section -- kestra workerGroups
-workerGroups: []
+workerGroups: {}
+# workerGroups:
+#   test:
+#     workerThreads: 128
 
 ### -------------------------------
 ### kestra service

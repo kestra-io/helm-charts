@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.2](https://img.shields.io/badge/Version-1.0.2-informational?style=flat-square) ![AppVersion: v1.0.0](https://img.shields.io/badge/AppVersion-v1.0.0-informational?style=flat-square)
+![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![AppVersion: v1.0.1](https://img.shields.io/badge/AppVersion-v1.0.1-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.2
+$ helm install my-kestra kestra/kestra --version 1.0.3
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -194,7 +194,19 @@ If you need to add extra environment variables from existing ConfigMaps or Secre
 
 ### We upgrade also the way the dind is managed. It's now under the `dind` entry in the values.yaml.
 
-We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is the default and recommended mode."
+We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is the default and recommended mode.
+
+### Usage for enterprise edition workerGroups
+
+workerGroups follow exactly the same pattern you see in deployments.
+
+```
+workerGroups:
+  test:
+    enabled: true # IMPORTANT
+    workerThreads: 128
+    # all you have in the common section
+```"
 
 ## Values
 
@@ -247,12 +259,12 @@ We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is 
 | deployments.scheduler.extraArgs | list | `[]` | Extra arguments to pass to the container. |
 | deployments.standalone.enabled | bool | `true` | Enable standalone Kestra deployment. |
 | deployments.standalone.extraArgs | list | `[]` | Extra arguments to pass to the container. |
-| deployments.standalone.workerThreads | int | `128` | Number of worker threads for standalone deployment. |
+| deployments.standalone.workerThreads | int | `32` | Number of worker threads for standalone deployment. |
 | deployments.webserver.enabled | bool | `false` | Enable webserver in distributed mode. |
 | deployments.webserver.extraArgs | list | `[]` | Extra arguments to pass to the container. |
 | deployments.worker.enabled | bool | `false` | Enable worker in distributed mode. |
 | deployments.worker.extraArgs | list | `[]` | Extra arguments to pass to the container. |
-| deployments.worker.workerThreads | int | `128` | Number of worker threads for worker deployment. |
+| deployments.worker.workerThreads | int | `32` | Number of worker threads for worker deployment. |
 
 ### kestra dind insecure
 
@@ -319,7 +331,7 @@ We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| workerGroups | list | `[]` | EE only - Define additional worker groups with custom settings. |
+| workerGroups | object | `{}` | EE only - Define additional worker groups with custom settings. |
 
 ### Other Values
 
