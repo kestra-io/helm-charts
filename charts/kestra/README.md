@@ -198,14 +198,13 @@ We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is 
 
 ### Usage for enterprise edition workerGroups
 
-workerGroups follow exactly the same pattern you see in deployments.
-
 ```yaml
 workerGroups:
   test:
-    enabled: true # IMPORTANT
+    enabled: true
     workerThreads: 128
-```"
+```
+The **workerGroups** follow exactly the same pattern you see in deployments key **worker**."
 
 ## Values
 
