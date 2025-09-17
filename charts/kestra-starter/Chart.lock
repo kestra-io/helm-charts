@@ -7,6 +7,6 @@ dependencies:
   version: 5.4.0
 - name: kestra
   repository: https://helm.kestra.io/
-  version: 1.0.2
-digest: sha256:05f51a2aa6c785c0d875867396f62a6588cc1ba18f54ba2606f36c5da5175cda
-generated: "2025-09-12T09:24:42.93842886+02:00"
+  version: 1.0.3
+digest: sha256:e9a5d9a216eba43b843a0d2bc723743a0828514ebf7100e22c24bd6337de6331
+generated: "2025-09-17T11:39:12.848910669+02:00"
