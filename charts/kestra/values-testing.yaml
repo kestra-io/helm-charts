@@ -44,20 +44,20 @@ deployments:
       - configMapRef:
           name: common-config
   executor:
-    enabled: true
+    enabled: false
   indexer:
-    enabled: true
+    enabled: false
   scheduler:
-    enabled: true
+    enabled: false
   worker:
-    enabled: true
+    enabled: false
     workerThreads: 16
   webserver:
-    enabled: true
+    enabled: false
 
 workerGroups:
   test:
-    enabled: true
+    enabled: false
     workerThreads: 128
 
 configurations:
