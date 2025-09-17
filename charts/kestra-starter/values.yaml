@@ -79,6 +79,11 @@ minio:
     - accessKey: "kestra-svcacct"
       secretKey: "kestra-svcacct-1234"
       user: "kestra"
+  resources:
+    requests:
+      memory: 2Gi
+  persistence:
+    size: 10Gi
 
 kestra:
   # -- see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations
