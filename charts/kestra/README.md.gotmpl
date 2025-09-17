@@ -205,6 +205,16 @@ If you need to add extra environment variables from existing ConfigMaps or Secre
 
 We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is the default and recommended mode.
 
+### Usage for enterprise edition workerGroups
+
+```yaml
+workerGroups:
+  test:
+    enabled: true
+    workerThreads: 128
+```
+The **workerGroups** follow exactly the same pattern you see in deployments key **worker**.
+
 {{- end }}
 
 ## Documentation

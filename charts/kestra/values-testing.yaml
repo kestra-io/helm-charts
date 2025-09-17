@@ -44,16 +44,21 @@ deployments:
       - configMapRef:
           name: common-config
   executor:
-    enabled: true
+    enabled: false
   indexer:
-    enabled: true
+    enabled: false
   scheduler:
-    enabled: true
+    enabled: false
   worker:
-    enabled: true
+    enabled: false
     workerThreads: 16
   webserver:
-    enabled: true
+    enabled: false
+
+workerGroups:
+  test:
+    enabled: false
+    workerThreads: 128
 
 configurations:
   application:
@@ -78,6 +83,10 @@ configurations:
   secrets:
     - name: kestra-basic-auth
       key: basic-auth.yml
+    - name: kestra-files
+      key: application.yml
+    - name: kestra-files
+      key: extra.yml
 
 service:
   ports:
@@ -122,6 +131,15 @@ extraManifests:
   data:
     others.yml: |
       # kestra:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name:  kestra-files
+  stringData:
+    application.yml: |
+      kestra: {}
+    extra.yml: |
+      kestra: {}
 - apiVersion: v1
   kind: Secret
   metadata:

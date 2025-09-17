@@ -13,3 +13,5 @@ Thumbs.db
 charts/kestra-starter/charts
 charts/kestra/charts
 charts/kestra-operator/charts
+
+.tmp

@@ -15,11 +15,11 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    {{- range $name, $port := .Values.service.ports }}
-    - name: {{ $name }}
-      port: {{ $port.port }}
-      targetPort: {{ $port.targetPort }}
-      protocol: {{ $port.protocol | default "TCP" }}
+    {{- range $n, $p := .Values.service.ports }}
+    - name: {{ $n }}
+      port: {{ $p.port }}
+      targetPort: {{ $p.targetPort }}
+      protocol: {{ $p.protocol | default "TCP" }}
     {{- end }}
   selector:
     {{- include "kestra.selectorLabels" . | nindent 4 }}
