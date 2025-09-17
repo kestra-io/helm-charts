@@ -138,7 +138,9 @@ spec:
                 {{- end }}
                 {{- end }}
                 {{- with $content.extraArgs }}
-                {{- . }} \
+                {{- range $key, $value := $content.extraArgs }}
+                {{- $value }} \
+                {{- end }}
                 {{- end }}
           {{- with (default $common.resources $content.resources) }}
           resources:
