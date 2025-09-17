@@ -185,12 +185,14 @@ spec:
               mountPath: /app/_default.yml
               subPath: _default.yml
             {{- range $global.configurations.configmaps }}
-            - name: {{ .name }}
+            {{- $vname := printf "%s-%s" .name .key | replace "." "-" | kebabcase }}
+            - name: {{ $vname }}
               mountPath: /app/{{ .key }}
               subPath: {{ .key }}
             {{- end }}
             {{- range $global.configurations.secrets }}
-            - name: {{ .name }}
+            {{- $vname := printf "%s-%s" .name .key | replace "." "-" | kebabcase }}
+            - name: {{ $vname }}
               mountPath: /app/{{ .key }}
               subPath: {{ .key }}
             {{- end }}
@@ -249,7 +251,8 @@ spec:
               - key: _default.yml
                 path: _default.yml
         {{- range $global.configurations.configmaps }}
-        - name: {{ .name }}
+        {{- $vname := printf "%s-%s" .name .key | replace "." "-" | kebabcase }}
+        - name: {{ $vname }}
           configMap:
             name: {{ .name }}
             items:
@@ -257,10 +260,14 @@ spec:
                 path: {{ .key }}
         {{- end }}
         {{- range $global.configurations.secrets }}
-        - name: {{ .name }}
+        {{- $vname := printf "%s-%s" .name .key | replace "." "-" | kebabcase }}
+        - name: {{ $vname }}
           secret:
             secretName: {{ .name }}
             defaultMode: 0444
+            items:
+              - key: {{ .key }}
+                path: {{ .key }}
         {{- end }}
         {{- if $dind }}
         - name: docker-dind-socket

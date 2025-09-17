@@ -83,6 +83,10 @@ configurations:
   secrets:
     - name: kestra-basic-auth
       key: basic-auth.yml
+    - name: kestra-files
+      key: application.yml
+    - name: kestra-files
+      key: extra.yml
 
 service:
   ports:
@@ -127,6 +131,15 @@ extraManifests:
   data:
     others.yml: |
       # kestra:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name:  kestra-files
+  stringData:
+    application.yml: |
+      kestra: {}
+    extra.yml: |
+      kestra: {}
 - apiVersion: v1
   kind: Secret
   metadata:
