@@ -226,6 +226,7 @@ workerGroups: {}
 # workerGroups:
 #   test:
 #     workerThreads: 128
+#     extraArgs: []
 
 ### -------------------------------
 ### kestra service
