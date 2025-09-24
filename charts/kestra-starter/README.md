@@ -86,6 +86,13 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 1.0.3
 | postgres.settings | object | `{"superuser":{"value":"postgres"},"superuserPassword":{"value":"SuperChangeMe#1234"}}` | see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations |
 | postgres.userDatabase | object | `{"name":{"value":"kestra"},"password":{"value":"ChangeMe#1234"},"user":{"value":"kestra"}}` | see https://artifacthub.io/packages/helm/groundhog2k/postgres for all available configurations |
 
+### Other Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| minio.persistence.size | string | `"10Gi"` |  |
+| minio.resources.requests.memory | string | `"2Gi"` |  |
+
 ## Documentation
 * Full documentation can be found under [kestra.io/docs](https://kestra.io/docs)
 * Deployment on Kubernetes documentation can be found [here](https://kestra.io/docs/installation/kubernetes)

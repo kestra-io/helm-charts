@@ -26,6 +26,9 @@ imagePullSecrets: []
 ### -------------------------------
 
 common:
+  # -- Kind of deployment (Deployment or StatefulSet).
+  # @section -- common settings
+  kind: Deployment
   # -- Number of pod replicas to run.
   # @section -- common settings
   replicas: 1

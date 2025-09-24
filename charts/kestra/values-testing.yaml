@@ -52,6 +52,7 @@ deployments:
   worker:
     enabled: false
     workerThreads: 16
+    kind: StatefulSet
   webserver:
     enabled: false
 

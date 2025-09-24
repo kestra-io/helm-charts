@@ -19,7 +19,7 @@
 {{- $dind = true }}
 {{- end }}
 apiVersion: apps/v1
-kind: Deployment
+kind: {{ default $common.kind $content.kind }}
 metadata:
   name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
   labels:
