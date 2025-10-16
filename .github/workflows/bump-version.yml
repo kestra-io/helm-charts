@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       new_version:
-        description: 'New version to update (ex: v0.20.4)'
-        required: true
+        description: 'New version to update (ex: v1.0.x) - optional when chart_only_bump is true'
+        required: false
         type: string
+      chart_only_bump:
+        description: 'If true and new_version is not provided, only bump chart version (patch) and do NOT change appVersion'
+        required: false
+        type: boolean
   repository_dispatch:
     types: [update-helm-chart-version]
 
@@ -55,7 +59,19 @@ jobs:
           echo "LATEST_VERSION = ${LATEST_VERSION}"
           echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
 
+      - name: Compute next chart patch version
+        id: compute-next-patch
+        run: |
+          LATEST_VERSION=${{ env.LATEST_VERSION }}
+          # split semver into parts
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${LATEST_VERSION}"
+          NEXT_PATCH=$((PATCH + 1))
+          NEXT_CHART_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}"
+          echo "NEXT_CHART_VERSION=${NEXT_CHART_VERSION}" >> $GITHUB_ENV
+          echo "Computed next chart version from ${LATEST_VERSION} -> ${NEXT_CHART_VERSION}"
+
       - name: Compare versions
+        if: ${{ env.HELM_CHART_VERSION != '' }}
         id: compare_versions
         uses: jackbilestech/semver-compare@1.0.4
         continue-on-error: true
@@ -63,31 +79,82 @@ jobs:
             head: ${{ env.HELM_CHART_VERSION }}
             base: ${{ env.LATEST_VERSION }}
             operator: '>'
-
       - name: Update version and appVersion in Chart.yaml File
         id: edit-chart-version
         run: |
           git config user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config user.email "${{ env.CI_COMMIT_EMAIL }}"
-          yq e -i ".appVersion = \"${{ env.HELM_VERSION }}\"" ${{ env.CHART_FILE }}
-          yq e -i ".version = \"${{ env.HELM_CHART_VERSION }}\"" ${{ env.CHART_FILE }}
+
+          # Priority: repository_dispatch payload -> workflow_dispatch.new_version -> chart_only_bump/manual (no new_version)
+          if [ -n "${{ github.event.client_payload.new_version }}" ]; then
+            # Case A: repository_dispatch (app tag provided) -> set appVersion to payload, bump chart patch
+            APP_VER="${{ github.event.client_payload.new_version }}"
+            echo "Repository dispatch detected. Setting appVersion=${APP_VER}"
+            # Compute chart next patch based on Chart.yaml
+            LATEST=$(yq eval '.version' ${{ env.CHART_FILE }} )
+            IFS='.' read -r MAJOR MINOR PATCH <<< "${LATEST}"
+            NEXT_PATCH=$((PATCH + 1))
+            NEXT_CHART="${MAJOR}.${MINOR}.${NEXT_PATCH}"
+            echo "Setting chart version to ${NEXT_CHART}"
+            yq e -i ".appVersion = \"${APP_VER}\"" ${{ env.CHART_FILE }}
+            yq e -i ".version = \"${NEXT_CHART}\"" ${{ env.CHART_FILE }}
+            COMMIT_MSG="Update chart version ${LATEST} -> ${NEXT_CHART} and appVersion -> ${APP_VER}"
+
+          elif [ -n "${{ inputs.new_version }}" ]; then
+            # Case C: Manual app bump with explicit new_version -> set appVersion and bump chart patch
+            APP_VER="${{ inputs.new_version }}"
+            echo "Manual app bump. Setting appVersion=${APP_VER}"
+            LATEST=$(yq eval '.version' ${{ env.CHART_FILE }} )
+            IFS='.' read -r MAJOR MINOR PATCH <<< "${LATEST}"
+            NEXT_PATCH=$((PATCH + 1))
+            NEXT_CHART="${MAJOR}.${MINOR}.${NEXT_PATCH}"
+            yq e -i ".appVersion = \"${APP_VER}\"" ${{ env.CHART_FILE }}
+            yq e -i ".version = \"${NEXT_CHART}\"" ${{ env.CHART_FILE }}
+            COMMIT_MSG="Update chart version ${LATEST} -> ${NEXT_CHART} and appVersion -> ${APP_VER}"
+
+          elif [ "${{ inputs.chart_only_bump }}" = "true" ] || [ -z "${{ inputs.new_version }}" ]; then
+            # Case B: Manual chart-only bump -> bump chart patch only, do not change appVersion
+            echo "Manual chart-only bump. Not changing appVersion."
+            LATEST=$(yq eval '.version' ${{ env.CHART_FILE }} )
+            IFS='.' read -r MAJOR MINOR PATCH <<< "${LATEST}"
+            NEXT_PATCH=$((PATCH + 1))
+            NEXT_CHART="${MAJOR}.${MINOR}.${NEXT_PATCH}"
+            yq e -i ".version = \"${NEXT_CHART}\"" ${{ env.CHART_FILE }}
+            COMMIT_MSG="Update chart version ${LATEST} -> ${NEXT_CHART} (chart-only bump)"
+
+          else
+            echo "No version inputs provided and chart_only_bump not set -> nothing to do."
+            exit 1
+          fi
+
+          # Regenerate docs with helm-docs and include README
+          # Ensure helm-docs is available in PATH
+          if command -v helm-docs >/dev/null 2>&1; then
+            helm-docs
+          else
+            echo "helm-docs not found - you should install it (e.g., uses: helm-docs/helm-docs-action)"; exit 1
+          fi
+
+          # Add both Chart.yaml and generated README
           git add ${{ env.CHART_FILE }}
-          git commit -m "Update version to ${{ env.HELM_CHART_VERSION }} and appVersion to ${{ env.HELM_VERSION }}"
+          git add charts/kestra/README.md
+          git commit -m "${COMMIT_MSG}" || echo "No changes to commit"
+          echo "NEXT_CHART_VERSION=${NEXT_CHART}" >> $GITHUB_ENV
+          echo "COMPUTED_APP_VERSION=${APP_VER}" >> $GITHUB_ENV
 
       - name: Create Pull Request
-        if: ${{ steps.compare_versions.outcome == 'success' }}
+        if: ${{ env.NEXT_CHART_VERSION != '' }}
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-          branch: ${{ env.HELM_BRANCH_MERGE }}${{ env.HELM_VERSION }}
+          branch: ${{ env.HELM_BRANCH_MERGE }}${{ env.NEXT_CHART_VERSION }}
           delete-branch: true
-          title: 'Helm chart update from ${{ env.LATEST_VERSION }} to ${{ env.HELM_CHART_VERSION }}'
+          title: 'Helm chart update from ${{ env.LATEST_VERSION }} to ${{ env.NEXT_CHART_VERSION }}'
           body: |
             Helm Chart update to new version:
-            - In `${{ env.CHART_FILE }}` new `version` is ${{ env.HELM_CHART_VERSION }}
-            - In `${{ env.CHART_FILE }}` new `appVersion` is ${{ env.HELM_VERSION }}
+            - Chart file: `${{ env.CHART_FILE }}` old version: ${{ env.LATEST_VERSION }} new version: ${{ env.NEXT_CHART_VERSION }}
+            - appVersion: ${{ env.COMPUTED_APP_VERSION }} (or left unchanged for chart-only bump)
             - Auto-generated by [Action URL][1]
-
             [1]: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           labels: |
             automated pr
