@@ -97,6 +97,7 @@ jobs:
 
           echo "NEXT_CHART_VERSION=${NEXT_CHART}" >> $GITHUB_ENV
           echo "COMPUTED_APP_VERSION=${APP_VER}" >> $GITHUB_ENV
+          echo "COMMIT_MSG=${COMMIT_MSG}" >> $GITHUB_ENV
 
       - name: Regenerate Helm docs
         uses: losisin/helm-docs-github-action@v1
