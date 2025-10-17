@@ -178,9 +178,9 @@ deployments:
     # -- Enable standalone Kestra deployment.
     # @section -- kestra deployments
     enabled: true
-    # -- Number of worker threads for standalone deployment.
+    # -- Number of worker threads for standalone deployment ; "0" to auto-configure based on CPU.
     # @section -- kestra deployments
-    workerThreads: 32
+    workerThreads: 0
     # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
@@ -216,9 +216,9 @@ deployments:
     # -- Enable worker in distributed mode.
     # @section -- kestra deployments
     enabled: false
-    # -- Number of worker threads for worker deployment.
+    # -- Number of worker threads for worker deployment ; "0" to auto-configure based on CPU.
     # @section -- kestra deployments
-    workerThreads: 32
+    workerThreads: 0
     # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
@@ -228,7 +228,8 @@ deployments:
 workerGroups: {}
 # workerGroups:
 #   test:
-#     workerThreads: 128
+#     enabled: true
+#     workerThreads: 32
 #     extraArgs: []
 
 ### -------------------------------

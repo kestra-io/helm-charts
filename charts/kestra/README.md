@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.4](https://img.shields.io/badge/Version-1.0.4-informational?style=flat-square) ![AppVersion: v1.0.1](https://img.shields.io/badge/AppVersion-v1.0.1-informational?style=flat-square)
+![Version: 1.0.5](https://img.shields.io/badge/Version-1.0.5-informational?style=flat-square) ![AppVersion: v1.0.6](https://img.shields.io/badge/AppVersion-v1.0.6-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.4
+$ helm install my-kestra kestra/kestra --version 1.0.5
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -258,12 +258,12 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | deployments.scheduler.extraArgs | list | `[]` | Extra arguments to pass to the container. |
 | deployments.standalone.enabled | bool | `true` | Enable standalone Kestra deployment. |
 | deployments.standalone.extraArgs | list | `[]` | Extra arguments to pass to the container. |
-| deployments.standalone.workerThreads | int | `32` | Number of worker threads for standalone deployment. |
+| deployments.standalone.workerThreads | int | `0` | Number of worker threads for standalone deployment ; "0" to auto-configure based on CPU. |
 | deployments.webserver.enabled | bool | `false` | Enable webserver in distributed mode. |
 | deployments.webserver.extraArgs | list | `[]` | Extra arguments to pass to the container. |
 | deployments.worker.enabled | bool | `false` | Enable worker in distributed mode. |
 | deployments.worker.extraArgs | list | `[]` | Extra arguments to pass to the container. |
-| deployments.worker.workerThreads | int | `32` | Number of worker threads for worker deployment. |
+| deployments.worker.workerThreads | int | `0` | Number of worker threads for worker deployment ; "0" to auto-configure based on CPU. |
 
 ### kestra dind insecure
 

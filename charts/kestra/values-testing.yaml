@@ -29,6 +29,7 @@ common:
 deployments:
   standalone:
     revisionHistoryLimit: 5
+    workerThreads: 64
     resources:
       requests:
         cpu: 500m
@@ -50,15 +51,14 @@ deployments:
   scheduler:
     enabled: false
   worker:
-    enabled: false
-    workerThreads: 16
+    enabled: true
     kind: StatefulSet
   webserver:
     enabled: false
 
 workerGroups:
   test:
-    enabled: false
+    enabled: true
     workerThreads: 128
 
 configurations:
