@@ -18,8 +18,9 @@
 {{- if and ($global.dind.enabled) (eq $type "standalone") }}
 {{- $dind = true }}
 {{- end }}
+{{- $kind := default $common.kind $content.kind }}
 apiVersion: apps/v1
-kind: {{ default $common.kind $content.kind }}
+kind: {{ $kind }}
 metadata:
   name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
   labels:
@@ -45,9 +46,17 @@ spec:
     matchLabels:
       {{- include "kestra.selectorLabels" $ | nindent 6 }}
       app.kubernetes.io/component: {{ $type }}
+  {{- if eq $kind "Deployment" }}
   {{- with (default $common.strategy $content.strategy) }}
   strategy:
     {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+  {{- if eq $kind "StatefulSet" }}
+  {{- with (default $common.updateStrategy $content.updateStrategy) }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- end }}
   template:
     metadata:

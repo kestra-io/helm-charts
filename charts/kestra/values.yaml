@@ -35,13 +35,11 @@ common:
   # -- Priority class for scheduling pods.
   # @section -- common settings
   priorityClassName: ""
-  # -- Deployment update strategy (e.g., RollingUpdate, Recreate).
+  # -- Deployment update strategy.
   # @section -- common settings
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+  strategy: {}
+  # -- StatefulSet update strategy.
+  updateStrategy: {}
   # -- Number of old ReplicaSets to retain for rollback.
   # @section -- common settings
   revisionHistoryLimit: 10

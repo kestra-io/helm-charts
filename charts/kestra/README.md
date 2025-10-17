@@ -234,7 +234,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | common.revisionHistoryLimit | int | `10` | Number of old ReplicaSets to retain for rollback. |
 | common.securityContext | object | `{}` | Security context settings for containers. |
 | common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | Startup probe configuration to verify app starts correctly. |
-| common.strategy | object | `{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}` | Deployment update strategy (e.g., RollingUpdate, Recreate). |
+| common.strategy | object | `{}` | Deployment update strategy. |
 | common.terminationGracePeriodSeconds | int | `60` | Grace period for pod termination. |
 | common.tolerations | list | `[]` | Tolerations for scheduling pods on tainted nodes. |
 
@@ -336,6 +336,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| common.updateStrategy | object | `{}` | StatefulSet update strategy. |
 | extraManifests | list | `[]` | Extra Kubernetes manifests to deploy with the chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |

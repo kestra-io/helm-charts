@@ -25,7 +25,10 @@ common:
   extraVolumeMounts:
     - name: kestra-plugins
       mountPath: /app/plugins
-
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
 deployments:
   standalone:
     revisionHistoryLimit: 5
