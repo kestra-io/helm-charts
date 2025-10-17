@@ -18,8 +18,9 @@
 {{- if and ($global.dind.enabled) (eq $type "standalone") }}
 {{- $dind = true }}
 {{- end }}
+{{- $kind := default $common.kind $content.kind }}
 apiVersion: apps/v1
-kind: {{ default $common.kind $content.kind }}
+kind: {{ $kind }}
 metadata:
   name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
   labels:
@@ -45,9 +46,17 @@ spec:
     matchLabels:
       {{- include "kestra.selectorLabels" $ | nindent 6 }}
       app.kubernetes.io/component: {{ $type }}
+  {{- if eq $kind "Deployment" }}
   {{- with (default $common.strategy $content.strategy) }}
   strategy:
     {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+  {{- if eq $kind "StatefulSet" }}
+  {{- with (default $common.updateStrategy $content.updateStrategy) }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- end }}
   template:
     metadata:
@@ -68,7 +77,11 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- if and (eq $type "worker") (ne $name "worker") }}
+      serviceAccountName: {{ default (include "kestra.serviceAccountName" $) $content.serviceAccountName }}
+      {{- else }}
       serviceAccountName: {{ include "kestra.serviceAccountName" $ }}
+      {{- end }}
       {{- with (default $common.priorityClassName $content.priorityClassName) }}
       priorityClassName: {{ . }}
       {{- end }}
@@ -130,6 +143,9 @@ spec:
             - "-c"
             - | 
                 exec /app/kestra server {{ $type }} \
+                {{- if and (eq $type "worker") (ne $name "worker") }}
+                --worker-group={{ $name }} \
+                {{- end }}
                 {{- if $content.workerThreads }}
                 {{- if eq $type "standalone" }}
                 --worker-thread={{ $content.workerThreads }} \

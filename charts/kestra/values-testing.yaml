@@ -25,10 +25,14 @@ common:
   extraVolumeMounts:
     - name: kestra-plugins
       mountPath: /app/plugins
-
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
 deployments:
   standalone:
     revisionHistoryLimit: 5
+    workerThreads: 64
     resources:
       requests:
         cpu: 500m
@@ -50,16 +54,22 @@ deployments:
   scheduler:
     enabled: false
   worker:
-    enabled: false
-    workerThreads: 16
+    enabled: true
     kind: StatefulSet
   webserver:
     enabled: false
 
 workerGroups:
-  test:
+  test-000:
     enabled: false
+  test-001:
+    enabled: true
     workerThreads: 128
+    serviceAccountName: "kestra-worker-sa-external"
+    extraArgs:
+    - '--no-tutorials'
+  test-002:
+    enabled: true
 
 configurations:
   application:

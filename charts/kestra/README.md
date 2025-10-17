@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.4](https://img.shields.io/badge/Version-1.0.4-informational?style=flat-square) ![AppVersion: v1.0.1](https://img.shields.io/badge/AppVersion-v1.0.1-informational?style=flat-square)
+![Version: 1.0.5](https://img.shields.io/badge/Version-1.0.5-informational?style=flat-square) ![AppVersion: v1.0.5](https://img.shields.io/badge/AppVersion-v1.0.5-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.4
+$ helm install my-kestra kestra/kestra --version 1.0.5
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -200,9 +200,14 @@ We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is 
 
 ```yaml
 workerGroups:
-  test:
+  test-000:
+    enabled: false
+  test-001:
     enabled: true
     workerThreads: 128
+    serviceAccountName: "kestra-worker-sa-external"
+  test-002:
+    enabled: true
 ```
 The **workerGroups** follow exactly the same pattern you see in deployments key **worker**."
 
@@ -234,7 +239,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | common.revisionHistoryLimit | int | `10` | Number of old ReplicaSets to retain for rollback. |
 | common.securityContext | object | `{}` | Security context settings for containers. |
 | common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | Startup probe configuration to verify app starts correctly. |
-| common.strategy | object | `{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}` | Deployment update strategy (e.g., RollingUpdate, Recreate). |
+| common.strategy | object | `{}` | Deployment update strategy. |
 | common.terminationGracePeriodSeconds | int | `60` | Grace period for pod termination. |
 | common.tolerations | list | `[]` | Tolerations for scheduling pods on tainted nodes. |
 
@@ -258,12 +263,12 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | deployments.scheduler.extraArgs | list | `[]` | Extra arguments to pass to the container. |
 | deployments.standalone.enabled | bool | `true` | Enable standalone Kestra deployment. |
 | deployments.standalone.extraArgs | list | `[]` | Extra arguments to pass to the container. |
-| deployments.standalone.workerThreads | int | `32` | Number of worker threads for standalone deployment. |
+| deployments.standalone.workerThreads | int | `0` | Number of worker threads for standalone deployment ; "0" to auto-configure based on CPU. |
 | deployments.webserver.enabled | bool | `false` | Enable webserver in distributed mode. |
 | deployments.webserver.extraArgs | list | `[]` | Extra arguments to pass to the container. |
 | deployments.worker.enabled | bool | `false` | Enable worker in distributed mode. |
 | deployments.worker.extraArgs | list | `[]` | Extra arguments to pass to the container. |
-| deployments.worker.workerThreads | int | `32` | Number of worker threads for worker deployment. |
+| deployments.worker.workerThreads | int | `0` | Number of worker threads for worker deployment ; "0" to auto-configure based on CPU. |
 
 ### kestra dind insecure
 
@@ -336,6 +341,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| common.updateStrategy | object | `{}` | StatefulSet update strategy. |
 | extraManifests | list | `[]` | Extra Kubernetes manifests to deploy with the chart. |
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |

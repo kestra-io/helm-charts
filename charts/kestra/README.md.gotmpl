@@ -209,9 +209,14 @@ We add `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is 
 
 ```yaml
 workerGroups:
-  test:
+  test-000:
+    enabled: false
+  test-001:
     enabled: true
     workerThreads: 128
+    serviceAccountName: "kestra-worker-sa-external"
+  test-002:
+    enabled: true
 ```
 The **workerGroups** follow exactly the same pattern you see in deployments key **worker**.
 

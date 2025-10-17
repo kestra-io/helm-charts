@@ -35,13 +35,11 @@ common:
   # -- Priority class for scheduling pods.
   # @section -- common settings
   priorityClassName: ""
-  # -- Deployment update strategy (e.g., RollingUpdate, Recreate).
+  # -- Deployment update strategy.
   # @section -- common settings
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+  strategy: {}
+  # -- StatefulSet update strategy.
+  updateStrategy: {}
   # -- Number of old ReplicaSets to retain for rollback.
   # @section -- common settings
   revisionHistoryLimit: 10
@@ -178,9 +176,9 @@ deployments:
     # -- Enable standalone Kestra deployment.
     # @section -- kestra deployments
     enabled: true
-    # -- Number of worker threads for standalone deployment.
+    # -- Number of worker threads for standalone deployment ; "0" to auto-configure based on CPU.
     # @section -- kestra deployments
-    workerThreads: 32
+    workerThreads: 0
     # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
@@ -216,9 +214,9 @@ deployments:
     # -- Enable worker in distributed mode.
     # @section -- kestra deployments
     enabled: false
-    # -- Number of worker threads for worker deployment.
+    # -- Number of worker threads for worker deployment ; "0" to auto-configure based on CPU.
     # @section -- kestra deployments
-    workerThreads: 32
+    workerThreads: 0
     # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
@@ -228,7 +226,9 @@ deployments:
 workerGroups: {}
 # workerGroups:
 #   test:
-#     workerThreads: 128
+#     enabled: true
+#     workerThreads: 32
+#     serviceAccountName: "one-more-service-account"
 #     extraArgs: []
 
 ### -------------------------------
