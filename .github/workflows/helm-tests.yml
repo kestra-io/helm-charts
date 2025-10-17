@@ -9,6 +9,24 @@ on:
       - "**"
 
 jobs:
+  tests-helm-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Regenerate Helm docs
+        uses: losisin/helm-docs-github-action@v1
+        with:
+          git-push: false
+      - name: Check for changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Helm chart documentation is out of date. Please run helm-docs locally and commit the changes."
+            git status --porcelain
+            exit 1
+          else
+            echo "Helm chart documentation is up to date."
+          fi
   tests-kestra:
     runs-on: ubuntu-latest
     steps:
