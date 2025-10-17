@@ -77,7 +77,11 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- if and (eq $type "worker") (ne $name "worker") }}
+      serviceAccountName: {{ default (include "kestra.serviceAccountName" $) $content.serviceAccountName }}
+      {{- else }}
       serviceAccountName: {{ include "kestra.serviceAccountName" $ }}
+      {{- end }}
       {{- with (default $common.priorityClassName $content.priorityClassName) }}
       priorityClassName: {{ . }}
       {{- end }}

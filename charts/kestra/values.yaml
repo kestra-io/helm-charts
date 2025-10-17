@@ -228,6 +228,7 @@ workerGroups: {}
 #   test:
 #     enabled: true
 #     workerThreads: 32
+#     serviceAccountName: "one-more-service-account"
 #     extraArgs: []
 
 ### -------------------------------

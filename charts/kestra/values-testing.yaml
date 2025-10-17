@@ -60,9 +60,16 @@ deployments:
     enabled: false
 
 workerGroups:
-  test:
+  test-000:
+    enabled: false
+  test-001:
     enabled: true
     workerThreads: 128
+    serviceAccountName: "kestra-worker-sa-external"
+    extraArgs:
+    - '--no-tutorials'
+  test-002:
+    enabled: true
 
 configurations:
   application:
