@@ -37,8 +37,27 @@ jobs:
         id: read-latest
         run: |
           LATEST_VERSION=$(yq eval '.version' "${CHART_FILE}")
+          CURRENT_APP_VERSION=$(yq eval '.appVersion' "${CHART_FILE}")
           echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
+          echo "CURRENT_APP_VERSION=${CURRENT_APP_VERSION}" >> $GITHUB_ENV
           echo "Detected chart version: ${LATEST_VERSION}"
+          echo "Detected app version: ${CURRENT_APP_VERSION}"
+
+      - name: Skip if incoming version is not newer
+        if: ${{ github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch' }}
+        run: |
+          NEW_APP_VER="${CLIENT_PAYLOAD_NEW_VERSION:-${INPUTS_NEW_VERSION}}"
+          if [ -z "${NEW_APP_VER}" ]; then
+            echo "No new version provided — skipping."
+            exit 0
+          fi
+          echo "Comparing current appVersion (${CURRENT_APP_VERSION}) with incoming version (${NEW_APP_VER})"
+          if [ "$(printf '%s\n' "${CURRENT_APP_VERSION#v}" "${NEW_APP_VER#v}" | sort -V | tail -n1)" != "${NEW_APP_VER#v}" ]; then
+            echo "Incoming version is not newer — skipping Helm chart bump."
+            exit 0
+          else
+            echo "New version is greater — continuing with Helm chart update."
+          fi
 
       - name: Compute next patch version
         id: compute-next
