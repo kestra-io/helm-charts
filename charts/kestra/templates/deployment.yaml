@@ -1,8 +1,10 @@
 {{ $global := .Values }}
 {{ $common := .Values.common }}
 {{ $kestra := merge .Values.deployments .Values.workerGroups }}
+
 {{- range $name, $content := $kestra }}
 {{- if $content.enabled }}
+
 ---
 {{- $type := "worker" }}
 {{- $list := list "standalone" "webserver" "executor" "indexer" "scheduler" }}
@@ -299,5 +301,31 @@ spec:
         {{- with $content.extraVolumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+
+---
+{{- $hpa := default $common.autoscaler $content.autoscaler }}
+{{- if $hpa.enabled }}
+{{- if semverCompare ">=1.23-0" $.Capabilities.KubeVersion.GitVersion -}}
+apiVersion: autoscaling/v2
+{{- else -}}
+apiVersion: autoscaling/v2beta2
+{{- end }}
+kind: HorizontalPodAutoscaler
+metadata:
+  name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: {{ $kind }}
+    name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
+  minReplicas: {{ $hpa.minReplicas | default 1 }}
+  maxReplicas: {{ $hpa.maxReplicas | default 1 }}
+  {{- if $hpa.extra }}{{ toYaml $hpa.extra | trim | nindent 2 }}{{ end }}
+  {{- if $hpa.metrics }}
+  metrics:
+  {{- toYaml $hpa.metrics | nindent 4 }}
+  {{- end }}
+{{- end }}
+
 {{- end }}
 {{- end }}
