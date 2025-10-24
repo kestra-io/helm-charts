@@ -29,6 +29,8 @@ common:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
+  autoscaler:
+    enabled: true
 deployments:
   standalone:
     revisionHistoryLimit: 5
@@ -56,6 +58,8 @@ deployments:
   worker:
     enabled: true
     kind: StatefulSet
+    autoscaler:
+      enabled: false
   webserver:
     enabled: false
 
@@ -70,6 +74,10 @@ workerGroups:
     - '--no-tutorials'
   test-002:
     enabled: true
+    autoscaler:
+      enabled: true
+      minReplicas: 3
+      maxReplicas: 6
 
 configurations:
   application:

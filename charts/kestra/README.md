@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.7](https://img.shields.io/badge/Version-1.0.7-informational?style=flat-square) ![AppVersion: v1.0.7](https://img.shields.io/badge/AppVersion-v1.0.7-informational?style=flat-square)
+![Version: 1.0.8](https://img.shields.io/badge/Version-1.0.8-informational?style=flat-square) ![AppVersion: v1.0.7](https://img.shields.io/badge/AppVersion-v1.0.7-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.7
+$ helm install my-kestra kestra/kestra --version 1.0.8
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -219,6 +219,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 |-----|------|---------|-------------|
 | common.affinity | object | `{}` | Affinity rules for pod scheduling. |
 | common.annotations | object | `{}` | Annotations applied to all resources. |
+| common.autoscaler | object | `{"enabled":false,"extra":{},"maxReplicas":3,"metrics":[],"minReplicas":1}` | Enabled or not horizontal autoscaling. |
 | common.extraContainers | list | `[]` | Additional sidecar containers. |
 | common.extraEnv | list | `[]` | Extra environment variables for containers. |
 | common.extraEnvFrom | list | `[]` | Import environment variables from ConfigMaps/Secrets. |
