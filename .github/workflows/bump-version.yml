@@ -43,6 +43,19 @@ jobs:
           echo "Detected chart version: ${LATEST_VERSION}"
           echo "Detected app version: ${CURRENT_APP_VERSION}"
 
+      - name: Check if target image exists on Docker Hub
+        id: check_image
+        run: |
+          NEW_APP_VER="${CLIENT_PAYLOAD_NEW_VERSION:-${INPUTS_NEW_VERSION}}"
+          IMAGE_NAME="kestra/kestra"
+          echo "Checking if image ${IMAGE_NAME}:${NEW_APP_VER} exists on Docker Hub..."
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${NEW_APP_VER}/")
+          if [ "$STATUS_CODE" -ne 200 ]; then
+            echo "Docker image ${IMAGE_NAME}:${NEW_APP_VER} does not exist on Docker Hub."
+            exit 1
+          else
+            echo "Docker image ${IMAGE_NAME}:${NEW_APP_VER} exists on Docker Hub."
+          fi
       - name: Skip if incoming version is not newer
         id: version-check
         run: |

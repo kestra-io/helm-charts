@@ -6,10 +6,6 @@ on:
       - master
     paths-ignore:
       - '.github/**'
-  pull_request:
-    branches:
-      - "**"
-
 jobs:
   build:
     name: Helm Publish
