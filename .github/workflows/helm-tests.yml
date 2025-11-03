@@ -9,6 +9,44 @@ on:
       - "**"
 
 jobs:
+  tests-helm-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Regenerate Helm docs
+        uses: losisin/helm-docs-github-action@v1
+        with:
+          git-push: false
+      - name: Check for changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Helm chart documentation is out of date. Please run helm-docs locally and commit the changes."
+            git status --porcelain
+            exit 1
+          else
+            echo "Helm chart documentation is up to date."
+          fi
+  tests-image-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Check if appVersion image exists
+        id: check_image
+        run: |
+          APP_VERSION=$(grep '^appVersion:' charts/kestra/Chart.yaml | awk '{print $2}' | tr -d '"')
+          echo "Detected appVersion: $APP_VERSION"
+          IMAGE_NAME="kestra/kestra"
+          echo "Checking if image $IMAGE_NAME:$APP_VERSION exists on Docker Hub..."
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${APP_VERSION}/")
+          if [ "$STATUS_CODE" -ne 200 ]; then
+            echo "Docker image ${IMAGE_NAME}:${APP_VERSION} does not exist on Docker Hub."
+            exit 1
+          else
+            echo "Docker image ${IMAGE_NAME}:${APP_VERSION} exists on Docker Hub."
+          fi
   tests-kestra:
     runs-on: ubuntu-latest
     steps:
