@@ -66,12 +66,12 @@ Create the name of the service account to use
 Create the content of MICRONAUT_CONFIG_FILES
 */}}
 {{- define "kestra.micronautConfigFiles" -}}
-{{- $files := list "/app/_default.yml" }}
+{{- $files := list "/app/confs/_default.yml" }}
 {{- range .Values.configurations.configmaps }}
-  {{- $files = append $files (printf "/app/%s" .key) }}
+  {{- $files = append $files (printf "/app/confs/%s" .key) }}
 {{- end }}
 {{- range .Values.configurations.secrets }}
-  {{- $files = append $files (printf "/app/%s" .key) }}
+  {{- $files = append $files (printf "/app/secrets/%s" .key) }}
 {{- end }}
 {{- join "," $files }}
 {{- end }}
