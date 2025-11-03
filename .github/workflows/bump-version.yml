@@ -63,8 +63,7 @@ jobs:
 
           if [ -z "${NEW_APP_VER}" ]; then
             echo "No new version provided — skipping workflow."
-            echo "SKIP_HELM_BUMP=true" >> $GITHUB_ENV
-            exit 0
+            exit 1
           fi
 
           echo "Comparing current appVersion ${CURRENT_APP_VERSION} with incoming version ${NEW_APP_VER}"
@@ -75,14 +74,12 @@ jobs:
 
           if [ "$HIGHEST" != "$NEW" ]; then
             echo "Incoming version is not newer — skipping Helm chart bump."
-            echo "SKIP_HELM_BUMP=true" >> $GITHUB_ENV
+            exit 1
           else
             echo "New version is greater — continuing with Helm chart update."
-            echo "SKIP_HELM_BUMP=false" >> $GITHUB_ENV
           fi
 
       - name: Compute next patch version
-        if: ${{ env.SKIP_HELM_BUMP != 'true' }}
         id: compute-next
         run: |
           IFS='.' read -r MAJOR MINOR PATCH <<< "${LATEST_VERSION}"
@@ -92,7 +89,6 @@ jobs:
           echo "Computed next chart version: ${LATEST_VERSION} -> ${NEXT_CHART_VERSION}"
 
       - name: Update Chart.yaml
-        if: ${{ env.SKIP_HELM_BUMP != 'true' }}
         id: update-chart
         run: |
           set -e
@@ -127,19 +123,17 @@ jobs:
           echo "COMMIT_MSG=${COMMIT_MSG}" >> $GITHUB_ENV
 
       - name: Regenerate Helm docs
-        if: ${{ env.SKIP_HELM_BUMP != 'true' }}
         uses: losisin/helm-docs-github-action@v1
         with:
           git-push: false
 
       - name: Commit changes
-        if: ${{ env.SKIP_HELM_BUMP != 'true' }}
         run: |
           git add "${CHART_FILE}" charts/kestra/README.md
           git commit -m "${COMMIT_MSG}" || echo "No changes to commit"
 
       - name: Create Pull Request
-        if: ${{ env.SKIP_HELM_BUMP != 'true' && env.NEXT_CHART_VERSION != '' }}
+        if: ${{ env.NEXT_CHART_VERSION != '' }}
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
