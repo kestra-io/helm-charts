@@ -6,7 +6,6 @@ on:
       - master
     paths-ignore:
       - '.github/**'
-
 jobs:
   build:
     name: Helm Publish

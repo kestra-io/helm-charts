@@ -132,8 +132,12 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- end }}
+      {{- $cname := printf "kestra-%s" $type }}
+      {{- if and (eq $type "worker") (ne $name "worker") }}
+      {{- $cname = printf "kestra-workergroup-%s" $name }}
+      {{- end }}
       containers:
-        - name: kestra-{{ $type }}
+        - name: "{{ $cname }}"
           image: "{{ $global.image.repository }}:{{ default $.Chart.AppVersion $global.image.tag }}"
           imagePullPolicy: {{ $global.image.pullPolicy }}
           {{- with (default $common.securityContext $content.securityContext) }}
@@ -202,18 +206,18 @@ spec:
             {{- end }}
           volumeMounts:
             - name: {{ template "kestra.fullname" $ }}-config
-              mountPath: /app/_default.yml
+              mountPath: /app/confs/_default.yml
               subPath: _default.yml
             {{- range $global.configurations.configmaps }}
             {{- $vname := printf "%s-%s" .name .key | replace "." "-" | kebabcase }}
             - name: {{ $vname }}
-              mountPath: /app/{{ .key }}
+              mountPath: /app/confs/{{ .key }}
               subPath: {{ .key }}
             {{- end }}
             {{- range $global.configurations.secrets }}
             {{- $vname := printf "%s-%s" .name .key | replace "." "-" | kebabcase }}
             - name: {{ $vname }}
-              mountPath: /app/{{ .key }}
+              mountPath: /app/secrets/{{ .key }}
               subPath: {{ .key }}
             {{- end }}
             {{- with $common.extraVolumeMounts }}
