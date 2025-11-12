@@ -147,6 +147,10 @@ common:
   # -- Additional sidecar containers.
   # @section -- common settings
   extraContainers: []
+  # -- Application configuration reloader if configmap changed.
+  # @section -- common settings
+  configmapReloader:
+    enabled: false
 
 ### -------------------------------
 ### Kestra settings

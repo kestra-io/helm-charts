@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.13](https://img.shields.io/badge/Version-1.0.13-informational?style=flat-square) ![AppVersion: v1.1.2](https://img.shields.io/badge/AppVersion-v1.1.2-informational?style=flat-square)
+![Version: 1.0.14](https://img.shields.io/badge/Version-1.0.14-informational?style=flat-square) ![AppVersion: v1.1.2](https://img.shields.io/badge/AppVersion-v1.1.2-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.13
+$ helm install my-kestra kestra/kestra --version 1.0.14
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -190,7 +190,10 @@ configurations:
 ```
 
 No need of taking care of `configurationPath:`; It's automatically managed by the chart.
+
 If you need to add extra environment variables from existing ConfigMaps or Secrets, you can still use `extraEnv` and `extraEnvFrom` under the `common` entry.
+
+If you want your deployment to restart if `configurations.application` change, you can enable the option `common.configmapReloader.enabled: true` (default to false).
 
 ### We upgrade also the way the dind is managed. It's now under the `dind` entry in the values.yaml.
 
@@ -220,6 +223,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | common.affinity | object | `{}` | Affinity rules for pod scheduling. |
 | common.annotations | object | `{}` | Annotations applied to all resources. |
 | common.autoscaler | object | `{"enabled":false,"extra":{},"maxReplicas":3,"metrics":[],"minReplicas":1}` | Enabled or not horizontal autoscaling. |
+| common.configmapReloader | object | `{"enabled":false}` | Application configuration reloader if configmap changed. |
 | common.extraContainers | list | `[]` | Additional sidecar containers. |
 | common.extraEnv | list | `[]` | Extra environment variables for containers. |
 | common.extraEnvFrom | list | `[]` | Import environment variables from ConfigMaps/Secrets. |
