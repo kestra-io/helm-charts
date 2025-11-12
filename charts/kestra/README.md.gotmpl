@@ -199,7 +199,10 @@ configurations:
 ```
 
 No need of taking care of `configurationPath:`; It's automatically managed by the chart.
+
 If you need to add extra environment variables from existing ConfigMaps or Secrets, you can still use `extraEnv` and `extraEnvFrom` under the `common` entry.
+
+If you want your deployment to restart if `configurations.application` change, you can enable the option `common.configmapReloader.enabled: true` (default to false).
 
 ### We upgrade also the way the dind is managed. It's now under the `dind` entry in the values.yaml.
 

@@ -72,6 +72,15 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
+        {{- $configmapReloaderEnabled := $common.configmapReloader.enabled -}}
+        {{- if hasKey $content "configmapReloader" -}}
+          {{- if hasKey $content.configmapReloader "enabled" -}}
+            {{- $configmapReloaderEnabled = $content.configmapReloader.enabled -}}
+          {{- end -}}
+        {{- end -}}
+        {{- if $configmapReloaderEnabled }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+        {{- end }}
         {{- with $common.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
