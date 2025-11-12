@@ -24,7 +24,11 @@
 apiVersion: apps/v1
 kind: {{ $kind }}
 metadata:
+  {{- if and (eq $type "worker") (ne $name "worker") }}
+  name: "{{ include "kestra.fullname" $ }}-workergroup-{{ $name }}"
+  {{- else }}
   name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
+  {{- end }}
   labels:
     {{- include "kestra.labels" $ | nindent 4 }}
     app.kubernetes.io/component: {{ $type }}
