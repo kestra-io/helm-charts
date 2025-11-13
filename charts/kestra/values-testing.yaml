@@ -2,6 +2,8 @@ image:
   tag: v0.24.1
 
 common:
+  configmapReloader:
+    enabled: true
   labels:
     app: kestra
     application/team: io.kestra
