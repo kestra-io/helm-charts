@@ -206,6 +206,10 @@ deployments:
     # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
+    dind:
+      # -- Enable dind sidecar in standalone deployment.
+      # @section -- kestra deployments
+      enabled: true
   webserver:
     # -- Enable webserver in distributed mode.
     # @section -- kestra deployments
