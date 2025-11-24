@@ -218,35 +218,35 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 
 ### common settings
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| common.affinity | object | `{}` | Affinity rules for pod scheduling. |
-| common.annotations | object | `{}` | Annotations applied to all resources. |
-| common.autoscaler | object | `{"enabled":false,"extra":{},"maxReplicas":3,"metrics":[],"minReplicas":1}` | Enabled or not horizontal autoscaling. |
-| common.configmapReloader | object | `{"enabled":false}` | Application configuration reloader if configmap changed. |
-| common.extraContainers | list | `[]` | Additional sidecar containers. |
-| common.extraEnv | list | `[]` | Extra environment variables for containers. |
-| common.extraEnvFrom | list | `[]` | Import environment variables from ConfigMaps/Secrets. |
-| common.extraVolumeMounts | list | `[]` | Extra volume mounts to add to containers. |
-| common.extraVolumes | list | `[]` | Extra volumes to add to pods. |
-| common.initContainers | list | `[]` | Additional init containers to run before main container. |
-| common.kind | string | `"Deployment"` | Kind of deployment (Deployment or StatefulSet). |
-| common.labels | object | `{}` | Labels applied to all resources. |
-| common.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/liveness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | Liveness probe configuration for container health checks. |
-| common.nodeSelector | object | `{}` | Node selector constraints for scheduling pods. |
-| common.podAnnotations | object | `{}` | Annotations applied specifically to pods. |
-| common.podLabels | object | `{}` | Labels applied specifically to pods. |
-| common.podSecurityContext | object | `{}` | Security context settings for pods. |
-| common.priorityClassName | string | `""` | Priority class for scheduling pods. |
+| Key | Type | Default                                                                                                                                                               | Description |
+|-----|------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| common.affinity | object | `{}`                                                                                                                                                                  | Affinity rules for pod scheduling. |
+| common.annotations | object | `{}`                                                                                                                                                                  | Annotations applied to all resources. |
+| common.autoscaler | object | `{"enabled":false,"extra":{},"maxReplicas":3,"metrics":[],"minReplicas":1}`                                                                                           | Enabled or not horizontal autoscaling. |
+| common.configmapReloader | object | `{"enabled":false}`                                                                                                                                                   | Application configuration reloader if configmap changed. |
+| common.extraContainers | list | `[]`                                                                                                                                                                  | Additional sidecar containers. |
+| common.extraEnv | list | `[]`                                                                                                                                                                  | Extra environment variables for containers. |
+| common.extraEnvFrom | list | `[]`                                                                                                                                                                  | Import environment variables from ConfigMaps/Secrets. |
+| common.extraVolumeMounts | list | `[]`                                                                                                                                                                  | Extra volume mounts to add to containers. |
+| common.extraVolumes | list | `[]`                                                                                                                                                                  | Extra volumes to add to pods. |
+| common.initContainers | list | `[]`                                                                                                                                                                  | Additional init containers to run before main container. |
+| common.kind | string | `"Deployment"`                                                                                                                                                        | Kind of deployment (Deployment or StatefulSet). |
+| common.labels | object | `{}`                                                                                                                                                                  | Labels applied to all resources. |
+| common.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/liveness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}`  | Liveness probe configuration for container health checks. |
+| common.nodeSelector | object | `{}`                                                                                                                                                                  | Node selector constraints for scheduling pods. |
+| common.podAnnotations | object | `{}`                                                                                                                                                                  | Annotations applied specifically to pods. |
+| common.podLabels | object | `{}`                                                                                                                                                                  | Labels applied specifically to pods. |
+| common.podSecurityContext | object | `{}`                                                                                                                                                                  | Security context settings for pods. |
+| common.priorityClassName | string | `""`                                                                                                                                                                  | Priority class for scheduling pods. |
 | common.readinessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/readiness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | Readiness probe configuration to determine pod availability. |
-| common.replicas | int | `1` | Number of pod replicas to run. |
-| common.resources | object | `{}` | Resource requests and limits for containers. |
-| common.revisionHistoryLimit | int | `10` | Number of old ReplicaSets to retain for rollback. |
-| common.securityContext | object | `{}` | Security context settings for containers. |
-| common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | Startup probe configuration to verify app starts correctly. |
-| common.strategy | object | `{}` | Deployment update strategy. |
-| common.terminationGracePeriodSeconds | int | `60` | Grace period for pod termination. |
-| common.tolerations | list | `[]` | Tolerations for scheduling pods on tainted nodes. |
+| common.replicas | int | `1`                                                                                                                                                                   | Number of pod replicas to run. |
+| common.resources | object | `{}`                                                                                                                                                                  | Resource requests and limits for containers. |
+| common.revisionHistoryLimit | int | `10`                                                                                                                                                                  | Number of old ReplicaSets to retain for rollback. |
+| common.securityContext | object | `{}`                                                                                                                                                                  | Security context settings for containers. |
+| common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}`         | Startup probe configuration to verify app starts correctly. |
+| common.strategy | object | `{}`                                                                                                                                                                  | Deployment update strategy. |
+| common.terminationGracePeriodSeconds | int | `360`                                                                                                                                                                 | Grace period for pod termination. |
+| common.tolerations | list | `[]`                                                                                                                                                                  | Tolerations for scheduling pods on tainted nodes. |
 
 ### kestra configurations
 
