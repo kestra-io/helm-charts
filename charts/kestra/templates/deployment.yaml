@@ -17,7 +17,7 @@
 {{- if and ($global.dind.enabled) (eq $type "worker") }}
 {{- $dind = true }}
 {{- end }}
-{{- if and ($global.dind.enabled) (eq $type "standalone") }}
+{{- if and ($global.dind.enabled) (eq $type "standalone") ($global.deployments.standalone.dind.enabled) }}
 {{- $dind = true }}
 {{- end }}
 {{- $kind := default $common.kind $content.kind }}

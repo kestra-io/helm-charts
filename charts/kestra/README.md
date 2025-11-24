@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.14](https://img.shields.io/badge/Version-1.0.14-informational?style=flat-square) ![AppVersion: v1.1.2](https://img.shields.io/badge/AppVersion-v1.1.2-informational?style=flat-square)
+![Version: 1.0.16](https://img.shields.io/badge/Version-1.0.16-informational?style=flat-square) ![AppVersion: v1.1.4](https://img.shields.io/badge/AppVersion-v1.1.4-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.14
+$ helm install my-kestra kestra/kestra --version 1.0.16
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -266,6 +266,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | deployments.indexer.extraArgs | list | `[]` | Extra arguments to pass to the container. |
 | deployments.scheduler.enabled | bool | `false` | Enable scheduler in distributed mode. |
 | deployments.scheduler.extraArgs | list | `[]` | Extra arguments to pass to the container. |
+| deployments.standalone.dind.enabled | bool | `true` | Enable dind sidecar in standalone deployment. |
 | deployments.standalone.enabled | bool | `true` | Enable standalone Kestra deployment. |
 | deployments.standalone.extraArgs | list | `[]` | Extra arguments to pass to the container. |
 | deployments.standalone.workerThreads | int | `0` | Number of worker threads for standalone deployment ; "0" to auto-configure based on CPU. |
