@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.16](https://img.shields.io/badge/Version-1.0.16-informational?style=flat-square) ![AppVersion: v1.1.4](https://img.shields.io/badge/AppVersion-v1.1.4-informational?style=flat-square)
+![Version: 1.0.17](https://img.shields.io/badge/Version-1.0.17-informational?style=flat-square) ![AppVersion: v1.1.4](https://img.shields.io/badge/AppVersion-v1.1.4-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.16
+$ helm install my-kestra kestra/kestra --version 1.0.17
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -245,7 +245,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | common.securityContext | object | `{}` | Security context settings for containers. |
 | common.startupProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health","port":"management"},"initialDelaySeconds":1,"periodSeconds":1,"successThreshold":1,"timeoutSeconds":1}` | Startup probe configuration to verify app starts correctly. |
 | common.strategy | object | `{}` | Deployment update strategy. |
-| common.terminationGracePeriodSeconds | int | `60` | Grace period for pod termination. |
+| common.terminationGracePeriodSeconds | int | `360` | Grace period for pod termination. |
 | common.tolerations | list | `[]` | Tolerations for scheduling pods on tainted nodes. |
 
 ### kestra configurations
