@@ -113,7 +113,7 @@ common:
   resources: {}
   # -- Grace period for pod termination.
   # @section -- common settings
-  terminationGracePeriodSeconds: 60
+  terminationGracePeriodSeconds: 360
   # -- Node selector constraints for scheduling pods.
   # @section -- common settings
   nodeSelector: {}
