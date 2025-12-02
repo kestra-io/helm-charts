@@ -25,8 +25,49 @@ entries:
         - title: Documentation
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
+    appVersion: v1.1.6
+    created: "2025-12-02T16:22:38.248997525Z"
+    description: Infinitely scalable, event-driven, language-agnostic orchestration
+      and scheduling platform to manage millions of workflows declaratively in code.
+    digest: c3ff081fe3526d7c7c9317a24a443c9927e44b006759e7081e5bc3d4cca66a52
+    home: https://kestra.io
+    icon: https://kestra.io/favicon-192x192.png
+    maintainers:
+    - email: tchiot.ludo@gmail.com
+      name: tchiotludo
+    name: kestra
+    sources:
+    - https://github.com/kestra-io/helm-charts
+    type: application
+    urls:
+    - kestra-1.0.19.tgz
+    version: 1.0.19
+  - annotations:
+      artifacthub.io/links: |
+        - name: Documentation
+          url: https://kestra.io/docs/
+      artifacthub.io/screenshots: |
+        - title: Home page
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/03-Homepage.png
+        - title: Flows list
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/04-Flows.png
+        - title: Flow page
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/05-Flows-Flow.png
+        - title: Execution list
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/08-Executions.png
+        - title: Execution page
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/09-Executions-Execution.png
+        - title: Execution gantt
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/27-Executions-Gantt.png
+        - title: Namespaces list
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/14-EE-Namespace.png
+        - title: Global logs
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/10-Logs.png
+        - title: Documentation
+          url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
+    apiVersion: v2
     appVersion: v1.1.5
-    created: "2025-11-26T08:11:37.606715043Z"
+    created: "2025-12-02T16:22:38.248022292Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 44ecb5a940c8efc892088a0be93ba096584c9fd190da259c1ec536a9e69dc7f6
@@ -67,7 +108,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.4
-    created: "2025-11-26T08:11:37.605768791Z"
+    created: "2025-12-02T16:22:38.24700972Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: a15b1918c0d101b89b80b6d81d469a5df4d11356f701ed064c27e9270cf9c31f
@@ -108,7 +149,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.4
-    created: "2025-11-26T08:11:37.604843107Z"
+    created: "2025-12-02T16:22:38.245926153Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: fa9f481a744aac9f10404478be8be76cb1ebee8fc25d86f1740dcbcc73237d41
@@ -149,7 +190,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.4
-    created: "2025-11-26T08:11:37.603857511Z"
+    created: "2025-12-02T16:22:38.244383348Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 81c9dbcbc5664df45fd7e77f149fd5498fc82663b79f28b1d06f98aae6ad3024
@@ -190,7 +231,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.2
-    created: "2025-11-26T08:11:37.602954459Z"
+    created: "2025-12-02T16:22:38.243134351Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 8cee64d300fe339983781284a4ada1178d76e0a79893b51f377f6429fffc71ee
@@ -231,7 +272,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.2
-    created: "2025-11-26T08:11:37.602009018Z"
+    created: "2025-12-02T16:22:38.242124454Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: b1e80bb6b4c2ae954ed5e82495c2a62fc46e6a75ad9d72868830a841c6ec1acc
@@ -272,7 +313,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.1
-    created: "2025-11-26T08:11:37.600298133Z"
+    created: "2025-12-02T16:22:38.241225485Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 430a40d4cef071b3675a6c62ca7ab6eec3c473d57d15ea322d09f3510ed21044
@@ -313,7 +354,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.0
-    created: "2025-11-26T08:11:37.599377269Z"
+    created: "2025-12-02T16:22:38.240319422Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 16ba16a63ce0fd2f1dd3cf021bb6d7b5d38e286e3e92b7c385bf87fd0ff11e94
@@ -354,7 +395,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.8
-    created: "2025-11-26T08:11:37.598405348Z"
+    created: "2025-12-02T16:22:38.239416857Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: bb0c04234b4c1a9b38a09df67741ff2a8fa42580b3e9b9aee807895bf72dab5a
@@ -395,7 +436,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.8
-    created: "2025-11-26T08:11:37.614825555Z"
+    created: "2025-12-02T16:22:38.257146691Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 1e2a0742dcc67243370d6135ec6fc1fe4b759117220a6ce283be4b01711d7065
@@ -436,7 +477,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.7
-    created: "2025-11-26T08:11:37.613791789Z"
+    created: "2025-12-02T16:22:38.25623657Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 23827679c6a9a4fdc03d2a737db141a3ee8b1c64a1e14e2381b98c454691abec
@@ -477,7 +518,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.7
-    created: "2025-11-26T08:11:37.612877156Z"
+    created: "2025-12-02T16:22:38.255323875Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 2b5aa44fdedaa8523503c16cae3589f695839e1090187b9a303fbdc6a305fd11
@@ -518,7 +559,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.6
-    created: "2025-11-26T08:11:37.612024949Z"
+    created: "2025-12-02T16:22:38.254429565Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 4eeb7d4723e49e22a842b99e3b0f5e106978d6828170ca3082e540836f1cc040
@@ -559,7 +600,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.5
-    created: "2025-11-26T08:11:37.611143248Z"
+    created: "2025-12-02T16:22:38.253483487Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 96b8a56f30a9441556976a0bf094a3e1907849454e3f4d9808b7042dde696d0a
@@ -600,7 +641,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.1
-    created: "2025-11-26T08:11:37.610246839Z"
+    created: "2025-12-02T16:22:38.251674324Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 3d981e5186790996ba017a688496e7f742144ee3501c0e27ac9ac113c55f76b6
@@ -641,7 +682,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.1
-    created: "2025-11-26T08:11:37.609320133Z"
+    created: "2025-12-02T16:22:38.250779784Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: ac43f0361c96558973c4d605d75341ca209df21a86e7844d75dd70c03c0bdfa2
@@ -682,7 +723,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-11-26T08:11:37.60762089Z"
+    created: "2025-12-02T16:22:38.249893348Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: f257b8767d61d96948934497ee91095f25920df9a1486c4838c796a77b6aab84
@@ -723,7 +764,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-11-26T08:11:37.597490615Z"
+    created: "2025-12-02T16:22:38.23846082Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 2ada7bcb08913797c14e94f565b83891abff3e71bec34cbfe0e0e52046172072
@@ -764,7 +805,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-11-26T08:11:37.596576472Z"
+    created: "2025-12-02T16:22:38.237571579Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
     digest: 742df8b9b846616c37db0960300cf3bfce8ace1375220cb063eae5303ba9afff
@@ -805,7 +846,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.24.4
-    created: "2025-11-26T08:11:37.535926197Z"
+    created: "2025-12-02T16:22:38.176595493Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -867,7 +908,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/docs/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.24.0
-    created: "2025-11-26T08:11:37.518208702Z"
+    created: "2025-12-02T16:22:38.158718167Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -929,7 +970,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.23.9
-    created: "2025-11-26T08:11:37.500816291Z"
+    created: "2025-12-02T16:22:38.140906729Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -991,7 +1032,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.23.5
-    created: "2025-11-26T08:11:37.481614634Z"
+    created: "2025-12-02T16:22:38.122961175Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1053,7 +1094,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.23.1
-    created: "2025-11-26T08:11:37.463519941Z"
+    created: "2025-12-02T16:22:38.10555078Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1115,7 +1156,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.23.0
-    created: "2025-11-26T08:11:37.445964319Z"
+    created: "2025-12-02T16:22:38.087901372Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1177,7 +1218,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.13
-    created: "2025-11-26T08:11:37.357025918Z"
+    created: "2025-12-02T16:22:37.999076051Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1239,7 +1280,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.12
-    created: "2025-11-26T08:11:37.339400241Z"
+    created: "2025-12-02T16:22:37.982384318Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1301,7 +1342,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.10
-    created: "2025-11-26T08:11:37.321773053Z"
+    created: "2025-12-02T16:22:37.963891476Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1363,7 +1404,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.9
-    created: "2025-11-26T08:11:37.427964373Z"
+    created: "2025-12-02T16:22:38.069911275Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1425,7 +1466,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.4
-    created: "2025-11-26T08:11:37.410271584Z"
+    created: "2025-12-02T16:22:38.052224041Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1487,7 +1528,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.3
-    created: "2025-11-26T08:11:37.392817611Z"
+    created: "2025-12-02T16:22:38.034122769Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1549,7 +1590,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.2
-    created: "2025-11-26T08:11:37.375128255Z"
+    created: "2025-12-02T16:22:38.016591839Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1611,7 +1652,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.1
-    created: "2025-11-26T08:11:37.304355821Z"
+    created: "2025-12-02T16:22:37.944564842Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1673,7 +1714,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.22.0
-    created: "2025-11-26T08:11:37.286656603Z"
+    created: "2025-12-02T16:22:37.927727695Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1735,7 +1776,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.11
-    created: "2025-11-26T08:11:37.12700206Z"
+    created: "2025-12-02T16:22:37.770225271Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1797,7 +1838,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.9
-    created: "2025-11-26T08:11:37.269458383Z"
+    created: "2025-12-02T16:22:37.909686079Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1859,7 +1900,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.8
-    created: "2025-11-26T08:11:37.251055302Z"
+    created: "2025-12-02T16:22:37.892007346Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1921,7 +1962,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.7
-    created: "2025-11-26T08:11:37.233351756Z"
+    created: "2025-12-02T16:22:37.87514669Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -1983,7 +2024,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.6
-    created: "2025-11-26T08:11:37.216172722Z"
+    created: "2025-12-02T16:22:37.857803693Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2045,7 +2086,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.5
-    created: "2025-11-26T08:11:37.198508081Z"
+    created: "2025-12-02T16:22:37.839706711Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2107,7 +2148,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.4
-    created: "2025-11-26T08:11:37.181093723Z"
+    created: "2025-12-02T16:22:37.821974272Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2169,7 +2210,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.3
-    created: "2025-11-26T08:11:37.162546419Z"
+    created: "2025-12-02T16:22:37.804697362Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2231,7 +2272,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.2
-    created: "2025-11-26T08:11:37.144246821Z"
+    created: "2025-12-02T16:22:37.787881317Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2293,7 +2334,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.21.0
-    created: "2025-11-26T08:11:37.109000079Z"
+    created: "2025-12-02T16:22:37.753100458Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2355,7 +2396,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.20.13
-    created: "2025-11-26T08:11:37.038797862Z"
+    created: "2025-12-02T16:22:37.681715161Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2417,7 +2458,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.20.12
-    created: "2025-11-26T08:11:37.021063047Z"
+    created: "2025-12-02T16:22:37.66398636Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2479,7 +2520,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.20.11
-    created: "2025-11-26T08:11:37.003578013Z"
+    created: "2025-12-02T16:22:37.647139259Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2541,7 +2582,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.20.10
-    created: "2025-11-26T08:11:36.985788121Z"
+    created: "2025-12-02T16:22:37.62899368Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2603,7 +2644,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.20.7
-    created: "2025-11-26T08:11:37.091170096Z"
+    created: "2025-12-02T16:22:37.734489149Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2665,7 +2706,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.20.6
-    created: "2025-11-26T08:11:37.073326772Z"
+    created: "2025-12-02T16:22:37.717085932Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2727,7 +2768,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.20.4
-    created: "2025-11-26T08:11:37.056417609Z"
+    created: "2025-12-02T16:22:37.699818884Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2789,7 +2830,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.20.0
-    created: "2025-11-26T08:11:36.966662997Z"
+    created: "2025-12-02T16:22:37.611285766Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2851,7 +2892,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v0.19.12
-    created: "2025-11-26T08:11:36.905610219Z"
+    created: "2025-12-02T16:22:37.552141031Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2913,7 +2954,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: 0.18.0
-    created: "2025-11-26T08:11:36.888655476Z"
+    created: "2025-12-02T16:22:37.534150286Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -2975,7 +3016,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: 0.17.0
-    created: "2025-11-26T08:11:36.870984748Z"
+    created: "2025-12-02T16:22:37.515947929Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3037,7 +3078,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: 0.16.0
-    created: "2025-11-26T08:11:36.857393851Z"
+    created: "2025-12-02T16:22:37.502595003Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3099,7 +3140,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: 0.15.0
-    created: "2025-11-26T08:11:36.843849378Z"
+    created: "2025-12-02T16:22:37.489839195Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3161,7 +3202,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: 0.14.0
-    created: "2025-11-26T08:11:36.83138558Z"
+    created: "2025-12-02T16:22:37.477377815Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3223,7 +3264,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v1
     appVersion: 0.13.0
-    created: "2025-11-26T08:11:36.818798514Z"
+    created: "2025-12-02T16:22:37.464321368Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3285,7 +3326,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v1
     appVersion: 0.11.0
-    created: "2025-11-26T08:11:36.805721621Z"
+    created: "2025-12-02T16:22:37.451405771Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3350,7 +3391,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.5.1
-    created: "2025-11-26T08:11:37.59567811Z"
+    created: "2025-12-02T16:22:38.236676527Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3415,7 +3456,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.5.0
-    created: "2025-11-26T08:11:37.583455597Z"
+    created: "2025-12-02T16:22:38.223487646Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3476,7 +3517,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.4
-    created: "2025-11-26T08:11:37.573978028Z"
+    created: "2025-12-02T16:22:38.214035801Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3537,7 +3578,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.3
-    created: "2025-11-26T08:11:37.564786117Z"
+    created: "2025-12-02T16:22:38.205058573Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3598,7 +3639,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.4.2
-    created: "2025-11-26T08:11:37.555712732Z"
+    created: "2025-12-02T16:22:38.196108165Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3659,7 +3700,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/master/docs/user-interface-guide/assets/12.png
     apiVersion: v1
     appVersion: 0.3.1
-    created: "2025-11-26T08:11:36.94900982Z"
+    created: "2025-12-02T16:22:37.593563162Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3689,7 +3730,7 @@ entries:
     version: 0.2.6
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.943299243Z"
+    created: "2025-12-02T16:22:37.588121377Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3708,7 +3749,7 @@ entries:
     version: 0.2.5
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.936521467Z"
+    created: "2025-12-02T16:22:37.581791842Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3727,7 +3768,7 @@ entries:
     version: 0.2.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.930393259Z"
+    created: "2025-12-02T16:22:37.575741721Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3746,7 +3787,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.923841256Z"
+    created: "2025-12-02T16:22:37.569225071Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3765,7 +3806,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.918480365Z"
+    created: "2025-12-02T16:22:37.563884256Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3784,7 +3825,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.91176336Z"
+    created: "2025-12-02T16:22:37.557425821Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3803,7 +3844,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.792005722Z"
+    created: "2025-12-02T16:22:37.438825343Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3822,7 +3863,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.787844585Z"
+    created: "2025-12-02T16:22:37.434704585Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3841,7 +3882,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.784617568Z"
+    created: "2025-12-02T16:22:37.43147699Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3860,7 +3901,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.781336332Z"
+    created: "2025-12-02T16:22:37.427287241Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3879,7 +3920,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2025-11-26T08:11:36.777220915Z"
+    created: "2025-12-02T16:22:37.424040821Z"
     dependencies:
     - condition: elasticsearch.enabled
       name: elasticsearch
@@ -3927,10 +3968,10 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-11-26T08:11:37.615442661Z"
+    created: "2025-12-02T16:22:38.257680253Z"
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
-    digest: c556d6fddfcc6a9f574962b4e7529318f831131bb4b4415d6b43ebfa7ff4f06e
+    digest: 49da23a1a41843753bc3fd65ea57f41df1ad4f7f8e07512603edcbaf209df682
     home: https://kestra.io
     icon: https://kestra.io/favicon-192x192.png
     maintainers:
@@ -3969,7 +4010,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.5
-    created: "2025-11-26T08:11:37.633948204Z"
+    created: "2025-12-02T16:22:38.275810159Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -3982,7 +4023,7 @@ entries:
       version: 1.0.18
     description: Infinitely scalable, event-driven, language-agnostic orchestration
       and scheduling platform to manage millions of workflows declaratively in code.
-    digest: dd70727f75841a22070b4391acd16deee2a1d0187bfba7e3e1f47fed6a7c927e
+    digest: 4d38598a6b276caf8c0094001a429031c23a0b9128c19c3df0175da983a3457c
     home: https://kestra.io
     icon: https://kestra.io/favicon-192x192.png
     maintainers:
@@ -4020,7 +4061,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.4
-    created: "2025-11-26T08:11:37.62969504Z"
+    created: "2025-12-02T16:22:38.272544683Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4071,7 +4112,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.2
-    created: "2025-11-26T08:11:37.626458107Z"
+    created: "2025-12-02T16:22:38.269258689Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4122,7 +4163,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.2
-    created: "2025-11-26T08:11:37.662660458Z"
+    created: "2025-12-02T16:22:38.305588017Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4173,7 +4214,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.1
-    created: "2025-11-26T08:11:37.659386095Z"
+    created: "2025-12-02T16:22:38.301332476Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4224,7 +4265,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.1.0
-    created: "2025-11-26T08:11:37.655046028Z"
+    created: "2025-12-02T16:22:38.29798698Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4275,7 +4316,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.8
-    created: "2025-11-26T08:11:37.651736539Z"
+    created: "2025-12-02T16:22:38.293821383Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4326,7 +4367,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.7
-    created: "2025-11-26T08:11:37.647712963Z"
+    created: "2025-12-02T16:22:38.290550928Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4377,7 +4418,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.6
-    created: "2025-11-26T08:11:37.644479025Z"
+    created: "2025-12-02T16:22:38.286924547Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4428,7 +4469,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.1
-    created: "2025-11-26T08:11:37.640431248Z"
+    created: "2025-12-02T16:22:38.283202363Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4479,7 +4520,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-11-26T08:11:37.637205957Z"
+    created: "2025-12-02T16:22:38.279955813Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4530,7 +4571,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-11-26T08:11:37.622469667Z"
+    created: "2025-12-02T16:22:38.26512356Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4581,7 +4622,7 @@ entries:
           url: https://raw.githubusercontent.com/kestra-io/kestra.io/main/public/docs/user-interface-guide/12-Documentations-Plugins-Plugin.png
     apiVersion: v2
     appVersion: v1.0.0
-    created: "2025-11-26T08:11:37.619271376Z"
+    created: "2025-12-02T16:22:38.261899993Z"
     dependencies:
     - name: postgres
       repository: https://groundhog2k.github.io/helm-charts/
@@ -4607,4 +4648,4 @@ entries:
     urls:
     - kestra-starter-1.0.0.tgz
     version: 1.0.0
-generated: "2025-11-26T08:11:36.773694956Z"
+generated: "2025-12-02T16:22:37.419634804Z"
