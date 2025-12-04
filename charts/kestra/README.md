@@ -230,7 +230,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | common.extraVolumeMounts | list | `[]` | Extra volume mounts to add to containers. |
 | common.extraVolumes | list | `[]` | Extra volumes to add to pods. |
 | common.initContainers | list | `[]` | Additional init containers to run before main container. |
-| common.jvm.forceActiveProcessors | object | `{"count":"auto","enabled":false}` | Sometimes you can have problems with cgroup and cpu limits, then you can force the JVM to use a specific number of processors. |
+| common.jvm.forceActiveProcessors | object | `{"count":"auto","enabled":false,"value":2}` | Sometimes you can have problems with cgroup and cpu limits, then you can force the JVM to use a specific number of processors. |
 | common.kind | string | `"Deployment"` | Kind of deployment (Deployment or StatefulSet). |
 | common.labels | object | `{}` | Labels applied to all resources. |
 | common.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/liveness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | Liveness probe configuration for container health checks. |
@@ -348,6 +348,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| common.jvm.extraOpts | string | `""` |  |
 | common.updateStrategy | object | `{}` | StatefulSet update strategy. |
 | extraManifests | list | `[]` | Extra Kubernetes manifests to deploy with the chart. |
 | fullnameOverride | string | `""` |  |
