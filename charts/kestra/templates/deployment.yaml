@@ -185,7 +185,7 @@ spec:
             - name: MICRONAUT_CONFIG_FILES
               value: {{ include "kestra.micronautConfigFiles" $ | quote }}
             - name: KESTRA_JAVA_OPTS
-              value: ""
+              value: {{ include "kestra.jvmOpts" (dict "common" $common "content" $content) | quote }}
             {{- with $common.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
