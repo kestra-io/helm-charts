@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.19](https://img.shields.io/badge/Version-1.0.19-informational?style=flat-square) ![AppVersion: v1.1.6](https://img.shields.io/badge/AppVersion-v1.1.6-informational?style=flat-square)
+![Version: 1.0.20](https://img.shields.io/badge/Version-1.0.20-informational?style=flat-square) ![AppVersion: v1.1.6](https://img.shields.io/badge/AppVersion-v1.1.6-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.19
+$ helm install my-kestra kestra/kestra --version 1.0.20
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -230,6 +230,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | common.extraVolumeMounts | list | `[]` | Extra volume mounts to add to containers. |
 | common.extraVolumes | list | `[]` | Extra volumes to add to pods. |
 | common.initContainers | list | `[]` | Additional init containers to run before main container. |
+| common.jvm.forceActiveProcessors | object | `{"count":"auto","enabled":false}` | Sometimes you can have problems with cgroup and cpu limits, then you can force the JVM to use a specific number of processors. |
 | common.kind | string | `"Deployment"` | Kind of deployment (Deployment or StatefulSet). |
 | common.labels | object | `{}` | Labels applied to all resources. |
 | common.livenessProbe | object | `{"failureThreshold":3,"httpGet":{"path":"/health/liveness","port":"management"},"initialDelaySeconds":0,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | Liveness probe configuration for container health checks. |
