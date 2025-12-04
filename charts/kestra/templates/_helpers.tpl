@@ -88,3 +88,83 @@ Usage:
         {{- tpl (.value | toYaml) .context }}
     {{- end }}
 {{- end -}}
+
+
+{{- define "kestra.jvmOpts" -}}
+{{- $common := .common -}}
+{{- $content := .content -}}
+
+{{- /* extraOpts : common then override per component */ -}}
+{{- $commonJvm := default (dict) $common.jvm -}}
+{{- $contentJvm := default (dict) $content.jvm -}}
+{{- $extraCommon := default "" $commonJvm.extraOpts -}}
+{{- $extraContent := default "" $contentJvm.extraOpts -}}
+{{- $extra := default $extraCommon $extraContent -}}
+
+{{- $active := include "kestra.activeProcessorCount" (dict "common" $common "content" $content) | trim -}}
+
+{{- if and $active $extra }}
+-XX:ActiveProcessorCount={{ $active }} {{ $extra }}
+{{- else if $active }}
+-XX:ActiveProcessorCount={{ $active }}
+{{- else -}}
+{{- $extra -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "kestra.activeProcessorCount" -}}
+{{- $common := .common -}}
+{{- $content := .content -}}
+
+{{- /* JVM config: common, puis override par composant */ -}}
+{{- $commonJvm := default (dict) $common.jvm -}}
+{{- $contentJvm := default (dict) $content.jvm -}}
+
+{{- $forceCommon := default (dict) $commonJvm.forceActiveProcessors -}}
+{{- $forceContent := default (dict) $contentJvm.forceActiveProcessors -}}
+
+{{- /* Si le composant a une config, on la prend, sinon on tombe sur common */ -}}
+{{- $forceCfg := ternary $forceContent $forceCommon (not (empty $forceContent)) -}}
+
+{{- if not $forceCfg.enabled -}}
+{{- /* pas activé -> rien */ -}}
+{{- else -}}
+
+  {{- if eq $forceCfg.count "value" -}}
+    {{- printf "%d" (int $forceCfg.value) -}}
+
+  {{- else if eq $forceCfg.count "auto" -}}
+
+    {{- /* resources : common puis override par composant */ -}}
+    {{- $resCommon := default (dict) $common.resources -}}
+    {{- $resContent := default (dict) $content.resources -}}
+    {{- $res := default $resCommon $resContent -}}
+    {{- $limits := default (dict) $res.limits -}}
+    {{- $cpuLimit := default "" $limits.cpu -}}
+
+    {{- if ne $cpuLimit "" -}}
+      {{- /* Case 1250m, 500m, etc. */ -}}
+      {{- if hasSuffix "m" $cpuLimit -}}
+        {{- $milli := trimSuffix "m" $cpuLimit | int -}}
+        {{- $cpus := div $milli 1000 -}}
+        {{- if lt $cpus 1 }}{{- $cpus = 1 }}{{- end -}}
+        {{- printf "%d" $cpus -}}
+
+      {{- /* Case 0.5, 1.5, etc. */ -}}
+      {{- else if contains "." $cpuLimit -}}
+        {{- $f := float64 $cpuLimit -}}
+        {{- $cpus := ceil $f | int -}}
+        {{- if lt $cpus 1 }}{{- $cpus = 1 }}{{- end -}}
+        {{- printf "%d" $cpus -}}
+
+      {{- /* Case "1", "2", "8", etc. */ -}}
+      {{- else -}}
+        {{- $cpus := $cpuLimit | int -}}
+        {{- if lt $cpus 1 }}{{- $cpus = 1 }}{{- end -}}
+        {{- printf "%d" $cpus -}}
+      {{- end -}}
+    {{- end -}}
+
+  {{- end -}}
+{{- end -}}
+{{- end -}}
