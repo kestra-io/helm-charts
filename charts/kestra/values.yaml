@@ -158,6 +158,8 @@ common:
       enabled: false
       count: 'auto' # 'auto' or 'value'
       value: 2 # used if count is 'value'
+    # extraOpts is empty to keep the value deterministic
+    extraOpts: ""
 ### -------------------------------
 ### Kestra settings
 ### -------------------------------
