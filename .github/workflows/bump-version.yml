@@ -43,6 +43,18 @@ jobs:
           echo "Detected chart version: ${LATEST_VERSION}"
           echo "Detected app version: ${CURRENT_APP_VERSION}"
 
+      - name: Validate appVersion format
+        id: validate-format
+        run: |
+          NEW_APP_VER="${CLIENT_PAYLOAD_NEW_VERSION:-${INPUTS_NEW_VERSION}}"
+
+          if [[ ! "$NEW_APP_VER" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Error: appVersion '$NEW_APP_VER' is invalid. Must be in format vX.Y.Z (e.g., v1.2.3)."
+            exit 1
+          else
+            echo "appVersion format valid: $NEW_APP_VER"
+          fi
+
       - name: Skip if incoming version is not newer
         id: version-check
         run: |
