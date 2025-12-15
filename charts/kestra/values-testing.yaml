@@ -4,6 +4,9 @@ image:
 common:
   configmapReloader:
     enabled: true
+  jvm:
+    forceActiveProcessors:
+      enabled: true
   labels:
     app: kestra
     application/team: io.kestra
@@ -42,6 +45,7 @@ deployments:
         cpu: 500m
         memory: 2Gi
       limits:
+        cpu: '3'
         memory: 2Gi
     extraArgs:
       - '--no-tutorials'
@@ -60,6 +64,9 @@ deployments:
   worker:
     enabled: true
     kind: StatefulSet
+    jvm:
+      forceActiveProcessors:
+        enabled: false
     autoscaler:
       enabled: false
   webserver:
