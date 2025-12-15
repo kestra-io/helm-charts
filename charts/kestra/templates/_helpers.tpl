@@ -103,9 +103,9 @@ Usage:
 
 {{- $active := include "kestra.activeProcessorCount" (dict "common" $common "content" $content) | trim -}}
 
-{{- if and $active $extra }}
+{{- if and $active $extra -}}
 -XX:ActiveProcessorCount={{ $active }} {{ $extra }}
-{{- else if $active }}
+{{- else if $active -}}
 -XX:ActiveProcessorCount={{ $active }}
 {{- else -}}
 {{- $extra -}}
@@ -116,18 +116,18 @@ Usage:
 {{- $common := .common -}}
 {{- $content := .content -}}
 
-{{- /* JVM config: common, puis override par composant */ -}}
+{{- /* JVM config: common, then override per component */ -}}
 {{- $commonJvm := default (dict) $common.jvm -}}
 {{- $contentJvm := default (dict) $content.jvm -}}
 
 {{- $forceCommon := default (dict) $commonJvm.forceActiveProcessors -}}
 {{- $forceContent := default (dict) $contentJvm.forceActiveProcessors -}}
 
-{{- /* Si le composant a une config, on la prend, sinon on tombe sur common */ -}}
+{{- /* If the component has a config, take it, otherwise fall back to common */ -}}
 {{- $forceCfg := ternary $forceContent $forceCommon (not (empty $forceContent)) -}}
 
 {{- if not $forceCfg.enabled -}}
-{{- /* pas activé -> rien */ -}}
+{{- /* not activated then nothing */ -}}
 {{- else -}}
 
   {{- if eq $forceCfg.count "value" -}}
@@ -135,7 +135,7 @@ Usage:
 
   {{- else if eq $forceCfg.count "auto" -}}
 
-    {{- /* resources : common puis override par composant */ -}}
+    {{- /* resources : common then override per component */ -}}
     {{- $resCommon := default (dict) $common.resources -}}
     {{- $resContent := default (dict) $content.resources -}}
     {{- $res := default $resCommon $resContent -}}
