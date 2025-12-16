@@ -5,12 +5,12 @@ metadata:
   labels:
     app: {{ include "kestra-operator.fullname" . }}
     {{- with .Values.labels }}
-      {{- toYaml . | nindent 8 }}
-      {{- end }}
-    annotations:
-      {{- with .Values.annotations }}
-      {{- toYaml . | nindent 8 }}
-      {{- end }}
+    {{- toYaml . | nindent 8 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 8 }}
+    {{- end }}
 spec:
   replicas: 1
   {{- if .Values.revisionHistoryLimit }}
