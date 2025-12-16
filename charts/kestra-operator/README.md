@@ -26,7 +26,7 @@
 
 # kestra-operator
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: v1.0.0](https://img.shields.io/badge/AppVersion-v1.0.0-informational?style=flat-square)
+![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square) ![AppVersion: v1.0.0](https://img.shields.io/badge/AppVersion-v1.0.0-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra-operator`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra-operator kestra/kestra-operator --version 1.0.0
+$ helm install my-kestra-operator kestra/kestra-operator --version 1.0.1
 ```
 
 ## Values
