@@ -151,7 +151,15 @@ common:
   # @section -- common settings
   configmapReloader:
     enabled: false
-
+  jvm:
+    # -- Sometimes you can have problems with cgroup and cpu limits, then you can force the JVM to use a specific number of processors.
+    # @section -- common settings
+    forceActiveProcessors:
+      enabled: false
+      count: 'auto' # 'auto' or 'value'
+      value: 2 # used if count is 'value'
+    # extraOpts is empty to keep the value deterministic
+    extraOpts: ""
 ### -------------------------------
 ### Kestra settings
 ### -------------------------------

@@ -39,6 +39,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
+    kestra.io/component: {{ $type }}
     {{- with $common.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -184,6 +185,8 @@ spec:
           env:
             - name: MICRONAUT_CONFIG_FILES
               value: {{ include "kestra.micronautConfigFiles" $ | quote }}
+            - name: KESTRA_JAVA_OPTS
+              value: {{ include "kestra.jvmOpts" (dict "common" $common "content" $content) | replace "\n" " " | trim | quote }}
             {{- with $common.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
