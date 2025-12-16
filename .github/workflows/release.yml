@@ -2,10 +2,9 @@ name: Helm Publish
 
 on:
   push:
-    branches:
-      - master
-    paths-ignore:
-      - '.github/**'
+    tags:
+      - v*
+
 jobs:
   build:
     name: Helm Publish
