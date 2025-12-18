@@ -27,6 +27,12 @@ jobs:
           mkdir -p .cr-release-packages
           helm package charts/kestra -d .cr-release-packages
           helm package charts/kestra-operator -d .cr-release-packages
+
+      - name: Configure git identity for commits
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Publish (upload + index)
         uses: helm/chart-releaser-action@v1.7.0
         env:
@@ -81,6 +87,12 @@ jobs:
           rm -rf .cr-release-packages
           mkdir -p .cr-release-packages
           helm package charts/kestra-starter -d .cr-release-packages
+
+      - name: Configure git identity for commits
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Publish (upload + index)
         uses: helm/chart-releaser-action@v1.7.0
         env:
