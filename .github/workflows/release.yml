@@ -12,11 +12,13 @@ jobs:
   publish_core_and_operator:
     name: Publish kestra + kestra-operator
     runs-on: ubuntu-latest
-    # env:
-    #   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Setup Helm
         uses: azure/setup-helm@v4
       - name: Package kestra + kestra-operator
@@ -32,9 +34,13 @@ jobs:
         with:
           charts_dir: charts
           skip_packaging: true
+          pages_branch: gh-pages
       - name: Slack notification
         uses: 8398a7/action-slack@v3
         if: ${{ always() && env.SLACK_WEBHOOK_URL != 0 }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           status: ${{ job.status }}
           job_name: Helm Publish
@@ -42,9 +48,6 @@ jobs:
           username: GitHub Actions
           icon_emoji: ':github-actions:'
           channel: 'C02DQ1A7JLR'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   publish_starter:
     name: Publish kestra-starter
     runs-on: ubuntu-latest
@@ -52,6 +55,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Setup Helm
         uses: azure/setup-helm@v4
       - name: Update dependencies (retry until kestra version appears)
@@ -83,9 +88,13 @@ jobs:
         with:
           charts_dir: charts
           skip_packaging: true
+          pages_branch: gh-pages
       - name: Slack notification
         uses: 8398a7/action-slack@v3
         if: ${{ always() && env.SLACK_WEBHOOK_URL != 0 }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           status: ${{ job.status }}
           job_name: Helm Publish
@@ -93,6 +102,3 @@ jobs:
           username: GitHub Actions
           icon_emoji: ':github-actions:'
           channel: 'C02DQ1A7JLR'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
