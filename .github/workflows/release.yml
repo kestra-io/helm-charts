@@ -5,112 +5,86 @@ on:
     tags:
       - v*
 
-permissions:
-  contents: write
-
 jobs:
-  publish_core_and_operator:
-    name: Publish kestra + kestra-operator
+  publish_core:
+    name: Helm Publish (kestra + operator)
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - name: Setup Helm
-        uses: azure/setup-helm@v4
-      - name: Package kestra + kestra-operator
-        run: |
-          rm -rf .cr-release-packages
-          mkdir -p .cr-release-packages
-          helm package charts/kestra -d .cr-release-packages
-          helm package charts/kestra-operator -d .cr-release-packages
 
-      - name: Configure git identity for commits
+      - name: Prepare charts (core + operator)
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          rm -rf .charts-core
+          mkdir -p .charts-core
+          cp -R charts/kestra .charts-core/
+          cp -R charts/kestra-operator .charts-core/
 
-      - name: Publish (upload + index)
-        uses: helm/chart-releaser-action@v1.7.0
-        env:
-          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish core charts to gh-pages
+        uses: J12934/helm-gh-pages-action@v2.0.0
         with:
-          charts_dir: charts
-          skip_packaging: true
-          pages_branch: gh-pages
+          access-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          charts-folder: ".charts-core"
+          deploy-branch: gh-pages
+
       - name: Slack notification
         uses: 8398a7/action-slack@v3
         if: ${{ always() && env.SLACK_WEBHOOK_URL != 0 }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           status: ${{ job.status }}
-          job_name: Helm Publish
+          job_name: Helm Publish (core)
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           username: GitHub Actions
           icon_emoji: ':github-actions:'
           channel: 'C02DQ1A7JLR'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
   publish_starter:
-    name: Publish kestra-starter
+    name: Helm Publish (kestra-starter)
     runs-on: ubuntu-latest
-    needs: publish_core_and_operator
+    needs: publish_core
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - name: Setup Helm
-        uses: azure/setup-helm@v4
-      - name: Update dependencies (retry until kestra version appears)
+      - name: Wait for kestra repo to be updated
         run: |
           helm repo add kestra https://helm.kestra.io/
-          helm repo add groundhog2k https://groundhog2k.github.io/helm-charts/
-          helm repo add minio https://charts.min.io/
-
           for i in {1..18}; do
             helm repo update
-            if helm dependency update charts/kestra-starter; then
-              exit 0
-            fi
-            echo "kestra not visible yet in helm.kestra.io (attempt $i) — retrying..."
-            sleep 60
+            # Just checking the repo answers; dependency update below is the real gate.
+            helm search repo kestra/kestra >/dev/null 2>&1 && break
+            sleep 10
           done
 
-          echo "Dependency update failed after retries."
-          exit 1
-      - name: Package kestra-starter
+      - name: Prepare charts (starter only)
         run: |
-          rm -rf .cr-release-packages
-          mkdir -p .cr-release-packages
-          helm package charts/kestra-starter -d .cr-release-packages
+          rm -rf .charts-starter
+          mkdir -p .charts-starter
+          cp -R charts/kestra-starter .charts-starter/
 
-      - name: Configure git identity for commits
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Publish (upload + index)
-        uses: helm/chart-releaser-action@v1.7.0
-        env:
-          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish starter chart to gh-pages
+        uses: J12934/helm-gh-pages-action@v2.0.0
         with:
-          charts_dir: charts
-          skip_packaging: true
-          pages_branch: gh-pages
+          access-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          charts-folder: ".charts-starter"
+          deploy-branch: gh-pages
+
       - name: Slack notification
         uses: 8398a7/action-slack@v3
         if: ${{ always() && env.SLACK_WEBHOOK_URL != 0 }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           status: ${{ job.status }}
-          job_name: Helm Publish
+          job_name: Helm Publish (starter)
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           username: GitHub Actions
           icon_emoji: ':github-actions:'
           channel: 'C02DQ1A7JLR'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
