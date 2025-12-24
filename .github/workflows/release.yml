@@ -33,12 +33,19 @@ jobs:
           cp -R charts/kestra .cr-charts/
           cp -R charts/kestra-operator .cr-charts/
 
+      - name: Workaround for manual tagging
+        run: |
+          echo "Current tag is ${{ github.ref_name }}"
+          echo "Deleting current tag locally so 'cr' compares HEAD against the previous tag..."
+          git tag -d ${{ github.ref_name }}
+
       - name: Publish (upload + index)
         uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: .cr-charts
           pages_branch: gh-pages
           packages_with_index: true
+          skip_existing: true
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
