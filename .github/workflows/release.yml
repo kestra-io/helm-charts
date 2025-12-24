@@ -26,12 +26,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Build release charts dir (kestra + operator only)
+      # - name: Build release charts dir (kestra + operator only)
+      #   run: |
+      #     rm -rf .cr-charts
+      #     mkdir -p .cr-charts
+      #     cp -R charts/kestra .cr-charts/
+      #     cp -R charts/kestra-operator .cr-charts/
+
+      # This leaves 'kestra' and 'kestra-operator' in the valid 'charts/' git path
+      - name: Prepare charts directory
         run: |
-          rm -rf .cr-charts
-          mkdir -p .cr-charts
-          cp -R charts/kestra .cr-charts/
-          cp -R charts/kestra-operator .cr-charts/
+          # Remove kestra-starter so it is not processed in this job
+          rm -rf charts/kestra-starter
 
       - name: Workaround for manual tagging
         run: |
@@ -42,7 +48,7 @@ jobs:
       - name: Publish (upload + index)
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: .cr-charts
+          charts_dir: charts
           pages_branch: gh-pages
           packages_with_index: true
           skip_existing: true
@@ -108,19 +114,24 @@ jobs:
           done
           exit 1
 
-      - name: Build release charts dir (starter only)
+      - name: Prepare charts directory (starter only)
         run: |
-          rm -rf .cr-charts
-          mkdir -p .cr-charts
-          cp -R charts/kestra-starter .cr-charts/
+          rm -rf charts/kestra
+          rm -rf charts/kestra-operator
+      - name: Workaround for manual tagging
+        run: |
+          echo "Current tag is ${{ github.ref_name }}"
+          echo "Deleting current tag locally so 'cr' compares HEAD against the previous tag..."
+          git tag -d ${{ github.ref_name }}
 
       - name: Publish (upload + index)
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: .cr-charts
+          charts_dir: charts
           pages_branch: gh-pages
           packages_with_index: true
           push: true
+          skip_existing: true
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
