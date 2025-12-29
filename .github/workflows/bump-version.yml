@@ -18,11 +18,12 @@ permissions:
 env:
   CI_COMMIT_AUTHOR: bump-version-wf
   CI_COMMIT_EMAIL: actions@github.com
+
+  # Branch naming
   HELM_BRANCH_MERGE: "feat-helm/update-to-"
 
   # Files
   KESTRA_CHART_FILE: charts/kestra/Chart.yaml
-  KESTRA_VALUES_FILE: charts/kestra/values.yaml
   STARTER_CHART_FILE: charts/kestra-starter/Chart.yaml
 
   # Inputs
@@ -47,14 +48,17 @@ jobs:
           KESTRA_LATEST_VERSION=$(yq eval '.version' "${KESTRA_CHART_FILE}")
           CURRENT_APP_VERSION=$(yq eval '.appVersion' "${KESTRA_CHART_FILE}")
           STARTER_LATEST_VERSION=$(yq eval '.version' "${STARTER_CHART_FILE}")
+          STARTER_CURRENT_APP_VERSION=$(yq eval '.appVersion' "${STARTER_CHART_FILE}")
 
           echo "KESTRA_LATEST_VERSION=${KESTRA_LATEST_VERSION}" >> $GITHUB_ENV
           echo "CURRENT_APP_VERSION=${CURRENT_APP_VERSION}" >> $GITHUB_ENV
           echo "STARTER_LATEST_VERSION=${STARTER_LATEST_VERSION}" >> $GITHUB_ENV
+          echo "STARTER_CURRENT_APP_VERSION=${STARTER_CURRENT_APP_VERSION}" >> $GITHUB_ENV
 
           echo "Detected kestra chart version: ${KESTRA_LATEST_VERSION}"
           echo "Detected kestra app version: ${CURRENT_APP_VERSION}"
           echo "Detected starter chart version: ${STARTER_LATEST_VERSION}"
+          echo "Detected starter app version: ${STARTER_CURRENT_APP_VERSION}"
 
       - name: Resolve incoming version
         id: resolve-version
@@ -88,7 +92,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          echo "Comparing current appVersion ${CURRENT_APP_VERSION} with incoming version ${NEW_APP_VER}"
+          echo "Comparing current kestra appVersion ${CURRENT_APP_VERSION} with incoming version ${NEW_APP_VER}"
 
           CUR="${CURRENT_APP_VERSION#v}"
           NEW="${NEW_APP_VER#v}"
@@ -102,7 +106,6 @@ jobs:
           echo "New version is greater — continuing with Helm chart update."
 
       - name: Check if target image exists on Docker Hub
-        if: false
         id: check_image
         run: |
           set -euo pipefail
@@ -128,7 +131,7 @@ jobs:
           K_NEXT_PAT=$((K_PAT + 1))
           NEXT_KESTRA_CHART_VERSION="${K_MAJ}.${K_MIN}.${K_NEXT_PAT}"
 
-          # kestra-starter
+          # starter
           IFS='.' read -r S_MAJ S_MIN S_PAT <<< "${STARTER_LATEST_VERSION}"
           S_NEXT_PAT=$((S_PAT + 1))
           NEXT_STARTER_CHART_VERSION="${S_MAJ}.${S_MIN}.${S_NEXT_PAT}"
@@ -137,9 +140,9 @@ jobs:
           echo "NEXT_STARTER_CHART_VERSION=${NEXT_STARTER_CHART_VERSION}" >> $GITHUB_ENV
 
           echo "Computed kestra chart version: ${KESTRA_LATEST_VERSION} -> ${NEXT_KESTRA_CHART_VERSION}"
-          echo "Computed kestra-starter chart version: ${STARTER_LATEST_VERSION} -> ${NEXT_STARTER_CHART_VERSION}"
+          echo "Computed starter chart version: ${STARTER_LATEST_VERSION} -> ${NEXT_STARTER_CHART_VERSION}"
 
-      - name: Update charts (kestra + kestra-starter)
+      - name: Update charts (kestra + starter)
         id: update-charts
         run: |
           set -euo pipefail
@@ -147,27 +150,24 @@ jobs:
           git config user.name "${CI_COMMIT_AUTHOR}"
           git config user.email "${CI_COMMIT_EMAIL}"
 
+          # Safety: ensure starter has a 'kestra' dependency entry
+          if ! yq e '.dependencies[].name' "${STARTER_CHART_FILE}" | grep -qx 'kestra'; then
+            echo "Error: No dependency named 'kestra' found in ${STARTER_CHART_FILE}"
+            exit 1
+          fi
+
+          # --- Update kestra chart ---
           yq e -i ".appVersion = \"${NEW_APP_VER}\"" "${KESTRA_CHART_FILE}"
           yq e -i ".version = \"${NEXT_KESTRA_CHART_VERSION}\"" "${KESTRA_CHART_FILE}"
 
-          # Ensure docker tag matches appVersion (common place: values.yaml image.tag)
-          if yq e '.image.tag' "${KESTRA_VALUES_FILE}" >/dev/null 2>&1; then
-            yq e -i ".image.tag = \"${NEW_APP_VER}\"" "${KESTRA_VALUES_FILE}"
-          else
-            echo "Warning: ${KESTRA_VALUES_FILE} has no .image.tag key; skipping image tag update."
-          fi
-
+          # --- Update starter chart ---
           yq e -i ".version = \"${NEXT_STARTER_CHART_VERSION}\"" "${STARTER_CHART_FILE}"
           yq e -i ".appVersion = \"${NEW_APP_VER}\"" "${STARTER_CHART_FILE}"
 
-          if yq e '.dependencies' "${STARTER_CHART_FILE}" >/dev/null 2>&1; then
-            yq e -i '
-              (.dependencies[] | select(.name == "kestra") | .version) = "'"${NEXT_KESTRA_CHART_VERSION}"'"
-            ' "${STARTER_CHART_FILE}"
-          else
-            echo "Warning: No dependencies section found in ${STARTER_CHART_FILE}; cannot update kestra dependency."
-            exit 1
-          fi
+          # Update dependency version for kestra inside starter Chart.yaml
+          yq e -i '
+            (.dependencies[] | select(.name == "kestra") | .version) = "'"${NEXT_KESTRA_CHART_VERSION}"'"
+          ' "${STARTER_CHART_FILE}"
 
           COMMIT_MSG="Helm: kestra ${KESTRA_LATEST_VERSION}->${NEXT_KESTRA_CHART_VERSION}, starter ${STARTER_LATEST_VERSION}->${NEXT_STARTER_CHART_VERSION}, appVersion ${NEW_APP_VER}"
 
@@ -184,7 +184,6 @@ jobs:
           set -euo pipefail
           git add \
             "${KESTRA_CHART_FILE}" \
-            "${KESTRA_VALUES_FILE}" \
             "${STARTER_CHART_FILE}" \
             charts/kestra/README.md \
             charts/kestra-starter/README.md
@@ -205,7 +204,6 @@ jobs:
             - Old version: **${{ env.KESTRA_LATEST_VERSION }}**
             - New version: **${{ env.NEXT_KESTRA_CHART_VERSION }}**
             - appVersion: **${{ env.COMPUTED_APP_VERSION }}**
-            - image.tag: **${{ env.COMPUTED_APP_VERSION }}**
 
             **Kestra Starter chart (`charts/kestra-starter`)**
             - Old version: **${{ env.STARTER_LATEST_VERSION }}**
