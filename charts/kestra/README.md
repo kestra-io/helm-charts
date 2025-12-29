@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.25](https://img.shields.io/badge/Version-1.0.25-informational?style=flat-square) ![AppVersion: v1.1.11](https://img.shields.io/badge/AppVersion-v1.1.11-informational?style=flat-square)
+![Version: 1.0.26](https://img.shields.io/badge/Version-1.0.26-informational?style=flat-square) ![AppVersion: v1.1.12](https://img.shields.io/badge/AppVersion-v1.1.12-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.25
+$ helm install my-kestra kestra/kestra --version 1.0.26
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -306,7 +306,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 |-----|------|---------|-------------|
 | image.pullPolicy | string | `"IfNotPresent"` | Policy for pulling container images (Always, IfNotPresent, Never). |
 | image.repository | string | `"kestra/kestra"` | Image repository to use for deploying kestra. |
-| image.tag | string | `""` | Overrides the image tag (defaults to chart appVersion). |
+| image.tag | string | `"v1.1.12"` | Overrides the image tag (defaults to chart appVersion). |
 | imagePullSecrets | list | `[]` | References to secrets for pulling images from private registries. |
 
 ### kubernetes ingress

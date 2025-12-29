@@ -1,11 +1,9 @@
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
-
 ### -------------------------------
 ### Image settings
 ### -------------------------------
-
 image:
   # -- Image repository to use for deploying kestra.
   # @section -- image settings
@@ -15,7 +13,7 @@ image:
   pullPolicy: IfNotPresent
   # -- Overrides the image tag (defaults to chart appVersion).
   # @section -- image settings
-  tag: ""
+  tag: "v1.1.12"
 # -- References to secrets for pulling images from private registries.
 # @section -- image settings
 imagePullSecrets: []
@@ -24,7 +22,6 @@ imagePullSecrets: []
 ### -------------------------------
 ### Common settings
 ### -------------------------------
-
 common:
   # -- Kind of deployment (Deployment or StatefulSet).
   # @section -- common settings
@@ -180,11 +177,9 @@ configurations:
   # secrets:
   #   - name: kestra-basic-auth
   #     key: basic-auth.yml
-
 ### -------------------------------
 ### kestra service account
 ### -------------------------------
-
 serviceAccount:
   # -- Specifies whether to create a ServiceAccount.
   # @section -- kubernetes serviceAccount
@@ -198,11 +193,9 @@ serviceAccount:
   # -- Name of the ServiceAccount to use.
   # @section -- kubernetes serviceAccount
   name: ""
-
 ### -------------------------------
 ### kestra deployments
 ### -------------------------------
-
 deployments:
   standalone:
     # -- Enable standalone Kestra deployment.
@@ -256,7 +249,6 @@ deployments:
     # -- Extra arguments to pass to the container.
     # @section -- kestra deployments
     extraArgs: []
-
 # -- EE only - Define additional worker groups with custom settings.
 # @section -- kestra workerGroups
 workerGroups: {}
@@ -270,7 +262,6 @@ workerGroups: {}
 ### -------------------------------
 ### kestra service
 ### -------------------------------
-
 service:
   # -- Kubernetes Service type (ClusterIP, NodePort, LoadBalancer).
   # @section -- kestra service
@@ -296,11 +287,9 @@ service:
       containerPort: 8081
       targetPort: management
       protocol: TCP
-
 ### -------------------------------
 ### kestra dind
 ### -------------------------------
-
 dind:
   # -- Enable Docker-in-Docker (dind) sidecar.
   # @section -- kestra dind
@@ -356,7 +345,6 @@ dind:
   # -- Extra environment variables for dind container.
   # @section -- kestra dind
   extraEnv: []
-
 ### -------------------------------
 ### Ingress
 ### -------------------------------
@@ -378,7 +366,6 @@ ingress:
   # -- TLS configuration for Ingress.
   # @section -- kubernetes ingress
   tls: []
-
 ### -------------------------------
 ### Extra Kubernetes Manifests
 ### -------------------------------

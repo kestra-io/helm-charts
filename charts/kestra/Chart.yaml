@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
-version: "1.0.25"
-appVersion: "v1.1.11"
+version: "1.0.26"
+appVersion: "v1.1.12"
 name: kestra
 description: Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 home: https://kestra.io
