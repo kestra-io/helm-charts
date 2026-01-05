@@ -1,0 +1,40 @@
+{{- if .Values.httpRoute.enabled -}}
+{{ $merged := (merge (dict "Component" "httpRoute") $) -}}
+{{- $fullName := include "kestra.fullname" (merge (dict "Component" "httpRoute") $) -}}
+{{- $fullNameService := include "kestra.fullname" (merge (dict "Component" "service") $) -}}
+{{- $svcPort := .Values.service.ports.http.port }}
+apiVersion: {{ .Values.httpRoute.apiVersion }}
+kind: {{ .Values.httpRoute.kind }}
+metadata:
+  name: {{ $fullName }}
+  labels:
+{{ include "kestra.labels" $merged | indent 4 }}
+  {{- with .Values.httpRoute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.httpRoute.parentRefs }}
+  parentRefs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.httpRoute.hostnames }}
+  hostnames:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rules:
+    {{- if .Values.httpRoute.additionalRules }}
+      {{- toYaml .Values.httpRoute.additionalRules | nindent 4 }}
+    {{- end }}
+    - backendRefs:
+        - name: {{ $fullNameService }}
+          port: {{ $svcPort }}
+      {{- with .Values.httpRoute.filters }}
+      filters:
+        {{- toYaml | nindent 8 }}
+      {{- end }}
+      {{- with .Values.httpRoute.matches }}
+      matches:
+        {{- toYaml | nindent 8 }}
+      {{- end }}
+{{- end }}
