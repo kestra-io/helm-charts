@@ -26,64 +26,52 @@ postgres:
     password:
       value: "ChangeMe#1234"
 
-minio:
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  fullnameOverride: "kestra-starter-minio"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  mode: "standalone"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  rootUser: "root"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  rootPassword: "SuperChangeMe#1234"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  replicas: 1
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  resources: {}
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  deploymentUpdate:
-    type: "Recreate"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  users:
-    - accessKey: "console"
-      secretKey: "console-1234"
-      policy: "consoleAdmin"
-    - accessKey: "kestra"
-      secretKey: "kestra-1234"
-      policy: "KestraWritePolicy"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  policies:
-    - name: KestraWritePolicy
-      statements:
-        - effect: Allow
-          resources:
-            - 'arn:aws:s3:::kestra/*'
-          actions:
-            - "s3:*"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  buckets:
-    - name: "kestra"
-      policy: "public"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  svcaccts:
-    - accessKey: "kestra-svcacct"
-      secretKey: "kestra-svcacct-1234"
-      user: "kestra"
-  resources:
-    requests:
-      memory: 2Gi
-  persistence:
-    size: 10Gi
+seaweedfs:
+  # -- see https://artifacthub.io/packages/helm/seaweedfs/seaweedfs for all available configurations
+  # @section -- SeaweedFS Configuration
+  fullnameOverride: "kestra-starter-seaweed"
+  image:
+    tag: "3.99"  # Match app version from chart
+  
+  # Enable just what we need for S3 emulation
+  master:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+  
+  volume:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+    persistence:
+      enabled: true
+      size: 10Gi
+  
+  filer:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+    s3:
+      enabled: true
+      port: 8333
+      enableAuth: true
+      defaultCredentials:
+        accessKey: "kestra"
+        secretKey: "kestra-1234"
+      policies:
+        - name: "KestraWritePolicy"
+          statements:
+            - effect: "Allow"
+              resources:
+                - "arn:aws:s3:::kestra/*"
+              actions:
+                - "s3:*"
+      buckets:
+        - name: "kestra"
+          policy: "public"
 
 kestra:
   # -- see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations
@@ -118,8 +106,8 @@ kestra:
         storage:
           type: 'minio'
           minio:
-            endpoint: 'kestra-starter-minio'
-            port: '9000'
+            endpoint: 'kestra-starter-seaweed-filer'
+            port: '8333'
             access-key: 'kestra'
             secret-key: 'kestra-1234'
             secure: 'false'
