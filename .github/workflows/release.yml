@@ -2,52 +2,164 @@ name: Helm Publish
 
 on:
   push:
-    branches:
-      - master
-    paths-ignore:
-      - '.github/**'
+    tags:
+      - v*
+
+permissions:
+  contents: write
+
 jobs:
-  build:
-    name: Helm Publish
+  publish_core_and_operator:
+    name: Publish kestra + kestra-operator
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      # # Copy for helm
-      # - name: Add some files
-      #   run: |
-      #     cp LICENSE charts/kestra/LICENSE
-      #     cp README.md charts/kestra/README.md
-
-      # Better to switch to this one in the near future
-      # - name: Helm Chart Releaser
-      #   uses: helm/chart-releaser-action@v1.6.0
-      #   with:
-      #     charts_dir: "charts"
-      #     pages_branch: gh-pages
-      #   env:
-      #     CR_TOKEN: "${{ secrets.GITHUB_ACCESS_TOKEN }}"
-
-      - uses: J12934/helm-gh-pages-action@v2.0.0
+      - uses: actions/checkout@v5
         with:
-          access-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-          charts-folder: "charts"
-          deploy-branch: gh-pages
+          fetch-depth: 0
 
-      # Slack
+      - run: git fetch origin gh-pages:refs/remotes/origin/gh-pages
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # - name: Build release charts dir (kestra + operator only)
+      #   run: |
+      #     rm -rf .cr-charts
+      #     mkdir -p .cr-charts
+      #     cp -R charts/kestra .cr-charts/
+      #     cp -R charts/kestra-operator .cr-charts/
+
+      # This leaves 'kestra' and 'kestra-operator' in the valid 'charts/' git path
+      - name: Prepare charts directory
+        run: |
+          # Remove kestra-starter so it is not processed in this job
+          rm -rf charts/kestra-starter
+
+      - name: Workaround for manual tagging
+        run: |
+          echo "Current tag is ${{ github.ref_name }}"
+          echo "Deleting current tag locally so 'cr' compares HEAD against the previous tag..."
+          git tag -d ${{ github.ref_name }}
+
+      - name: Publish (upload + index)
+        uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: charts
+          pages_branch: gh-pages
+          packages_with_index: true
+          skip_existing: true
+        env:
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Assert index.yaml uses Pages URLs (no GitHub Releases links)
+        run: |
+          set -euo pipefail
+          rm -rf .gh-pages
+          git fetch origin gh-pages:refs/remotes/origin/gh-pages
+          git worktree add .gh-pages origin/gh-pages
+
+          if grep -R "/releases/download/" -n .gh-pages/index.yaml; then
+            echo "ERROR: gh-pages/index.yaml contains GitHub Releases URLs."
+            echo "This would break the expected https://helm.kestra.io/<chart>.tgz style."
+            exit 1
+          fi
+
+          echo "OK: index.yaml does not contain GitHub Releases URLs."
+
       - name: Slack notification
         uses: 8398a7/action-slack@v3
         if: ${{ always() && env.SLACK_WEBHOOK_URL != 0 }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           status: ${{ job.status }}
-          job_name: Helm Publish
+          job_name: Helm Publish (core)
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           username: GitHub Actions
           icon_emoji: ':github-actions:'
           channel: 'C02DQ1A7JLR'
+
+  publish_starter:
+    name: Publish kestra-starter
+    runs-on: ubuntu-latest
+    needs: publish_core_and_operator
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - run: git fetch origin gh-pages:refs/remotes/origin/gh-pages
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update deps (retry)
+        run: |
+          helm repo add kestra https://helm.kestra.io/
+          helm repo add groundhog2k https://groundhog2k.github.io/helm-charts/
+          helm repo add minio https://charts.min.io/
+          for i in {1..18}; do
+            helm repo update
+            helm dependency update charts/kestra-starter && exit 0
+            sleep 10
+          done
+          exit 1
+
+      - name: Prepare charts directory (starter only)
+        run: |
+          rm -rf charts/kestra
+          rm -rf charts/kestra-operator
+      - name: Workaround for manual tagging
+        run: |
+          echo "Current tag is ${{ github.ref_name }}"
+          echo "Deleting current tag locally so 'cr' compares HEAD against the previous tag..."
+          git tag -d ${{ github.ref_name }}
+
+      - name: Publish (upload + index)
+        uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: charts
+          pages_branch: gh-pages
+          packages_with_index: true
+          push: true
+          skip_existing: true
+        env:
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Assert index.yaml uses Pages URLs (no GitHub Releases links)
+        run: |
+          set -euo pipefail
+          rm -rf .gh-pages
+          git fetch origin gh-pages:refs/remotes/origin/gh-pages
+          git worktree add .gh-pages origin/gh-pages
+
+          if grep -R "/releases/download/" -n .gh-pages/index.yaml; then
+            echo "ERROR: gh-pages/index.yaml contains GitHub Releases URLs."
+            echo "This would break the expected https://helm.kestra.io/<chart>.tgz style."
+            exit 1
+          fi
+
+          echo "OK: index.yaml does not contain GitHub Releases URLs."
+
+      - name: Slack notification
+        uses: 8398a7/action-slack@v3
+        if: ${{ always() && env.SLACK_WEBHOOK_URL != 0 }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          status: ${{ job.status }}
+          job_name: Helm Publish (starter)
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          username: GitHub Actions
+          icon_emoji: ':github-actions:'
+          channel: 'C02DQ1A7JLR'

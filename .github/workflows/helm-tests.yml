@@ -4,9 +4,11 @@ permissions:
   contents: read
 
 on:
+  pull_request: {}
   push:
     branches:
-      - "**"
+      - master
+      - main
 
 jobs:
   tests-helm-docs:
@@ -63,6 +65,12 @@ jobs:
         run: |
           helm template charts/kestra -f charts/kestra/values-testing.yaml --validate=false > output.yaml
           kubeconform -strict -summary output.yaml
+      # because of a recent bug we disable this part
+      # helm-unittest/helm-unittest#790
+      # - name: Run unittests
+      #   run: |
+      #     helm plugin install https://github.com/helm-unittest/helm-unittest.git
+      #     helm unittest charts/kestra
   tests-kestra-starter:
     runs-on: ubuntu-latest
     steps:
