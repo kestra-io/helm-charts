@@ -26,7 +26,7 @@
 
 # kestra-starter
 
-![Version: 1.0.19](https://img.shields.io/badge/Version-1.0.19-informational?style=flat-square) ![AppVersion: v1.1.13](https://img.shields.io/badge/AppVersion-v1.1.13-informational?style=flat-square)
+![Version: 1.0.20](https://img.shields.io/badge/Version-1.0.20-informational?style=flat-square) ![AppVersion: v1.2.0](https://img.shields.io/badge/AppVersion-v1.2.0-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra-starter`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra-starter kestra/kestra-starter --version 1.0.19
+$ helm install my-kestra-starter kestra/kestra-starter --version 1.0.20
 ```
 
 ## Requirements
@@ -47,7 +47,7 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 1.0.19
 |------------|------|---------|
 | https://charts.min.io/ | minio | 5.4.0 |
 | https://groundhog2k.github.io/helm-charts/ | postgres | 1.5.7 |
-| https://helm.kestra.io/ | kestra | 1.0.27 |
+| https://helm.kestra.io/ | kestra | 1.0.28 |
 
 ## Values
 
