@@ -26,7 +26,7 @@
 
 # kestra-starter
 
-![Version: 1.0.20](https://img.shields.io/badge/Version-1.0.20-informational?style=flat-square) ![AppVersion: v1.2.0](https://img.shields.io/badge/AppVersion-v1.2.0-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![AppVersion: v1.2.0](https://img.shields.io/badge/AppVersion-v1.2.0-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,14 +38,13 @@ To install the chart with the release name `my-kestra-starter`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra-starter kestra/kestra-starter --version 1.0.20
+$ helm install my-kestra-starter kestra/kestra-starter --version 1.1.0
 ```
 
 ## Requirements
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.min.io/ | minio | 5.4.0 |
 | https://groundhog2k.github.io/helm-charts/ | postgres | 1.5.7 |
 | https://helm.kestra.io/ | kestra | 1.0.28 |
 
@@ -55,26 +54,10 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 1.0.20
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| kestra.common | object | `{"revisionHistoryLimit":5}` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
-| kestra.configurations | object | `{"application":{"datasources":{"postgres":{"driverClassName":"org.postgresql.Driver","password":"ChangeMe#1234","url":"jdbc:postgresql://kestra-starter-postgres:5432/kestra","username":"kestra"}},"kestra":{"queue":{"type":"postgres"},"repository":{"type":"postgres"},"storage":{"minio":{"access-key":"kestra","bucket":"kestra","endpoint":"kestra-starter-minio","port":"9000","secret-key":"kestra-1234","secure":"false"},"type":"minio"},"tutorialFlows":{"enabled":true}}}}` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
+| kestra.common | object | `{"configmapReloader":{"enabled":true},"initContainers":[{"args":["set -euo pipefail\necho \"waiting for versitygw...\"\nfor i in $(seq 1 60); do\n  echo \"attempt $i...\"\n  aws --endpoint-url \"$S3_ENDPOINT_URL\" s3api list-buckets >/dev/null 2>&1 && break\n  sleep 2\ndone\naws --endpoint-url \"$S3_ENDPOINT_URL\" s3api head-bucket --bucket \"$BUCKET\" >/dev/null 2>&1 \\\n  || aws --endpoint-url \"$S3_ENDPOINT_URL\" s3 mb \"s3://$BUCKET\"\n"],"command":["sh","-lc"],"env":[{"name":"AWS_ACCESS_KEY_ID","valueFrom":{"secretKeyRef":{"key":"ROOT_ACCESS_KEY","name":"versitygw-root"}}},{"name":"AWS_SECRET_ACCESS_KEY","valueFrom":{"secretKeyRef":{"key":"ROOT_SECRET_KEY","name":"versitygw-root"}}},{"name":"AWS_DEFAULT_REGION","value":"eu-west-1"},{"name":"S3_ENDPOINT_URL","value":"http://versitygw:7070"},{"name":"BUCKET","value":"kestra"}],"image":"amazon/aws-cli:2.15.57","name":"ensure-kestra-bucket"}],"revisionHistoryLimit":5}` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
+| kestra.configurations | object | `{"application":{"datasources":{"postgres":{"driverClassName":"org.postgresql.Driver","password":"ChangeMe#1234","url":"jdbc:postgresql://kestra-starter-postgres:5432/kestra","username":"kestra"}},"kestra":{"queue":{"type":"postgres"},"repository":{"type":"postgres"},"storage":{"s3":{"access-key":"kestra","bucket":"kestra","endpoint":"http://versitygw:7070","force-path-style":true,"region":"eu-west-1","secret-key":"ChangeMe#1234"},"type":"s3"},"tutorialFlows":{"enabled":true}}}}` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
 | kestra.dind | object | `{"enabled":true,"mode":"insecure"}` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
 | kestra.fullnameOverride | string | `"kestra-starter"` | see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations |
-
-### MinIO Configuration
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| minio.buckets | list | `[{"name":"kestra","policy":"public"}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.deploymentUpdate | object | `{"type":"Recreate"}` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.fullnameOverride | string | `"kestra-starter-minio"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.mode | string | `"standalone"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.policies | list | `[{"name":"KestraWritePolicy","statements":[{"actions":["s3:*"],"effect":"Allow","resources":["arn:aws:s3:::kestra/*"]}]}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.replicas | int | `1` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.resources | object | `{}` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.rootPassword | string | `"SuperChangeMe#1234"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.rootUser | string | `"root"` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.svcaccts | list | `[{"accessKey":"kestra-svcacct","secretKey":"kestra-svcacct-1234","user":"kestra"}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
-| minio.users | list | `[{"accessKey":"console","policy":"consoleAdmin","secretKey":"console-1234"},{"accessKey":"kestra","policy":"KestraWritePolicy","secretKey":"kestra-1234"}]` | see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations |
 
 ### PostgreSQL Configuration
 
@@ -90,8 +73,11 @@ $ helm install my-kestra-starter kestra/kestra-starter --version 1.0.20
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| minio.persistence.size | string | `"10Gi"` |  |
-| minio.resources.requests.memory | string | `"2Gi"` |  |
+| s3Emulator.image.repository | string | `"versity/versitygw"` |  |
+| s3Emulator.image.tag | string | `"v1.1.0"` |  |
+| s3Emulator.sidecar.enabled | bool | `false` |  |
+| s3Emulator.sidecar.size | string | `"10Gi"` |  |
+| s3Emulator.storage.size | string | `"20Gi"` |  |
 
 ## Documentation
 * Full documentation can be found under [kestra.io/docs](https://kestra.io/docs)
