@@ -26,7 +26,7 @@
 
 # kestra-operator
 
-![Version: 1.0.2](https://img.shields.io/badge/Version-1.0.2-informational?style=flat-square) ![AppVersion: v1.0.0](https://img.shields.io/badge/AppVersion-v1.0.0-informational?style=flat-square)
+![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![AppVersion: v1.0.0](https://img.shields.io/badge/AppVersion-v1.0.0-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra-operator`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra-operator kestra/kestra-operator --version 1.0.2
+$ helm install my-kestra-operator kestra/kestra-operator --version 1.0.3
 ```
 
 ## Values
@@ -47,8 +47,8 @@ $ helm install my-kestra-operator kestra/kestra-operator --version 1.0.2
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | annotations | object | `{}` |  |
-| configuration.kestra.apiKey | object | `{"fromSecret":{"key":"","name":""},"value":"[your-api-key]"}` | This is the Kestra API Key the operator will use to authenticate against the Kestra API. |
-| configuration.kestra.basicAuth | object | `{"fromSecret":{"key":"","name":""},"value":"[your-basic-auth]"}` | This is the Kestra API Basic Auth the operator will use to authenticate against the Kestra API. |
+| configuration.kestra.apiKey | object | `{"enabled":true,"fromSecret":{"key":"","name":""},"value":"[your-api-key]"}` | This is the Kestra API Key the operator will use to authenticate against the Kestra API. |
+| configuration.kestra.basicAuth | object | `{"enabled":false,"fromSecret":{"key":"","name":""},"value":"[your-basic-auth]"}` | This is the Kestra API Basic Auth the operator will use to authenticate against the Kestra API. |
 | configuration.kestra.url | string | `"http://my-kestra:8081"` | This is the Kestra API URL the operator will connect to. |
 | extraEnv | list | `[]` | Extra environment variables for containers |
 | extraEnvFrom | list | `[]` | Import environment variables from ConfigMaps/Secrets |

@@ -14,12 +14,14 @@ configuration:
     url: http://my-kestra:8081
     # -- This is the Kestra API Key the operator will use to authenticate against the Kestra API.
     apiKey:
+      enabled: true
       value: "[your-api-key]" # Not secure: use fromSecret instead
       fromSecret:
         name: ""
         key: ""
     # -- This is the Kestra API Basic Auth the operator will use to authenticate against the Kestra API.
     basicAuth:
+      enabled: false
       value: "[your-basic-auth]" # Not secure: use fromSecret instead
       fromSecret:
         name: ""
