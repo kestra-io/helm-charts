@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
-version: "1.0.20"
-appVersion: "v1.2.0"
+version: "1.1.1"
+appVersion: "v1.2.1"
 name: kestra-starter
 description: Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 home: https://kestra.io
@@ -38,9 +38,6 @@ dependencies:
   - name: postgres
     repository: https://groundhog2k.github.io/helm-charts/
     version: "1.5.7"
-  - name: minio
-    repository: https://charts.min.io/
-    version: "5.4.0"
   - name: kestra
     repository: https://helm.kestra.io/
-    version: "1.0.28"
+    version: "1.0.29"

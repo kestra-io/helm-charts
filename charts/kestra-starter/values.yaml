@@ -26,65 +26,16 @@ postgres:
     password:
       value: "ChangeMe#1234"
 
-minio:
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  fullnameOverride: "kestra-starter-minio"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  mode: "standalone"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  rootUser: "root"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  rootPassword: "SuperChangeMe#1234"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  replicas: 1
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  resources: {}
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  deploymentUpdate:
-    type: "Recreate"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  users:
-    - accessKey: "console"
-      secretKey: "console-1234"
-      policy: "consoleAdmin"
-    - accessKey: "kestra"
-      secretKey: "kestra-1234"
-      policy: "KestraWritePolicy"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  policies:
-    - name: KestraWritePolicy
-      statements:
-        - effect: Allow
-          resources:
-            - 'arn:aws:s3:::kestra/*'
-          actions:
-            - "s3:*"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  buckets:
-    - name: "kestra"
-      policy: "public"
-  # -- see https://artifacthub.io/packages/helm/minio-official/minio for all available configurations
-  # @section -- MinIO Configuration
-  svcaccts:
-    - accessKey: "kestra-svcacct"
-      secretKey: "kestra-svcacct-1234"
-      user: "kestra"
-  resources:
-    requests:
-      memory: 2Gi
-  persistence:
+s3Emulator:
+  image:
+    repository: "versity/versitygw"
+    tag: "v1.1.0"
+  storage:
+    size: 20Gi
+  sidecar:
+    enabled: false
     size: 10Gi
-
+  
 kestra:
   # -- see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations
   # @section -- Kestra Configuration
@@ -93,6 +44,40 @@ kestra:
   # @section -- Kestra Configuration
   common:
     revisionHistoryLimit: 5
+    configmapReloader:
+      enabled: true
+    initContainers:
+    - name: ensure-kestra-bucket
+      image: amazon/aws-cli:2.15.57
+      command: ["sh","-lc"]
+      env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: versitygw-root
+              key: ROOT_ACCESS_KEY
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: versitygw-root
+              key: ROOT_SECRET_KEY
+        - name: AWS_DEFAULT_REGION
+          value: "eu-west-1"
+        - name: S3_ENDPOINT_URL
+          value: "http://versitygw:7070"
+        - name: BUCKET
+          value: "kestra"
+      args:
+        - |
+          set -euo pipefail
+          echo "waiting for versitygw..."
+          for i in $(seq 1 60); do
+            echo "attempt $i..."
+            aws --endpoint-url "$S3_ENDPOINT_URL" s3api list-buckets >/dev/null 2>&1 && break
+            sleep 2
+          done
+          aws --endpoint-url "$S3_ENDPOINT_URL" s3api head-bucket --bucket "$BUCKET" >/dev/null 2>&1 \
+            || aws --endpoint-url "$S3_ENDPOINT_URL" s3 mb "s3://$BUCKET"
   # -- see https://artifacthub.io/packages/helm/kestra/kestra for all available configurations
   # @section -- Kestra Configuration
   dind:
@@ -116,11 +101,11 @@ kestra:
         repository:
           type: 'postgres'
         storage:
-          type: 'minio'
-          minio:
-            endpoint: 'kestra-starter-minio'
-            port: '9000'
-            access-key: 'kestra'
-            secret-key: 'kestra-1234'
-            secure: 'false'
-            bucket: 'kestra'
+          type: s3
+          s3:
+            endpoint: "http://versitygw:7070"
+            region: "eu-west-1"
+            bucket: "kestra"
+            access-key: "kestra"
+            secret-key: "ChangeMe#1234"
+            force-path-style: true
