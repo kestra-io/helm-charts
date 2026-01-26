@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.29](https://img.shields.io/badge/Version-1.0.29-informational?style=flat-square) ![AppVersion: v1.2.1](https://img.shields.io/badge/AppVersion-v1.2.1-informational?style=flat-square)
+![Version: 1.0.30](https://img.shields.io/badge/Version-1.0.30-informational?style=flat-square) ![AppVersion: v1.2.1](https://img.shields.io/badge/AppVersion-v1.2.1-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.29
+$ helm install my-kestra kestra/kestra --version 1.0.30
 ```
 
 ## Migration from 0.x.x to 1.0.0
@@ -248,6 +248,7 @@ The **workerGroups** follow exactly the same pattern you see in deployments key 
 | common.strategy | object | `{}` | Deployment update strategy. |
 | common.terminationGracePeriodSeconds | int | `360` | Grace period for pod termination. |
 | common.tolerations | list | `[]` | Tolerations for scheduling pods on tainted nodes. |
+| common.topologySpreadConstraints | list | `[]` | Topology spread constraints for pod scheduling. |
 
 ### kestra configurations
 
