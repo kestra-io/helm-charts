@@ -229,6 +229,11 @@ spec:
               containerPort: {{ $p.containerPort }}
               protocol: {{ $p.protocol | default "TCP" }}
             {{- end }}
+            {{- if $global.externalMetrics.enabled }}
+            - name: {{ $global.externalMetrics.servicePort.name }}
+              containerPort: {{ $global.externalMetrics.servicePort.containerPort }}
+              protocol: {{ $global.externalMetrics.servicePort.protocol | default "TCP" }}
+            {{- end }}
           volumeMounts:
             - name: {{ template "kestra.fullname" $ }}-config
               mountPath: /app/confs/_default.yml

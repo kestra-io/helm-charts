@@ -21,6 +21,12 @@ spec:
       targetPort: {{ $p.targetPort }}
       protocol: {{ $p.protocol | default "TCP" }}
     {{- end }}
+    {{- if .Values.externalMetrics.enabled }}
+    - name: {{ .Values.externalMetrics.servicePort.name }}
+      port: {{ .Values.externalMetrics.servicePort.port }}
+      targetPort: {{ .Values.externalMetrics.servicePort.targetPort | default .Values.externalMetrics.servicePort.containerPort }}
+      protocol: {{ .Values.externalMetrics.servicePort.protocol | default "TCP" }}
+    {{- end }}
   selector:
     {{- include "kestra.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: "{{ $deployment }}"

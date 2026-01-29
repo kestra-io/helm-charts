@@ -203,6 +203,33 @@ serviceAccount:
   name: ""
 
 ### -------------------------------
+### External metrics (webserver endpoint)
+### -------------------------------
+
+externalMetrics:
+  # -- Enable external metrics APIService and Service port.
+  # @section -- external metrics
+  enabled: false
+  # -- Service port used by the aggregated API server (must be HTTPS).
+  # @section -- external metrics
+  servicePort:
+    name: ext-metrics
+    port: 443
+    targetPort: 6443
+    containerPort: 6443
+    protocol: TCP
+  # -- APIService registration.
+  # @section -- external metrics
+  apiService:
+    create: true
+    group: external.metrics.k8s.io
+    version: v1beta1
+    groupPriorityMinimum: 100
+    versionPriority: 100
+    insecureSkipTLSVerify: true
+    caBundle: ""
+
+### -------------------------------
 ### kestra deployments
 ### -------------------------------
 
