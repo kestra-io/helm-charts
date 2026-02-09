@@ -296,6 +296,31 @@ workerGroups: {}
 #     workerThreads: 32
 #     serviceAccountName: "one-more-service-account"
 #     extraArgs: []
+#   # Example with autoscaling based on external metrics:
+#   # Each worker group can scale independently based on its own metrics.
+#   # The worker_group label is automatically injected into External metric selectors.
+#   gpu-workers:
+#     enabled: true
+#     workerThreads: 16
+#     autoscaler:
+#       enabled: true
+#       minReplicas: 1
+#       maxReplicas: 10
+#       metrics:
+#         - type: External
+#           external:
+#             metric:
+#               name: kestra.worker.job.pending
+#             target:
+#               type: Value
+#               value: "5"
+#         - type: External
+#           external:
+#             metric:
+#               name: kestra.worker.job.running
+#             target:
+#               type: AverageValue
+#               averageValue: "10"
 
 ### -------------------------------
 ### kestra service

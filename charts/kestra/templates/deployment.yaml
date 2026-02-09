@@ -53,6 +53,13 @@ spec:
     matchLabels:
       {{- include "kestra.selectorLabels" $ | nindent 6 }}
       app.kubernetes.io/component: {{ $type }}
+      {{- if eq $type "worker" }}
+      {{- if ne $name "worker" }}
+      kestra.io/worker-group: {{ $name }}
+      {{- else }}
+      kestra.io/worker-group: default
+      {{- end }}
+      {{- end }}
   {{- if eq $kind "Deployment" }}
   {{- with (default $common.strategy $content.strategy) }}
   strategy:
@@ -70,6 +77,13 @@ spec:
       labels:
         {{- include "kestra.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: {{ $type }}
+        {{- if eq $type "worker" }}
+        {{- if ne $name "worker" }}
+        kestra.io/worker-group: {{ $name }}
+        {{- else }}
+        kestra.io/worker-group: default
+        {{- end }}
+        {{- end }}
         {{- with $common.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -339,6 +353,7 @@ spec:
 ---
 {{- $hpa := default $common.autoscaler $content.autoscaler }}
 {{- if $hpa.enabled }}
+{{- $isWorkerGroup := and (eq $type "worker") (ne $name "worker") }}
 {{- if semverCompare ">=1.23-0" $.Capabilities.KubeVersion.GitVersion -}}
 apiVersion: autoscaling/v2
 {{- else -}}
@@ -346,18 +361,51 @@ apiVersion: autoscaling/v2beta2
 {{- end }}
 kind: HorizontalPodAutoscaler
 metadata:
+  {{- if $isWorkerGroup }}
+  name: "{{ include "kestra.fullname" $ }}-workergroup-{{ $name }}"
+  {{- else }}
   name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
+  {{- end }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: {{ $kind }}
+    {{- if $isWorkerGroup }}
+    name: "{{ include "kestra.fullname" $ }}-workergroup-{{ $name }}"
+    {{- else }}
     name: "{{ include "kestra.fullname" $ }}-{{ $name }}"
+    {{- end }}
   minReplicas: {{ $hpa.minReplicas | default 1 }}
   maxReplicas: {{ $hpa.maxReplicas | default 1 }}
   {{- if $hpa.extra }}{{ toYaml $hpa.extra | trim | nindent 2 }}{{ end }}
   {{- if $hpa.metrics }}
   metrics:
-  {{- toYaml $hpa.metrics | nindent 4 }}
+  {{- range $metric := $hpa.metrics }}
+  {{- if and $isWorkerGroup (eq $metric.type "External") }}
+  {{- $existingLabels := dig "external" "metric" "selector" "matchLabels" dict $metric }}
+  {{- $hasWorkerGroup := hasKey $existingLabels "worker_group" }}
+  - type: External
+    external:
+      metric:
+        name: {{ $metric.external.metric.name }}
+        selector:
+          matchLabels:
+            {{- if not $hasWorkerGroup }}
+            worker_group: {{ $name | quote }}
+            {{- end }}
+            {{- with $existingLabels }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with (dig "external" "metric" "selector" "matchExpressions" nil $metric) }}
+          matchExpressions:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      target:
+        {{- toYaml $metric.external.target | nindent 8 }}
+  {{- else }}
+  - {{ toYaml $metric | nindent 4 | trim }}
+  {{- end }}
+  {{- end }}
   {{- end }}
 {{- end }}
 
