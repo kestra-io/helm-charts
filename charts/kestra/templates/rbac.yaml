@@ -1,0 +1,34 @@
+{{- if .Values.rbac.scaleToZero.enabled -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "kestra.fullname" . }}-scale-to-zero
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "kestra.labels" . | nindent 4 }}
+    app.kubernetes.io/component: scale-to-zero
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments/scale"]
+    verbs: ["get", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "kestra.fullname" . }}-scale-to-zero
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "kestra.labels" . | nindent 4 }}
+    app.kubernetes.io/component: scale-to-zero
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "kestra.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "kestra.fullname" . }}-scale-to-zero
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

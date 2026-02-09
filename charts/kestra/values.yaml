@@ -75,6 +75,23 @@ common:
     #      target:
     #        type: AverageValue
     #        averageValue: 100Mi
+    #
+    # External metrics examples (for worker groups, worker_group label is auto-injected):
+    # Requires externalMetrics.enabled=true and Kestra EE with external metrics endpoint.
+    #  - type: External
+    #    external:
+    #      metric:
+    #        name: kestra.worker.job.pending
+    #      target:
+    #        type: Value
+    #        value: "5"
+    #  - type: External
+    #    external:
+    #      metric:
+    #        name: kestra.worker.job.running
+    #      target:
+    #        type: AverageValue
+    #        averageValue: "10"
   # -- Liveness probe configuration for container health checks.
   # @section -- common settings
   livenessProbe:
@@ -203,6 +220,19 @@ serviceAccount:
   name: ""
 
 ### -------------------------------
+### RBAC
+### -------------------------------
+
+rbac:
+  scaleToZero:
+    # -- Create Role and RoleBinding for scale-to-zero feature.
+    # Grants the service account permissions to get/list/watch deployments
+    # and get/update/patch deployments/scale in the release namespace.
+    # Required when using `configurations.application.kestra.scale-to-zero`.
+    # @section -- rbac
+    enabled: false
+
+### -------------------------------
 ### External metrics (webserver endpoint)
 ### -------------------------------
 
@@ -226,7 +256,7 @@ externalMetrics:
     version: v1beta1
     groupPriorityMinimum: 100
     versionPriority: 100
-    insecureSkipTLSVerify: true
+    insecureSkipTLSVerify: false
     caBundle: ""
 
 ### -------------------------------
