@@ -26,7 +26,7 @@
 
 # kestra
 
-![Version: 1.0.33](https://img.shields.io/badge/Version-1.0.33-informational?style=flat-square) ![AppVersion: v1.2.3](https://img.shields.io/badge/AppVersion-v1.2.3-informational?style=flat-square)
+![Version: 1.0.34](https://img.shields.io/badge/Version-1.0.34-informational?style=flat-square) ![AppVersion: v1.2.4](https://img.shields.io/badge/AppVersion-v1.2.4-informational?style=flat-square)
 
 Infinitely scalable, event-driven, language-agnostic orchestration and scheduling platform to manage millions of workflows declaratively in code.
 
@@ -38,7 +38,7 @@ To install the chart with the release name `my-kestra`:
 
 ```console
 $ helm repo add kestra https://helm.kestra.io/
-$ helm install my-kestra kestra/kestra --version 1.0.33
+$ helm install my-kestra kestra/kestra --version 1.0.34
 ```
 
 ## Migration from 0.x.x to 1.0.0
