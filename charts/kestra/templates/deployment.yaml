@@ -110,6 +110,15 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if (or $common.topologySpreadConstraints $content.topologySpreadConstraints) }}
+      topologySpreadConstraints:
+        {{- with $common.topologySpreadConstraints }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with $content.topologySpreadConstraints }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
       {{- if (or $common.nodeSelector $content.nodeSelector) }}
       nodeSelector:
         {{- with $common.nodeSelector }}
@@ -185,7 +194,7 @@ spec:
           env:
             - name: MICRONAUT_CONFIG_FILES
               value: {{ include "kestra.micronautConfigFiles" $ | quote }}
-            - name: KESTRA_JAVA_OPTS
+            - name: _JAVA_OPTIONS
               value: {{ include "kestra.jvmOpts" (dict "common" $common "content" $content) | replace "\n" " " | trim | quote }}
             {{- with $common.extraEnv }}
             {{- toYaml . | nindent 12 }}

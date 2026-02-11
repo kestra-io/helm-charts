@@ -123,6 +123,9 @@ common:
   # -- Affinity rules for pod scheduling.
   # @section -- common settings
   affinity: {}
+  # -- Topology spread constraints for pod scheduling.
+  # @section -- common settings
+  topologySpreadConstraints: []
   # -- Security context settings for containers.
   # @section -- common settings
   securityContext: {}
