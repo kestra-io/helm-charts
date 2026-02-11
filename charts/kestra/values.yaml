@@ -383,6 +383,40 @@ ingress:
   tls: []
 
 ### -------------------------------
+### HTTPRoute
+### -------------------------------
+
+# This block is for setting up the Gateway API HTTPRoute.
+httpRoute:
+  # -- Enable HTTPRoute resource.
+  # @section -- kubernetes httpRoute
+  enabled: false
+  # -- ApiVersion of the HTTP Route.
+  # @section -- kubernetes httpRoute
+  apiVersion: "gateway.networking.k8s.io/v1"
+  # -- Kind of the HTTP Route.
+  # @section -- kubernetes httpRoute
+  kind: "HTTPRoute"
+  # -- Annotations to add to the HTTPRoute.
+  # @section -- kubernetes httpRoute
+  annotations: {}
+  # -- Hostnames for the HTTP Route.
+  # @section -- kubernetes httpRoute
+  hostnames: []
+  # -- ParentRefs for the HTTPRoute
+  # @section -- kubernetes httpRoute
+  parentRefs: []
+  # -- Additional rules to add to the HTTPRoute
+  # @section -- kubernetes httpRoute
+  additionalRules: []
+  # -- Filters to add to the HTTPRoute
+  # @section -- kubernetes httpRoute
+  filters: []
+  # -- Matches to add to the HTTPRoute
+  # @section -- kubernetes httpRoute
+  matches: []
+
+### -------------------------------
 ### Extra Kubernetes Manifests
 ### -------------------------------
 
