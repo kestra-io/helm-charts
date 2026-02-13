@@ -1,0 +1,288 @@
+image:
+  repository: local-kestra-ee
+  tag: 1.3.0-SNAPSHOT
+  pullPolicy: IfNotPresent
+
+deployments:
+  webserver:
+    enabled: true
+  executor:
+    enabled: true
+  indexer:
+    enabled: true
+  scheduler:
+    enabled: true
+  worker:
+    enabled: true
+    keda:
+      enabled: true
+      minReplicaCount: 0
+      maxReplicaCount: 5
+      cooldownPeriod: 120
+      pollingInterval: 15
+  standalone:
+    enabled: false
+
+# Worker groups with individual autoscaling
+workerGroups:
+  gpu-workers:
+    enabled: true
+    workerThreads: 1
+    autoscaler:
+      enabled: false
+    keda:
+      enabled: true
+      minReplicaCount: 0
+      maxReplicaCount: 3
+      cooldownPeriod: 120
+      pollingInterval: 15
+  cpu-workers:
+    enabled: true
+    workerThreads: 1
+    autoscaler:
+      enabled: false
+    keda:
+      enabled: true
+      minReplicaCount: 0
+      maxReplicaCount: 10
+      cooldownPeriod: 60
+      pollingInterval: 15
+
+common:
+  initContainers:
+    - name: wait-for-postgres
+      image: busybox:1.36
+      command:
+        - sh
+        - -c
+        - |
+          until nc -z kestra-postgres 5432; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+          echo "PostgreSQL is ready"
+  extraVolumes:
+    - name: kestra-ssl
+      secret:
+        secretName: kestra-ssl
+  extraVolumeMounts:
+    - name: kestra-ssl
+      mountPath: /app/ssl
+      readOnly: true
+  extraEnvFrom:
+    - secretRef:
+        name: kestra-postgres
+    - secretRef:
+        name: kestra-license
+service:
+  type: ClusterIP
+  ports:
+    http:
+      port: 8080
+      containerPort: 8080
+      targetPort: http
+      protocol: TCP
+    https:
+      port: 443
+      containerPort: 6443
+      targetPort: 6443
+      protocol: TCP
+    management:
+      port: 8081
+      containerPort: 8081
+      targetPort: management
+      protocol: TCP
+configurations:
+  application:
+    kestra:
+      security:
+        basic-auth:
+          enabled: true
+          username: test@kestra.io
+          password: Password1
+      ee:
+        license:
+          fingerprint: ${KESTRA_LICENSE_FINGERPRINT}
+          id: ${KESTRA_LICENSE_ID}
+          key: ${KESTRA_LICENSE_KEY}
+      queue:
+        type: postgres
+      secret:
+        type: jdbc
+        jdbc:
+          secret: "shBvNNtluN0P9p131aoLR03NFYTbJgHTzzoyYouCegA="
+      encryption:
+        secret-key: "shBvNNtluN0P9p131aoLR03NFYTbJgHTzzoyYouCegA="
+      repository:
+        type: postgres
+      storage:
+        type: local
+        local:
+          basePath: "/app/storage"
+      scale-to-zero:
+        enabled: true
+        poll-interval: 30s
+        worker-groups:
+          default:
+            namespace: kestra
+            deployment-name: kestra-worker
+            scale-down-delay: 1m
+          cpu-workers:
+            namespace: kestra
+            deployment-name: kestra-workergroup-cpu-workers
+            scale-down-delay: 1m
+            scale-down-metrics:
+              - kestra.worker.job.pending
+              - kestra.worker.job.running
+              - kestra.queue.message.lag.count
+            scale-up-metrics:
+              - kestra.queue.message.lag.count
+          gpu-workers:
+            namespace: kestra
+            deployment-name: kestra-workergroup-gpu-workers
+            scale-down-delay: 1m
+            scale-down-metrics:
+              - kestra.worker.job.pending
+              - kestra.worker.job.running
+              - kestra.queue.message.lag.count
+            scale-up-metrics:
+              - kestra.queue.message.lag.count
+    datasources:
+      postgres:
+        url: jdbc:postgresql://kestra-postgres:5432/kestra
+        username: kestra
+        password: ${POSTGRES_PASSWORD}
+        driverClassName: org.postgresql.Driver
+    micronaut:
+      server:
+        ssl:
+          enabled: true
+          port: 6443
+          keyStore:
+            path: file:/app/ssl/keystore.p12
+            password: changeit
+            type: PKCS12
+
+extraManifests:
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: kestra-postgres
+    stringData:
+      POSTGRES_DB: kestra
+      POSTGRES_USER: kestra
+      POSTGRES_PASSWORD: kestra
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: kestra-postgres
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: kestra-postgres
+      template:
+        metadata:
+          labels:
+            app: kestra-postgres
+        spec:
+          containers:
+            - name: postgres
+              image: postgres:15
+              ports:
+                - containerPort: 5432
+              envFrom:
+                - secretRef:
+                    name: kestra-postgres
+              volumeMounts:
+                - name: postgres-data
+                  mountPath: /var/lib/postgresql/data
+          volumes:
+            - name: postgres-data
+              emptyDir: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: kestra-postgres
+    spec:
+      selector:
+        app: kestra-postgres
+      ports:
+        - port: 5432
+          targetPort: 5432
+  - apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: kestra-setup
+    spec:
+      backoffLimit: 20
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+            - name: wait-for-postgres
+              image: busybox:1.36
+              command:
+                - sh
+                - -c
+                - |
+                  until nc -z kestra-postgres 5432; do
+                    echo "Waiting for PostgreSQL..."
+                    sleep 2
+                  done
+                  echo "PostgreSQL is ready"
+          containers:
+            - name: setup
+              image: local-kestra-ee:1.3.0-SNAPSHOT
+              env:
+                - name: MICRONAUT_CONFIG_FILES
+                  value: /app/confs/_default.yml
+              envFrom:
+                - secretRef:
+                    name: kestra-postgres
+                - secretRef:
+                    name: kestra-license
+              volumeMounts:
+                - name: kestra-config
+                  mountPath: /app/confs/_default.yml
+                  subPath: _default.yml
+                - name: kestra-ssl
+                  mountPath: /app/ssl
+                  readOnly: true
+              command:
+                - bash
+                - -c
+                - |
+                  echo "Creating superadmin user..."
+                  bash /app/kestra auths users create --superadmin --if-not-exists test@kestra.io Password1 || true
+
+                  echo "Creating tenant 'my-tenant'..."
+                  bash /app/kestra tenants create my-tenant "My Tenant" --admin-username=test@kestra.io || true
+
+                  echo "Waiting for Kestra API to be ready..."
+                  until curl -sfk -u "test@kestra.io:Password1" https://kestra:443/api/v1/configs > /dev/null 2>&1; do
+                    echo "  Not ready yet, retrying in 5s..."
+                    sleep 5
+                  done
+                  echo "Kestra API is ready."
+
+                  echo "Creating worker groups via API..."
+                  curl -sfk -u "test@kestra.io:Password1" -X POST https://kestra:443/api/v1/instance/workergroups \
+                    -H "Content-Type: application/json" \
+                    -d '{"key": "gpu-workers", "description": "GPU Workers", "allowedTenants": ["my-tenant"]}' || true
+
+                  curl -sfk -u "test@kestra.io:Password1" -X POST https://kestra:443/api/v1/instance/workergroups \
+                    -H "Content-Type: application/json" \
+                    -d '{"key": "cpu-workers", "description": "CPU Workers", "allowedTenants": ["my-tenant"]}' || true
+
+                  echo "Setup complete."
+          volumes:
+            - name: kestra-config
+              configMap:
+                name: kestra-config
+                items:
+                  - key: _default.yml
+                    path: _default.yml
+            - name: kestra-ssl
+              secret:
+                secretName: kestra-ssl

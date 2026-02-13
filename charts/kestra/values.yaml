@@ -75,6 +75,22 @@ common:
     #      target:
     #        type: AverageValue
     #        averageValue: 100Mi
+  # -- KEDA ScaledObject configuration for scale-to-zero support.
+  # @section -- common settings
+  keda:
+    enabled: false
+    minReplicaCount: 0
+    maxReplicaCount: 5
+    cooldownPeriod: 300
+    pollingInterval: 30
+    idleReplicaCount: 0
+    metricThreshold: 1
+    metricsServerUrl: ""
+    auth:
+      username: ""
+      password: ""
+      existingSecret: ""
+    advanced: {}
   # -- Liveness probe configuration for container health checks.
   # @section -- common settings
   livenessProbe:

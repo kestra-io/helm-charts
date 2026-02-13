@@ -1,0 +1,150 @@
+{{ $global := .Values }}
+{{ $common := .Values.common }}
+{{ $kestra := merge .Values.deployments .Values.workerGroups }}
+{{ $kedaDefaults := $common.keda }}
+{{ $releaseName := include "kestra.fullname" . }}
+
+{{- $needsSecret := false }}
+{{- range $name, $content := $kestra }}
+{{- if $content.enabled }}
+{{- $type := "worker" }}
+{{- $list := list "standalone" "webserver" "executor" "indexer" "scheduler" }}
+{{- range $i, $val := $list }}
+{{- if eq $val $name }}
+{{- $type = $name }}
+{{- end }}
+{{- end }}
+{{- if eq $type "worker" }}
+{{- $keda := default $kedaDefaults $content.keda }}
+{{- if $keda.enabled }}
+{{- $auth := default $kedaDefaults.auth $keda.auth }}
+{{- if not $auth.existingSecret }}
+{{- $needsSecret = true }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- if $needsSecret }}
+{{- $secretUsername := "" }}
+{{- $secretPassword := "" }}
+{{- range $name, $content := $kestra }}
+{{- if $content.enabled }}
+{{- $type := "worker" }}
+{{- $list := list "standalone" "webserver" "executor" "indexer" "scheduler" }}
+{{- range $i, $val := $list }}
+{{- if eq $val $name }}
+{{- $type = $name }}
+{{- end }}
+{{- end }}
+{{- if eq $type "worker" }}
+{{- $keda := default $kedaDefaults $content.keda }}
+{{- if $keda.enabled }}
+{{- $auth := default $kedaDefaults.auth $keda.auth }}
+{{- if and (not $auth.existingSecret) $auth.username $auth.password (not $secretUsername) }}
+{{- $secretUsername = $auth.username }}
+{{- $secretPassword = $auth.password }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "{{ $releaseName }}-keda-metrics-auth"
+  labels:
+    {{- include "kestra.labels" . | nindent 4 }}
+type: Opaque
+data:
+  username: {{ $secretUsername | b64enc | quote }}
+  password: {{ $secretPassword | b64enc | quote }}
+{{- end }}
+
+{{- range $name, $content := $kestra }}
+{{- if $content.enabled }}
+
+{{- $type := "worker" }}
+{{- $list := list "standalone" "webserver" "executor" "indexer" "scheduler" }}
+{{- range $i, $val := $list }}
+{{- if eq $val $name }}
+{{- $type = $name }}
+{{- end }}
+{{- end }}
+
+{{- if eq $type "worker" }}
+{{- $keda := default $kedaDefaults $content.keda }}
+{{- if $keda.enabled }}
+{{- $auth := default $kedaDefaults.auth $keda.auth }}
+{{- $secretName := default (printf "%s-keda-metrics-auth" $releaseName) $auth.existingSecret }}
+{{- $deploymentName := "" }}
+{{- $workerGroup := "" }}
+{{- if eq $name "worker" }}
+{{- $deploymentName = printf "%s-%s" $releaseName $name }}
+{{- $workerGroup = "default" }}
+{{- else }}
+{{- $deploymentName = printf "%s-workergroup-%s" $releaseName $name }}
+{{- $workerGroup = $name }}
+{{- end }}
+{{- $metricsServerUrl := default (printf "http://%s:8081" $releaseName) $keda.metricsServerUrl }}
+{{- $ns := $.Release.Namespace }}
+{{- $kind := default $common.kind $content.kind }}
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: "{{ $releaseName }}-keda-{{ $name }}-auth"
+  labels:
+    {{- include "kestra.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $type }}
+spec:
+  secretTargetRef:
+    - parameter: username
+      name: "{{ $secretName }}"
+      key: username
+    - parameter: password
+      name: "{{ $secretName }}"
+      key: password
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: "{{ $deploymentName }}"
+  labels:
+    {{- include "kestra.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $type }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: {{ $kind }}
+    name: "{{ $deploymentName }}"
+  minReplicaCount: {{ default $kedaDefaults.minReplicaCount $keda.minReplicaCount }}
+  maxReplicaCount: {{ default $kedaDefaults.maxReplicaCount $keda.maxReplicaCount }}
+  cooldownPeriod: {{ default $kedaDefaults.cooldownPeriod $keda.cooldownPeriod }}
+  pollingInterval: {{ default $kedaDefaults.pollingInterval $keda.pollingInterval }}
+  idleReplicaCount: {{ default $kedaDefaults.idleReplicaCount $keda.idleReplicaCount }}
+  {{- with (default $kedaDefaults.advanced $keda.advanced) }}
+  advanced:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  triggers:
+    {{- $metrics := list "kestra.worker.job.pending" "kestra.worker.job.running" "kestra.queue.message.lag.count" }}
+    {{- range $metric := $metrics }}
+    - type: metrics-api
+      metadata:
+        url: "{{ $metricsServerUrl }}/metrics/{{ $metric }}?tag=worker_group:{{ $workerGroup }}"
+        valueLocation: "measurements.0.value"
+        targetValue: "{{ default $kedaDefaults.metricThreshold $keda.metricThreshold }}"
+        activationTargetValue: "0"
+      authenticationRef:
+        name: "{{ $releaseName }}-keda-{{ $name }}-auth"
+    {{- end }}
+
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -28,3 +28,16 @@
 {{- if and .Values.dind.enabled (not (has .Values.dind.mode (list "rootless" "insecure"))) }}
 {{ fail (printf "Invalid dind.mode '%s'. Allowed values are: rootless, insecure" .Values.dind.mode) }}
 {{- end }}
+
+{{- $kedaDefaults := .Values.common.keda }}
+{{- $hpaDefaults := .Values.common.autoscaler }}
+{{- $all := merge .Values.deployments .Values.workerGroups }}
+{{- range $name, $content := $all }}
+{{- if $content.enabled }}
+{{- $hpa := default $hpaDefaults $content.autoscaler }}
+{{- $keda := default $kedaDefaults $content.keda }}
+{{- if and $hpa.enabled $keda.enabled }}
+{{ fail (printf "Both autoscaler.enabled and keda.enabled are true for '%s'. Only one scaling method can be active at a time." $name) }}
+{{- end }}
+{{- end }}
+{{- end }}
