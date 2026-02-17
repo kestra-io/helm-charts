@@ -83,7 +83,7 @@ data:
 {{- $workerGroup := "" }}
 {{- if eq $name "worker" }}
 {{- $deploymentName = printf "%s-%s" $releaseName $name }}
-{{- $workerGroup = "default" }}
+{{- $workerGroup = "__default__" }}
 {{- else }}
 {{- $deploymentName = printf "%s-workergroup-%s" $releaseName $name }}
 {{- $workerGroup = $name }}

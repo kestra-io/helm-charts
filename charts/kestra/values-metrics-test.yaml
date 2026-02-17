@@ -95,6 +95,10 @@ service:
 configurations:
   application:
     kestra:
+      metric:
+        queue:
+          lag:
+            enabled: true
       security:
         basic-auth:
           enabled: true
@@ -119,34 +123,6 @@ configurations:
         type: local
         local:
           basePath: "/app/storage"
-      scale-to-zero:
-        enabled: true
-        poll-interval: 30s
-        worker-groups:
-          default:
-            namespace: kestra
-            deployment-name: kestra-worker
-            scale-down-delay: 1m
-          cpu-workers:
-            namespace: kestra
-            deployment-name: kestra-workergroup-cpu-workers
-            scale-down-delay: 1m
-            scale-down-metrics:
-              - kestra.worker.job.pending
-              - kestra.worker.job.running
-              - kestra.queue.message.lag.count
-            scale-up-metrics:
-              - kestra.queue.message.lag.count
-          gpu-workers:
-            namespace: kestra
-            deployment-name: kestra-workergroup-gpu-workers
-            scale-down-delay: 1m
-            scale-down-metrics:
-              - kestra.worker.job.pending
-              - kestra.worker.job.running
-              - kestra.queue.message.lag.count
-            scale-up-metrics:
-              - kestra.queue.message.lag.count
     datasources:
       postgres:
         url: jdbc:postgresql://kestra-postgres:5432/kestra
