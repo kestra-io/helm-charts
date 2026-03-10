@@ -19,6 +19,9 @@ env:
   CI_COMMIT_AUTHOR: bump-version-wf
   CI_COMMIT_EMAIL: actions@github.com
 
+  # Slack
+  SLACK_CHANNEL_ID: C0AJDEN8AV7 # channel _int_devops-build
+
   # Branch naming
   HELM_BRANCH_MERGE: "feat-helm/update-to-"
 
@@ -226,7 +229,7 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            channel: C0AJDEN8AV7
+            channel: ${{ env.SLACK_CHANNEL_ID }}
             username: GitHub Actions
             icon_emoji: ":github-actions:"
             text: |
