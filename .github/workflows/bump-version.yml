@@ -42,14 +42,6 @@ jobs:
         with:
           ref: master
 
-      - name: Install yq
-        run: |
-          set -euo pipefail
-          YQ_VERSION="v4.44.3"
-          sudo wget -qO /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64"
-          sudo chmod +x /usr/local/bin/yq
-          yq --version
-
       - name: Read latest chart versions
         id: read-latest
         run: |
@@ -97,9 +89,8 @@ jobs:
 
           echo "appVersion format valid: ${NEW_APP_VER}"
 
-      - name: Skip if incoming version is not newer (TEMP DISABLED)
+      - name: Skip if incoming version is not newer
         id: version-check
-        if: ${{ false }}
         run: |
           set -euo pipefail
 
@@ -118,7 +109,6 @@ jobs:
 
       - name: Check if target image exists on Docker Hub
         id: check_image
-        if: ${{ false }}
         run: |
           set -euo pipefail
 
@@ -209,7 +199,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ env.HELM_BRANCH_MERGE }}${{ env.COMPUTED_APP_VERSION }}
           delete-branch: true
-          reviewers: MarcoSaba
+          reviewers: kestra-io/devops
           title: "Helm charts update: kestra ${{ env.KESTRA_LATEST_VERSION }} → ${{ env.NEXT_KESTRA_CHART_VERSION }} (starter ${{ env.STARTER_LATEST_VERSION }} → ${{ env.NEXT_STARTER_CHART_VERSION }})"
           body: |
             Helm charts update to new version:
