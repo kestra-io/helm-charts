@@ -92,20 +92,33 @@ jobs:
 
           echo "appVersion format valid: ${NEW_APP_VER}"
 
-      - name: Skip if incoming version is not newer
+      - name: Fail if incoming version is not newer
         id: version-check
         run: |
           set -euo pipefail
 
-          echo "Comparing current kestra appVersion ${CURRENT_APP_VERSION} with incoming version ${NEW_APP_VER}"
-
-          CUR="${CURRENT_APP_VERSION#v}"
-          NEW="${NEW_APP_VER#v}"
-          HIGHEST=$(printf '%s\n' "$CUR" "$NEW" | sort -V | tail -n1)
-
-          if [ "$HIGHEST" != "$NEW" ]; then
-            echo "Incoming version is not newer — skipping Helm chart bump."
+          fail() {
+            echo "$1"
             exit 1
+          }
+
+          echo "Comparing current kestra appVersion '${CURRENT_APP_VERSION}' with incoming version '${NEW_APP_VER}'"
+
+          if [ -z "${CURRENT_APP_VERSION}" ] || [ -z "${NEW_APP_VER}" ]; then
+            fail "Missing version(s): CURRENT_APP_VERSION='${CURRENT_APP_VERSION}', NEW_APP_VER='${NEW_APP_VER}'"
+          fi
+
+          if [ "${NEW_APP_VER}" = "${CURRENT_APP_VERSION}" ]; then
+            fail "Incoming version equals current (${CURRENT_APP_VERSION}) — failing to avoid creating a chart-only bump PR."
+          fi
+
+          cur_semver="${CURRENT_APP_VERSION#v}"
+          new_semver="${NEW_APP_VER#v}"
+          highest="$(printf '%s\n' "${cur_semver}" "${new_semver}" | sort -V | tail -n1)"
+
+          # Fail unless NEW is strictly greater than CURRENT (i.e. fail for equal or older)
+          if [ "${highest}" = "${cur_semver}" ]; then
+            fail "Incoming version '${NEW_APP_VER}' is equal to or older than current '${CURRENT_APP_VERSION}'"
           fi
 
           echo "New version is greater — continuing with Helm chart update."
