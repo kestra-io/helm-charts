@@ -1,0 +1,188 @@
+name: "Auto tag on merge"
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "If true, do not push tags or create releases"
+        required: true
+        default: true
+        type: boolean
+      merge_sha:
+        description: "Commit SHA to tag/read Chart.yaml from (optional; defaults to current HEAD)"
+        required: false
+        type: string
+      pr_url:
+        description: "PR URL to include in release notes (optional)"
+        required: false
+        type: string
+      pr_number:
+        description: "PR number for tag annotation (optional)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  tag_and_release:
+    name: Create tag + release
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.merged == true &&
+        github.event.pull_request.user.login == 'github-actions[bot]' &&
+        contains(github.event.pull_request.labels.*.name, 'automated pr') &&
+        startsWith(github.event.pull_request.title, 'Helm charts update:')
+      )
+
+    env:
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && (inputs.dry_run && 'true' || 'false') || 'false' }}
+      MERGE_SHA_INPUT: ${{ github.event_name == 'workflow_dispatch' && inputs.merge_sha || github.event.pull_request.merge_commit_sha }}
+      PR_URL_INPUT: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_url || github.event.pull_request.html_url }}
+      PR_NUMBER_INPUT: ${{ github.event_name == 'workflow_dispatch' && inputs.pr_number || github.event.pull_request.number }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Resolve target commit SHA
+        id: sha
+        run: |
+          set -euo pipefail
+
+          sha="${MERGE_SHA_INPUT:-}"
+          if [ -z "${sha}" ]; then
+            sha="$(git rev-parse HEAD)"
+          fi
+
+          # Ensure commit exists locally (fetch if needed)
+          if ! git cat-file -e "${sha}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin "${sha}"
+          fi
+
+          if ! git cat-file -e "${sha}^{commit}" 2>/dev/null; then
+            echo "Unable to resolve commit SHA: ${sha}"
+            exit 1
+          fi
+
+          echo "sha=${sha}" >> "$GITHUB_OUTPUT"
+          echo "Resolved SHA: ${sha}"
+
+      - name: Compute tag name
+        id: tag
+        run: |
+          set -euo pipefail
+
+          tag="v$(date -u +%Y-%m-%d)"
+
+          if git ls-remote --tags origin "$tag" | grep -q "refs/tags/${tag}$"; then
+            echo "Tag already exists on origin: ${tag}"
+            exit 1
+          fi
+
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "Computed tag: ${tag}"
+
+      - name: Create and push annotated tag
+        if: ${{ env.DRY_RUN != 'true' }}
+        env:
+          TAG_NAME: ${{ steps.tag.outputs.tag }}
+          MERGE_SHA: ${{ steps.sha.outputs.sha }}
+          PR_NUMBER: ${{ env.PR_NUMBER_INPUT }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${MERGE_SHA}" ]; then
+            echo "merge_commit_sha is empty; cannot tag."
+            exit 1
+          fi
+
+          git fetch --no-tags origin "${MERGE_SHA}"
+          git tag -a "${TAG_NAME}" "${MERGE_SHA}" -m "Automated chart release ${TAG_NAME} (PR #${PR_NUMBER})"
+          git push origin "${TAG_NAME}"
+
+      - name: Read Kestra appVersion (docker tag)
+        id: kestra-version
+        env:
+          MERGE_SHA: ${{ steps.sha.outputs.sha }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${MERGE_SHA}" ]; then
+            echo "merge_commit_sha is empty; cannot read appVersion."
+            exit 1
+          fi
+
+          chart="charts/kestra/Chart.yaml"
+          content="$(git show "${MERGE_SHA}:${chart}")"
+
+          app_version="$(printf '%s\n' "${content}" | awk -F': *' '/^appVersion:/{print $2; exit}' | tr -d '"')"
+
+          if [ -z "${app_version}" ]; then
+            echo "Could not extract appVersion from ${chart} at ${MERGE_SHA}."
+            exit 1
+          fi
+
+          echo "app_version=${app_version}" >> "$GITHUB_OUTPUT"
+          echo "Detected kestra appVersion: ${app_version}"
+
+      - name: Dry run summary
+        if: ${{ env.DRY_RUN == 'true' }}
+        env:
+          TAG_NAME: ${{ steps.tag.outputs.tag }}
+          MERGE_SHA: ${{ steps.sha.outputs.sha }}
+          PR_URL: ${{ env.PR_URL_INPUT }}
+          PR_NUMBER: ${{ env.PR_NUMBER_INPUT }}
+          KESTRA_APP_VERSION: ${{ steps.kestra-version.outputs.app_version }}
+        run: |
+          set -euo pipefail
+
+          echo "DRY RUN: no tag/release will be created."
+          echo "Would tag commit: ${MERGE_SHA}"
+          echo "Would create tag/release: ${TAG_NAME}"
+          echo "Would annotate tag with PR: #${PR_NUMBER}"
+
+          echo "--- Release notes preview ---"
+          printf 'release kestra [%s](https://kestra.io/docs/changelog/%s)\n\nAutomated chart release triggered by merge: %s\n' \
+            "${KESTRA_APP_VERSION}" "${KESTRA_APP_VERSION}" "${PR_URL}"
+
+      - name: Create GitHub Release (optional)
+        if: ${{ env.DRY_RUN != 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ steps.tag.outputs.tag }}
+          PR_URL: ${{ env.PR_URL_INPUT }}
+          KESTRA_APP_VERSION: ${{ steps.kestra-version.outputs.app_version }}
+        run: |
+          set -euo pipefail
+
+          if gh release view "${TAG_NAME}" >/dev/null 2>&1; then
+            echo "Release already exists for ${TAG_NAME}; skipping."
+            exit 0
+          fi
+
+          if [ -z "${KESTRA_APP_VERSION}" ]; then
+            echo "KESTRA_APP_VERSION is empty; cannot build release notes."
+            exit 1
+          fi
+
+          notes="$(printf 'release kestra [%s](https://kestra.io/docs/changelog/%s)\n\nAutomated chart release triggered by merge: %s\n' \
+            "${KESTRA_APP_VERSION}" "${KESTRA_APP_VERSION}" "${PR_URL}")"
+
+          gh release create "${TAG_NAME}" \
+            --title "${TAG_NAME}" \
+            --notes "${notes}"
