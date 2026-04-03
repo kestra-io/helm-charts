@@ -88,19 +88,3 @@ jobs:
           helm dep up charts/kestra-starter/
           helm template charts/kestra-starter --validate=false > output.yaml
           kubeconform -strict -summary output.yaml
-  tests-kestra-operator:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-      - name: Setup ASDF
-        run: |
-          echo "" > .tool-versions
-          echo "helm 3.12.3" >> .tool-versions
-          echo "kubeconform 0.7.0" >> .tool-versions
-      - name: Set up ASDF
-        uses: asdf-vm/actions/install@v4
-      - name: Run tests
-        run: |
-          helm template charts/kestra-operator --validate=false > output.yaml
-          kubeconform -strict -summary output.yaml

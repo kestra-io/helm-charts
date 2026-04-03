@@ -9,8 +9,8 @@ permissions:
   contents: write
 
 jobs:
-  publish_core_and_operator:
-    name: Publish kestra + kestra-operator
+  publish_core:
+    name: Publish kestra
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -26,14 +26,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      # - name: Build release charts dir (kestra + operator only)
-      #   run: |
-      #     rm -rf .cr-charts
-      #     mkdir -p .cr-charts
-      #     cp -R charts/kestra .cr-charts/
-      #     cp -R charts/kestra-operator .cr-charts/
-
-      # This leaves 'kestra' and 'kestra-operator' in the valid 'charts/' git path
       - name: Prepare charts directory
         run: |
           # Remove kestra-starter so it is not processed in this job
@@ -87,7 +79,7 @@ jobs:
   publish_starter:
     name: Publish kestra-starter
     runs-on: ubuntu-latest
-    needs: publish_core_and_operator
+    needs: publish_core
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
@@ -117,7 +109,6 @@ jobs:
       - name: Prepare charts directory (starter only)
         run: |
           rm -rf charts/kestra
-          rm -rf charts/kestra-operator
       - name: Workaround for manual tagging
         run: |
           echo "Current tag is ${{ github.ref_name }}"
