@@ -21,6 +21,7 @@ env:
 
   # Slack
   SLACK_CHANNEL_ID: C0AJDEN8AV7 # channel _int_devops-build
+  SLACK_CHANNEL_ID_2: C09FF36GKE1 # channel _int_alert-engineering-build
 
   # Branch naming
   HELM_BRANCH_MERGE: "feat-helm/update-to-"
@@ -241,6 +242,20 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             channel: ${{ env.SLACK_CHANNEL_ID }}
+            username: GitHub Actions
+            icon_emoji: ":github-actions:"
+            text: |
+              Created Helm charts bump PR #${{ steps.cpr.outputs.pull-request-number }}: ${{ steps.cpr.outputs.pull-request-url }}
+              appVersion=${{ env.COMPUTED_APP_VERSION }}, kestra=${{ env.NEXT_KESTRA_CHART_VERSION }}, kestra-starter=${{ env.NEXT_STARTER_CHART_VERSION }}
+
+      - name: Slack notification (PR created) — _int_alert-engineering-build
+        if: ${{ steps.cpr.outputs.pull-request-operation == 'created' && env.SLACK_WEBHOOK_URL != 0 }}
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL_ID_2 }}
             username: GitHub Actions
             icon_emoji: ":github-actions:"
             text: |
