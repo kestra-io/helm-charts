@@ -21,7 +21,7 @@ env:
 
   # Slack
   SLACK_CHANNEL_ID: C0AJDEN8AV7 # channel _int_devops-build
-  SLACK_CHANNEL_ID_2: C09FF36GKE1 # channel _int_alert-engineering-build
+  SLACK_CHANNEL_ID_2: C04HTFM3VL6 # channel _int_engineering
 
   # Branch naming
   HELM_BRANCH_MERGE: "feat-helm/update-to-"
