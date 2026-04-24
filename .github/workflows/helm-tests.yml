@@ -65,12 +65,6 @@ jobs:
         run: |
           helm template charts/kestra -f charts/kestra/values-testing.yaml --validate=false > output.yaml
           kubeconform -strict -summary output.yaml
-      # because of a recent bug we disable this part
-      # helm-unittest/helm-unittest#790
-      # - name: Run unittests
-      #   run: |
-      #     helm plugin install https://github.com/helm-unittest/helm-unittest.git
-      #     helm unittest charts/kestra
   tests-kestra-starter:
     runs-on: ubuntu-latest
     steps:
@@ -85,11 +79,10 @@ jobs:
         uses: asdf-vm/actions/install@v4
       - name: Run tests
         run: |
-          # Package local kestra chart and serve via HTTP so helm dep up resolves
-          # it without needing the version published to helm.kestra.io yet
           helm package charts/kestra --destination /tmp/kestra-pkg/
           helm repo index /tmp/kestra-pkg/
           python3 -m http.server 8879 --directory /tmp/kestra-pkg/ &
+          until curl -sf http://127.0.0.1:8879/index.yaml > /dev/null 2>&1; do sleep 0.1; done
           helm repo add local-kestra http://127.0.0.1:8879 --force-update
           sed -i 's|repository: https://helm.kestra.io/|repository: http://127.0.0.1:8879|' charts/kestra-starter/Chart.yaml
           helm dep up charts/kestra-starter/
