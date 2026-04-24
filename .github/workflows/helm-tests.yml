@@ -85,12 +85,13 @@ jobs:
         uses: asdf-vm/actions/install@v4
       - name: Run tests
         run: |
-          # Package local kestra chart and serve as a local Helm repo
-          # so helm dep up resolves it without needing the version published yet
+          # Package local kestra chart and serve via HTTP so helm dep up resolves
+          # it without needing the version published to helm.kestra.io yet
           helm package charts/kestra --destination /tmp/kestra-pkg/
           helm repo index /tmp/kestra-pkg/
-          helm repo add local-kestra "file:///tmp/kestra-pkg" --force-update
-          sed -i 's|repository: https://helm.kestra.io/|repository: file:///tmp/kestra-pkg|' charts/kestra-starter/Chart.yaml
+          python3 -m http.server 8879 --directory /tmp/kestra-pkg/ &
+          helm repo add local-kestra http://127.0.0.1:8879 --force-update
+          sed -i 's|repository: https://helm.kestra.io/|repository: http://127.0.0.1:8879|' charts/kestra-starter/Chart.yaml
           helm dep up charts/kestra-starter/
           helm template charts/kestra-starter --validate=false > output.yaml
           kubeconform -strict -summary output.yaml
