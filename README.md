@@ -35,6 +35,8 @@
 
 # Kestra Helm Charts
 
+> **This repository is archived.** Helm charts have moved to [kestra-io/kestra](https://github.com/kestra-io/kestra/tree/develop/charts). The chart repository remains available at [helm.kestra.io](https://helm.kestra.io/).
+
 This repository contains the Helm chart for Kestra.
 - [kestra](charts/kestra): The main Kestra application, including the UI and API server.
 - [kestra-starter](charts/kestra-starter): A starter chart that deploys Kestra with default configurations for quick setup.
